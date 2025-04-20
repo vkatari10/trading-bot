@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/vkatari10/trading-bot/issues"
   },
-  "homepage": "https://github.com/vkatari10/trading-bot#readme"
+  "homepage": "https://github.com/vkatari10/trading-bot#readme",
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
 }
