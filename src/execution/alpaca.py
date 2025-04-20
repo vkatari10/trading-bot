@@ -23,3 +23,9 @@ if account.trading_blocked:
 
 # Check how much money we can use to open new positions
 print('${} is available as buying power.'.format(account.buying_power))
+
+
+appl_asset = trading_client.get_asset('AAPL')
+
+if appl_asset.tradable:
+    print("We can trade apple")
