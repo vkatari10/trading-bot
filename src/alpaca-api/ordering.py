@@ -17,11 +17,13 @@ Date: 04/21/2025
 from alpaca_trade_api.rest import REST, TimeFrame
 
 # Other imports
-from dotenv import load_dotenv # to retrieve API keys
-from typing import List # for typing methods
-import requests # for API calls
+from dotenv import load_dotenv  # to retrieve API keys
+import requests  # for API calls
 import os
 import string
+
+# Exception imports
+from src.exceptions.custom_exceptions import Forbidden, InvalidRequest
 
 # Load environment variables from .env file
 load_dotenv()
@@ -31,12 +33,15 @@ API_KEY = os.getenv("ALPACA_API_KEY")
 SECRET_KEY = os.getenv("ALPACA_SECRET_KEY")
 
 # Initialize the Alpaca client
-trading_client = REST(API_KEY, SECRET_KEY, base_url="https://paper-api.alpaca.markets")
+trading_client = REST(API_KEY, SECRET_KEY,
+                      base_url="https://paper-api.alpaca.markets")
 
 # URLs for API calls
 orders_url = "https://paper-api.alpaca.markets/v2/orders"
 
-def place_market_order(time: string, symbol: string, qty: string, side: string, ext: bool) -> None:
+
+def place_market_order(time: string, symbol: string, qty: string, side: string,
+                       ext: bool) -> None:
     '''
     Places a order at market price through the Alpaca API.
 
@@ -48,7 +53,13 @@ def place_market_order(time: string, symbol: string, qty: string, side: string, 
     side (str): buy or sell
     ext (bool): enable day ext for time in force
 
+    Raises:
+
+    Forbidden: if the Alpaca API returns "forbidden".
+    InvalidRequest: if the request was considered invalid by Alpaca API.
+
     Returns:
+
     None.
     '''
     payload = {
@@ -58,16 +69,24 @@ def place_market_order(time: string, symbol: string, qty: string, side: string, 
         "qty": qty,
         "side": side,
         "extended_hours": ext
-    } # Payload
+    }  # Payload
 
     headers = {
         "accept": "application/json",
         "content-type": "application/json"
-    } # Headers
+    }  # Headers
 
-    requests.post(orders_url, json=payload, headers=headers)
+    request = requests.post(orders_url, json=payload, headers=headers)
 
-def place_limit_order(time: string, symbol: string, qty: string, side: string, ext: bool, limit_price: string) -> None:
+    # for bad requests
+    if request.status_code == 403:
+        raise Forbidden("Forbidden")
+    elif request.status_code == 422:
+        raise InvalidRequest("Request was invalid")
+
+
+def place_limit_order(time: string, symbol: string, qty: string, side: string,
+                      ext: bool, limit_price: string) -> None:
     '''
     Places a order at a limit price through the Alpaca API.
 
@@ -80,7 +99,13 @@ def place_limit_order(time: string, symbol: string, qty: string, side: string, e
     ext (bool): enable day ext for time in force
     limit_price (str): the specified limit price
 
+    Raises:
+
+    Forbidden: if the Alpaca API returns "forbidden".
+    InvalidRequest: if the request was considered invalid by Alpaca API.
+
     Returns:
+
     None.
     '''
     payload = {
@@ -91,23 +116,43 @@ def place_limit_order(time: string, symbol: string, qty: string, side: string, e
         "side": side,
         "limit_price": limit_price,
         "extended_hours": ext
-    } # Payload
+    }  # Payload
 
     headers = {
         "accept": "application/json",
         "content-type": "application/json"
-    } # Headers
+    }  # Headers
 
-    respose = requests.post(orders_url, json=payload, headers=headers)
+    response = requests.post(orders_url, json=payload, headers=headers)
 
-    print(respose.text)
+    if response.status_check == 403:
+        raise Forbidden("Forbidden")
+    elif response.status_check == 422:
+        raise InvalidRequest("Invalid request")
+
 
 def cancel_all_orders() -> None:
-    '''Cancels all pending orders'''
+    '''
+    Cancels all pending orders
+
+    Raises:
+
+    Forbidden: if the Alpaca API returns "forbidden".
+    InvalidRequest: if the request was considered invalid by Alpaca API.
+
+    Returns:
+
+    None
+    '''
     headers = {
         "accept": "application/json",
         "APCA-API-KEY-ID": API_KEY,
         "APCA-API-SECRET-KEY": SECRET_KEY
-    } # Headers
+    }  # Headers
 
     response = requests.delete(orders_url, headers=headers)
+
+    if response.status_check == 403:
+        raise Forbidden("Forbidden")
+    elif response.status_check == 422:
+        raise InvalidRequest("Invalid request")
