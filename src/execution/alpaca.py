@@ -4,28 +4,47 @@ from alpaca_trade_api.rest import REST, TimeFrame  # Or use your specific Alpaca
 # Other imports
 from dotenv import load_dotenv
 import os
+import requests
+import string
 
 # Load environment variables from .env file
 load_dotenv()
 
+# API keys
 API_KEY = os.getenv("ALPACA_API_KEY")
 SECRET_KEY = os.getenv("ALPACA_SECRET_KEY")
 
 # Initialize the Alpaca client
 trading_client = REST(API_KEY, SECRET_KEY, base_url="https://paper-api.alpaca.markets")
 
-# Get our account information
-account = trading_client.get_account()
+# URLs for API calls
+orders_url = "https://paper-api.alpaca.markets/v2/orders"
 
-# Check if our account is restricted from trading
-if account.trading_blocked:
-    print('Account is currently restricted from trading.')
+def cancel_all_orders() -> None:
+    '''Cancels all open orders when called'''
+    headers = {
+        "accept": "application/json",
+        "APCA-API-KEY-ID": API_KEY,
+        "APCA-API-SECRET-KEY": SECRET_KEY
+    }
 
-# Check how much money we can use to open new positions
-print('${} is available as buying power.'.format(account.buying_power))
+    response = requests.delete(orders_url, headers=headers)
 
 
-appl_asset = trading_client.get_asset('AAPL')
+def place_order_limit(type: string, time: string, symbol: string, qty: int, side: string, limit: int) -> None:
 
-if appl_asset.tradable:
-    print("We can trade apple")
+    payload = {
+        "type": type,
+        "time_in_force": time,
+        "symbol" : symbol,
+        "qty": qty,
+        "side" : side,
+        "limit_price" : limit
+    }
+
+    headers = {
+        "accept": "application/json",
+        "content-type": "application/json"
+    }
+
+    response = requests.post(orders_url, json=payload, headers=headers)
