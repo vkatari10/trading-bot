@@ -125,16 +125,25 @@ def place_limit_order(time: string, symbol: string, qty: string, side: string,
 
     headers = {
         "accept": "application/json",
-        "content-type": "application/json"
+        "content-type": "application/json",
+        "APCA-API-KEY-ID": API_KEY,
+        "APCA-API-SECRRET-KEY": SECRET_KEY
     }  # Headers
 
     response = requests.post(orders_url, json=payload, headers=headers)
 
+    print(response.text)
+
+    '''
     if response.status_code == 403:
         raise Forbidden("Forbidden")
     elif response.status_code == 422:
         raise InvalidRequest("Invalid request")
+    else:
+        return response.json()['id']
+    '''
 
+    return "s"
 
 def cancel_all_orders() -> None:
     '''
