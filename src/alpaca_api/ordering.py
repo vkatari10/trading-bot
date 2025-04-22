@@ -1,5 +1,6 @@
 '''
-This file contains the methods needed to interact with the
+This file contains the methods needed to interact with the ordering
+and canceling of orders
 
 Modules used
 
@@ -40,8 +41,7 @@ trading_client = REST(API_KEY, SECRET_KEY,
 orders_url = "https://paper-api.alpaca.markets/v2/orders"
 
 
-def place_market_order(time: string, symbol: string, qty: string, side: string,
-                       ext: bool) -> None:
+def place_market_order(symbol: string, qty: string, side: string) -> string:
     '''
     Places a order at market price through the Alpaca API.
 
@@ -60,15 +60,14 @@ def place_market_order(time: string, symbol: string, qty: string, side: string,
 
     Returns:
 
-    None.
+    The string representing the ID of the order
     '''
     payload = {
         "type": "market",
-        "time_in_force": time,
+        "time_in_force": "day",
         "symbol": symbol,
         "qty": qty,
         "side": side,
-        "extended_hours": ext
     }  # Payload
 
     headers = {
@@ -83,6 +82,12 @@ def place_market_order(time: string, symbol: string, qty: string, side: string,
         raise Forbidden("Forbidden")
     elif request.status_code == 422:
         raise InvalidRequest("Request was invalid")
+
+    request.json()
+
+    print(request['id'])
+
+    return request['id']
 
 
 def place_limit_order(time: string, symbol: string, qty: string, side: string,
@@ -125,9 +130,9 @@ def place_limit_order(time: string, symbol: string, qty: string, side: string,
 
     response = requests.post(orders_url, json=payload, headers=headers)
 
-    if response.status_check == 403:
+    if response.status_code == 403:
         raise Forbidden("Forbidden")
-    elif response.status_check == 422:
+    elif response.status_code == 422:
         raise InvalidRequest("Invalid request")
 
 
@@ -152,7 +157,33 @@ def cancel_all_orders() -> None:
 
     response = requests.delete(orders_url, headers=headers)
 
-    if response.status_check == 403:
+    if response.status_code == 403:
         raise Forbidden("Forbidden")
-    elif response.status_check == 422:
+    elif response.status_code == 422:
         raise InvalidRequest("Invalid request")
+
+
+def cancel_order(id: string) -> None:
+    '''
+    Cancels a pending order give the id of the order
+
+    Raises:
+
+    Forbidden: if the Alpaca API returns "forbidden".
+    InvalidRequest: if the request was considered invalid by Alpaca API.
+
+    Returns:
+
+    None
+    '''
+    headers = {
+        "APCA-API-KEY-ID": API_KEY,
+        "APCA-API-SECRET-KEY": SECRET_KEY
+    }  # Headers
+
+    id_url = orders_url + "/" + id
+
+    response = requests.delete(id_url, headers=headers)
+
+    if response.status_code == 422:
+        raise InvalidRequest("Order uncancelable")
