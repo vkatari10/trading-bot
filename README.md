@@ -1,10 +1,10 @@
 # Trading Bot
 
-Python and Typescript based trading both that can automically execute trades based.
+Python based trading bot that utilizes Alpaca API to place, order, and manage trades. Uses an interactive front end dashboard created using Create Next App.
 
 ## Structure
 
-Back end handles API calls to Alpaca, Front end was bootstrapped using Create Next App and uses typescript.<br>
+Back end relies on Python, Front end is using TypeScript and Next.js
 
 
 ## Requirements
