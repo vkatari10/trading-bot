@@ -5,7 +5,6 @@ from alpaca_trade_api.rest import REST, TimeFrame
 from dotenv import load_dotenv  # to retrieve API keys
 import requests  # for API calls
 import os
-import string
 
 # Exception imports
 from src.exceptions.custom_exceptions import Forbidden, InvalidRequest

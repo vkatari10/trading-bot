@@ -10,5 +10,7 @@ API_KEY = os.getenv("ALPACA_API_KEY")
 SECRET_KEY = os.getenv("ALPACA_SECRET_KEY")
 
 id = place_limit_order("day", "AAPL", "2", "buy", True, "199")
+print(id)
+
 time.sleep(5)
-cancel_order(id)
+cancel_order(id['id'])

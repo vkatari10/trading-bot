@@ -6,7 +6,7 @@ Modules used
 
 - requests
 - os
-- string
+- str
 - dotenv
 - alpaca_trade_api.rest
 
@@ -21,7 +21,6 @@ from alpaca_trade_api.rest import REST, TimeFrame
 from dotenv import load_dotenv  # to retrieve API keys
 import requests  # for API calls
 import os
-import string
 
 # Exception imports
 from src.exceptions.custom_exceptions import Forbidden, InvalidRequest
@@ -41,7 +40,7 @@ trading_client = REST(API_KEY, SECRET_KEY,
 orders_url = "https://paper-api.alpaca.markets/v2/orders"
 
 
-def place_market_order(symbol: string, qty: string, side: string) -> string:
+def place_market_order(symbol: str, qty: str, side: str) -> str:
     '''
     Places a order at market price through the Alpaca API.
 
@@ -60,7 +59,7 @@ def place_market_order(symbol: string, qty: string, side: string) -> string:
 
     Returns:
 
-    The string representing the ID of the order
+    The str representing the ID of the order
     '''
     payload = {
         "type": "market",
@@ -85,15 +84,11 @@ def place_market_order(symbol: string, qty: string, side: string) -> string:
     elif request.status_code == 422:
         raise InvalidRequest("Request was invalid")
 
-    request.json()
-
-    print(request['id'])
-
-    return request['id']
+    return request.json()
 
 
-def place_limit_order(time: string, symbol: string, qty: string, side: string,
-                      ext: bool, limit_price: string) -> None:
+def place_limit_order(time: str, symbol: str, qty: str, side: str,
+                      ext: bool, limit_price: str) -> None:
     '''
     Places a order at a limit price through the Alpaca API.
 
@@ -139,7 +134,7 @@ def place_limit_order(time: string, symbol: string, qty: string, side: string,
     elif response.status_code == 422:
         raise InvalidRequest("Invalid request")
     else:
-        return response.json()['id']
+        return response.json()
 
 
 def cancel_all_orders() -> None:
@@ -169,7 +164,7 @@ def cancel_all_orders() -> None:
         raise InvalidRequest("Invalid request")
 
 
-def cancel_order(id: string) -> None:
+def cancel_order(id: str) -> None:
     '''
     Cancels a pending order give the id of the order
 
