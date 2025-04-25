@@ -5,5 +5,6 @@ class InvalidRequest(Exception):
 class Forbidden(Exception):
     pass
 
+
 class Liquidation(Exception):
     pass
