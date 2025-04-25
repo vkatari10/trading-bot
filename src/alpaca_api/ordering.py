@@ -6,7 +6,6 @@ Modules used
 
 - requests
 - os
-- str
 - dotenv
 - alpaca_trade_api.rest
 
@@ -21,6 +20,7 @@ from alpaca_trade_api.rest import REST, TimeFrame
 from dotenv import load_dotenv  # to retrieve API keys
 import requests  # for API calls
 import os
+from typing import List, Dict
 
 # Exception imports
 from src.exceptions.custom_exceptions import Forbidden, InvalidRequest
@@ -40,7 +40,7 @@ trading_client = REST(API_KEY, SECRET_KEY,
 orders_url = "https://paper-api.alpaca.markets/v2/orders"
 
 
-def place_market_order(symbol: str, qty: str, side: str) -> str:
+def place_market_order(symbol: str, qty: str, side: str) -> List[str, any]:
     '''
     Places a order at market price through the Alpaca API.
 
@@ -88,7 +88,7 @@ def place_market_order(symbol: str, qty: str, side: str) -> str:
 
 
 def place_limit_order(time: str, symbol: str, qty: str, side: str,
-                      ext: bool, limit_price: str) -> None:
+                      ext: bool, limit_price: str) -> Dict[str, any]:
     '''
     Places a order at a limit price through the Alpaca API.
 
