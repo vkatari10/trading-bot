@@ -13,7 +13,7 @@ This file contains the methods to place market, limit orders, as well as canceli
 
 ## positions.py
 
-This file contains the method to view and close current positions.
+This file contains the methods to view and close current positions.
 
 # Notes
 
