@@ -1,5 +1,4 @@
 '''
-
 Contains wrapper methods for the Finnhub API
 
 Modules used
@@ -10,7 +9,6 @@ Modules used
 
 Author: Vikas Katari
 Date: 04/25/2025
-
 '''
 
 import finnhub
@@ -31,3 +29,5 @@ def get_quote(ticker: str) -> Dict[str, any]:
 
     '''
     return finnhub_client.quote(ticker)
+
+print(get_quote("AAPL"))

@@ -47,6 +47,18 @@ headers = {
 
 def get_all_positions() -> List[Dict[str, Any]]:
     '''
+    Gets all open positions in an account.
+
+    Args:
+    None
+
+    Returns:
+
+    An array of JSON objects that provide information about each position
+
+    Raises:
+
+    None
     '''
     response = requests.get(url, headers=headers)
     return response.json()
@@ -54,6 +66,20 @@ def get_all_positions() -> List[Dict[str, Any]]:
 
 def close_all_positions(cancel_orders: bool) -> List[Dict[str, Any]]:
     '''
+    Closes all open positions in an account
+
+    Args:
+
+    cancel_orders: true if you want to cancel all open orders, else false
+
+    Raises:
+
+    Liquidation errors if a position fails to liquidate
+
+    Returns:
+
+    An array of closed positions objects
+
     '''
     if cancel_orders:
         close_url = url + "?cancel_orders=true"
@@ -62,16 +88,23 @@ def close_all_positions(cancel_orders: bool) -> List[Dict[str, Any]]:
 
     response = requests.delete(close_url, headers=headers)
 
+    if response.status_code == 500:
+        raise Liquidation("Failed to liquidate")
+
     return response.json()
 
-
-'''
-ADD LIUIDAITION ERRORS FOR THE THING ABOVE
-'''
-
-
 def get_position(ticker: str) -> Dict[str, Any]:
+    '''
+    Gets an open position based on a specific ticker
 
+    Args:
+
+    ticker: ticker for a stock
+
+    Returns:
+
+    An JSON objects representing the position
+    '''
     symbol_url = url + "ticker"
 
     response = requests.get(symbol_url, headers=headers)
@@ -81,6 +114,15 @@ def get_position(ticker: str) -> Dict[str, Any]:
 
 def close_position(ticker: str) -> Dict[str, Any]:
     '''
+    This methods closes out an entire position at market value
+
+    Args:
+
+    ticker: ticker of asset
+
+    Returns:
+
+    An JSON representing the closed position
     '''
     ticker_url = url + "/ticker"
 
@@ -91,6 +133,16 @@ def close_position(ticker: str) -> Dict[str, Any]:
 
 def close_position_shares(ticker: str, shares: str) -> Dict[str, Any]:
     '''
+    This method closes a specified number of shares at market value.
+
+    Args:
+
+    ticker: ticker of the asset
+    shares: the number of shares as a string to close
+
+    Returns:
+
+    An JSON object representing the closed position
     '''
     total_url = url + "/ticker?qty=" + shares
 

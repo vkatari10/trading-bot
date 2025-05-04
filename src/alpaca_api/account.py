@@ -1,3 +1,15 @@
+'''
+This file contains the methods needed to interact with getting account information
+
+Modules used
+- request
+- os
+- dotenv
+- alpaca_trade_api.rest
+
+Author Vikas Katari
+Date: 04/22/2025
+'''
 # Alpaca imports
 from alpaca_trade_api.rest import REST, TimeFrame
 
@@ -36,6 +48,12 @@ headers = {
 
 
 def get_account() -> Dict[str, Any]:
+    '''
+    Get account data
 
+    Returns:
+
+    a JSON object representing the account
+    '''
     response = requests.get(url, headers=headers)
     return response.json()
