@@ -47,16 +47,20 @@ def process_data(df: DataFrame) -> None:
     A modified DataFrame with various technical indicators added
     '''
 
-
     '''
-    Moving Average 14
+    CURRENT TECHNICALS ADDED:
+
     Moving Average 20
     Moving Average 50
     Moving Average 200
-
     '''
-
-
-
-
+    df['SMA(20)'] = df.Close.rolling(20).mean()
+    df['SMA(50)'] = df.Close.rolling(50).mean()
+    df['SMA(200)'] = df.Close.rolling(200).mean()
     return
+
+
+
+df = get_data("AAPL")
+process_data(df)
+print(df)
