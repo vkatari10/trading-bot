@@ -1,11 +1,10 @@
 # Trading Bot
 
-Python based trading bot that utilizes Alpaca API to place, order, and manage trades. Uses an interactive front end dashboard created using Create Next App.
+Python based trading bot that utilizes Alpaca API to place, order, and manage trades.
 
 ## Structure
 
-Back end relies on Python, Front end is using TypeScript and Next.js
-
+Back end is done entirely in Python.
 
 ## Requirements
 
