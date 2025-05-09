@@ -1,5 +1,6 @@
 '''
-This file gets historical stock data by utilizing the yfinance API
+This file gets historical stock data by utilizing the yfinance API.
+Also adds technical indicators and buy/sell signals.
 
 Modules used
 - pandas
@@ -11,6 +12,8 @@ Date: 05/03/2025
 
 import yfinance as yf
 import pandas as pd
+import backtrader as bt
+import numpy as np
 from pandas import DataFrame  # To declare return type
 
 
@@ -61,10 +64,27 @@ def process_data(df: DataFrame) -> DataFrame:
     MACD
     '''
 
-    df = df.dropna()
-
     df['SMA(20)'] = df.Close.rolling(20).mean()
     df['SMA(50)'] = df.Close.rolling(50).mean()
     df['SMA(200)'] = df.Close.rolling(200).mean()
 
-    return df.dropna()
+    return df
+
+
+def add_signals(df: DataFrame) -> DataFrame:
+    df["Signal"] = np.where((df['SMA(50)'].shift(1) > df['SMA(200)'].shift(1)) & (df['SMA(50)'] < df['SMA(200)']), -1, np.where((df['SMA(50)'].shift(1) < df['SMA(200)'].shift(1)) & (df['SMA(50)'] > df['SMA(200)']),1, 0))
+
+    df["Signal"] = np.where((df['SMA(20)'].shift(1) > df['SMA(50)'].shift(1)) & (df['SMA(20)'] <
+                                                             df['SMA(50)']),
+        -1, np.where((df['SMA(20)'].shift(1) < df['SMA(50)'].shift(1)) &
+                     (df['SMA(20)'] > df['SMA(50)']), 1, 0)
+    )
+
+    return df
+
+
+def get_all(ticker: str) -> DataFrame:
+    df = get_data(ticker)
+    df = df.process_data(df)
+    df = df.add_signals(df)
+    return df

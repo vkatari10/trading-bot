@@ -1,5 +1,6 @@
 '''
-This file gets historical stock data by utilizing the yfinance API
+This file gets historical stock data by utilizing the yfinance API.
+Also adds technical indicators and buy/sell signals.
 
 Modules used
 - pandas
@@ -35,7 +36,7 @@ def get_data(ticker: str) -> DataFrame:
     return df
 
 
-def process_data(df: DataFrame) -> None:
+def process_data(df: DataFrame) -> DataFrame:
     '''
     Adds additional columns with technical indicators based on OHLCV columns
 
@@ -62,21 +63,21 @@ def process_data(df: DataFrame) -> None:
     MACD
     '''
 
-    df = df.dropna()
-
     df['SMA(20)'] = df.Close.rolling(20).mean()
     df['SMA(50)'] = df.Close.rolling(50).mean()
     df['SMA(200)'] = df.Close.rolling(200).mean()
 
-    df = df.dropna()
-    
+
+    return df
+
 
 def add_signals(df: DataFrame) -> DataFrame:
     df["Signal"] = np.where((df['SMA(50)'].shift(1) > df['SMA(200)'].shift(1)) & (df['SMA(50)'] < df['SMA(200)']), -1, np.where((df['SMA(50)'].shift(1) < df['SMA(200)'].shift(1)) & (df['SMA(50)'] > df['SMA(200)']),1, 0))
 
-    df["Signal"] = np.where(
-        (df['SMA(20)'].shift(1) > df['SMA(50)'].shift(1)) & (df['SMA(20)'] <
+    df["Signal"] = np.where((df['SMA(20)'].shift(1) > df['SMA(50)'].shift(1)) & (df['SMA(20)'] <
                                                              df['SMA(50)']),
         -1, np.where((df['SMA(20)'].shift(1) < df['SMA(50)'].shift(1)) &
                      (df['SMA(20)'] > df['SMA(50)']), 1, 0)
     )
+
+    return df

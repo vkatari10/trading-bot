@@ -1,10 +1,10 @@
 # Trading Bot
 
-Python based trading bot that utilizes Alpaca API to place, order, and manage trades.
+Python based ML-based trading bot that can buy, sell, execute orders.
 
 ## Structure
 
-Back end is done entirely in Python.
+Back end is done entirely in Python. FastAPI is used to expose the backend to allow front ends to display bot behavior.
 
 ## Requirements
 
