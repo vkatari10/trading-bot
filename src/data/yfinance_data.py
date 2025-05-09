@@ -53,6 +53,12 @@ def process_data(df: DataFrame) -> DataFrame:
     Moving Average 20
     Moving Average 50
     Moving Average 200
+
+    FUTURE TO ADD:
+
+    Exponential Moving Average
+    RSI
+    MACD
     '''
 
     df = df.dropna()
