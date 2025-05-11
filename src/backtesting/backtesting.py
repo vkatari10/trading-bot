@@ -1,8 +1,19 @@
+'''
+Backtesting file to test specific technical strategies
+
+Modules Used:
+- backtrader
+- yfinance
+
+Author: Vikas Katari
+Date: 05/09/2025
+'''
 import backtrader as bt
 import yfinance as yf
 
+
 class SmaCross(bt.Strategy):
-    params = dict(pfast=10, pslow=30)
+    params = dict(pfast=10, pslow=20)
 
     def __init__(self):
         sma1 = bt.ind.SMA(period=self.p.pfast)
@@ -10,14 +21,15 @@ class SmaCross(bt.Strategy):
         self.crossover = bt.ind.CrossOver(sma1, sma2)
 
     def next(self):
-
-        if len(self) < max(self.p.pfast, self.p.pslow):  # Important idk why yet
+        # Important idk why yet
+        if len(self) < max(self.p.pfast, self.p.pslow):
             return
 
         if not self.position and self.crossover > 0:
             self.buy()
         elif self.position and self.crossover < 0:
             self.close()
+
 
 # Download data
 df = yf.download("MSFT", start="2011-01-01", end="2012-12-31")
