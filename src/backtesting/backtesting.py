@@ -21,7 +21,6 @@ class SmaCross(bt.Strategy):
         self.crossover = bt.ind.CrossOver(sma1, sma2)
 
     def next(self):
-        # Important idk why yet
         if len(self) < max(self.p.pfast, self.p.pslow):
             return
 
@@ -30,6 +29,9 @@ class SmaCross(bt.Strategy):
         elif self.position and self.crossover < 0:
             self.close()
 
+
+class CustomStrategy(bt.Strategy):
+    pass
 
 # Download data
 df = yf.download("MSFT", start="2011-01-01", end="2012-12-31")
