@@ -14,7 +14,7 @@ import pandas as pd
 import backtrader as bt
 import numpy as np
 import src.data.technicals as te
-import src.data.signals as sg
+import src.data.signal as sg
 import src.yfinance_api.yfinance_api as yf
 
 from pandas import DataFrame
@@ -41,13 +41,17 @@ def process_data(df: DataFrame) -> DataFrame:
 
     df.dropna(inplace=True)
 
-    df = te.sma(df, 10) # SMA 10
-    df = te.sma(df, 30) # SMA 30
-    df = te.ema(df, 12) # EMA 12
-    df = te.ema(df, 26) # EMA 26
-    df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)")
-    df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line")
+    # Technical Indicators
+    df = te.sma(df, 10) # SMA(10)
+    df = te.sma(df, 30) # SMA(30)
+    df = te.ema(df, 12) # EMA(12)
+    df = te.ema(df, 26) # EMA(26)
+    df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)") # MACD
+    df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line") # MACD
 
+    # Crossovers
+    df = sg.crossover(df, "SMA(10)", "SMA(30)")
+    df = sg.crossover(df, "EMA(12-26)", "Signal Line(9)")
 
     df.dropna(inplace=True)
 

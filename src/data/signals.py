@@ -4,30 +4,45 @@ contain technical indicators
 
 Modules Used
 - pandas
+- numpy
 '''
 import pandas as pd
+import numpy as np
 from pandas import DataFrame
 
-def crossover(df: DataFrame, col1: str, col2: str) -> DataFrame:
+def crossover(df: DataFrame, col1: str, col2: str,
+              col_name: str) -> DataFrame:
     '''
     Finds the crossover between two indicators contained in two
     columns of a DataFrame.
 
-    Where col1 crosses col2 -> 1
-    Where col2 crosses col1 -> -1
-    Where no cross -> 0
+    Where col1 crosses above col2 -> 1
+    Where col2 crosses below col1 -> -1
+    Where no crossing occurs -> 0
     '''
-    pass #  TODO implement
+    df[col_name] = np.where(
+        (df[col1].shift(1) < df[col2].shift(1)) &
+        (df[col1] > df[col2]),
+        1,
+        np.where((df[col1].shift(1) > df[col2].shift(1))
+        & (df[col1] < df[col2]), -1,0))
+    return df
 
-def above(df: DataFrame, col1: str, col2: str) -> DataFrame:
+
+def above(df: DataFrame, col1: str, col2: str,
+          col_name: str) -> DataFrame:
     '''
     Finds if col1 is above col2, where true the value will be
     1, else 0
     '''
-    pass #  TODO implement
+    df[col_name] = np.where((df[col1] > df[col2]), 1, 0)
+    return df
 
-def below(df: DataFrame, col1: str, col2: str) -> DataFrame:
+def below(df: DataFrame, col1: str, col2: str,
+          col_name: str) -> DataFrame:
     '''
     Finds if col1 is below col2, where true the value will be
     1, else 0
     '''
+    df[col_name] = np.where((df[col1] > df[col2]), 0, 1)
+    return df
