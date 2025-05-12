@@ -11,25 +11,6 @@ Date: 05/09/2025
 import backtrader as bt
 import yfinance as yf
 
-
-class SmaCross(bt.Strategy):
-    params = dict(pfast=10, pslow=20)
-
-    def __init__(self):
-        sma1 = bt.ind.SMA(period=self.p.pfast)
-        sma2 = bt.ind.SMA(period=self.p.pslow)
-        self.crossover = bt.ind.CrossOver(sma1, sma2)
-
-    def next(self):
-        if len(self) < max(self.p.pfast, self.p.pslow):
-            return
-
-        if not self.position and self.crossover > 0:
-            self.buy()
-        elif self.position and self.crossover < 0:
-            self.close()
-
-
 class CustomStrategy(bt.Strategy):
     '''
     SMAs -> slow cross fast
@@ -79,6 +60,7 @@ class CustomStrategy(bt.Strategy):
             signal -= 1
 
         # Bollinger Bands
+        # Will not include right now in data/data_processing.py
         if self.data < self.bands.lines.bot:
             signal += 1
         elif self.data > self.bands.lines.top:
@@ -93,7 +75,7 @@ class CustomStrategy(bt.Strategy):
 
 
 # Download data
-df = yf.download("MSFT", start="2011-01-01", end="2012-12-31")
+df = yf.download("F", start="2021-01-01", end="2024-12-31")
 df.dropna(inplace=True)
 
 # Because yfinance returns cols as a multiindex

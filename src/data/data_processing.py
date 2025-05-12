@@ -10,32 +10,12 @@ Author: Vikas Katari
 Date: 05/03/2025
 '''
 
-import yfinance as yf
 import pandas as pd
 import backtrader as bt
 import numpy as np
-from pandas import DataFrame  # To declare return type
-
-
-def get_data(ticker: str) -> DataFrame:
-    '''
-    Returns all historical data given an ticker as a Pandas DataFrame
-
-    Args:
-
-    ticker: the ticker of the asset
-
-    Raises:
-
-    AttributeError: if the ticker does not exist
-
-    Returns:
-
-    A Pandas DataFrame with OHLCV as columns from the stocks inception date
-    '''
-    df = yf.download(tickers=ticker)
-    return df
-
+import src.data.technicals as te
+import src.yfinance_api.yfinance_api as yf
+from pandas import DataFrame
 
 def process_data(df: DataFrame) -> DataFrame:
     '''
@@ -51,24 +31,26 @@ def process_data(df: DataFrame) -> DataFrame:
     '''
 
     '''
-    CURRENT TECHNICALS ADDED:
-
-    Moving Average 20
-    Moving Average 50
-    Moving Average 200
-
-    FUTURE TO ADD:
-
-    Exponential Moving Average
+    SMA 10
+    SMA 30
     RSI
-    MACD
+    MACD -> EMA 12, 26, EMA of EMA_12-EMA_26
     '''
 
-    df['SMA(20)'] = df.Close.rolling(20).mean()
-    df['SMA(50)'] = df.Close.rolling(50).mean()
-    df['SMA(200)'] = df.Close.rolling(200).mean()
+    df.dropna(inplace=True)
+
+    df = te.sma(df, 10) # SMA 10
+    df = te.sma(df, 30) # SMA 30
+    df = te.ema(df, 12) # EMA 12
+    df = te.ema(df, 26) # EMA 26
+    df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA (12-26)")
+    df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line")
+
+
+    df.dropna(inplace=True)
 
     return df
+
 
 
 def add_signals(df: DataFrame) -> DataFrame:
@@ -82,9 +64,12 @@ def add_signals(df: DataFrame) -> DataFrame:
 
     return df
 
-
-def get_all(ticker: str) -> DataFrame:
-    df = get_data(ticker)
-    df = df.process_data(df)
-    df = df.add_signals(df)
+def get_df(ticker: str) -> DataFrame:
+    '''
+    Returns the modified dataframe of a stock with
+    technicals and signals
+    '''
+    df = yf.get_data(ticker)
+    df = process_data(df)
+    df = add_signals(df)
     return df
