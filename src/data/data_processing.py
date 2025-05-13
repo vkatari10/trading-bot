@@ -36,20 +36,21 @@ def process_data(df: DataFrame) -> DataFrame:
     df.dropna(inplace=True)
 
     # Technical Indicators
-    df = te.sma(df, 10) # SMA(10)
-    df = te.sma(df, 30) # SMA(30)
-    df = te.ema(df, 12) # EMA(12)
-    df = te.ema(df, 26) # EMA(26)
-    df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)") # MACD
-    df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line") # MACD
+    df = te.sma(df, 10)  # SMA(10)
+    df = te.sma(df, 30)  # SMA(30)
+    df = te.ema(df, 12)  # EMA(12)
+    df = te.ema(df, 26)  # EMA(26)
+    df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)")  # MACD
+    df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line")
+    # MACD
 
     # Crossovers
     df = sg.crossover(df, "SMA(10)", "SMA(30)", "SMA Crossover")
     df = sg.crossover(df, "EMA(12-26)", "Signal Line(9)", "MACD")
 
     # BUY, SELL, or HOLD Signals
-    df = sg.signal(df, "SMA Crossover")
-    df = sg.signal(df, "MACD")
+    df = sg.signal(df, "SMA Crossover", name="Signal")
+    df = sg.signal(df, "MACD", name="Signal")
 
     df.dropna(inplace=True)
 

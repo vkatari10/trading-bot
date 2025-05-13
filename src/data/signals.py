@@ -26,7 +26,7 @@ def crossover(df: DataFrame, col1: str, col2: str,
         (df[col1] > df[col2]),
         1,
         np.where((df[col1].shift(1) > df[col2].shift(1))
-        & (df[col1] < df[col2]), -1,0))
+                 & (df[col1] < df[col2]), -1, 0))
     return df
 
 
@@ -56,6 +56,6 @@ def signal(df: DataFrame, col: str, col_name="Signal") -> DataFrame:
     or "0", respectivley
     '''
     df[col_name] = np.where(df[col] == 1, "BUY",
-        np.where(df[col] == -1, "SELL", "HOLD"))
+                            np.where(df[col] == -1, "SELL", "HOLD"))
 
     return df
