@@ -9,34 +9,28 @@ Modules used
 Author: Vikas Katari
 Date: 05/03/2025
 '''
-
 import pandas as pd
 import backtrader as bt
 import numpy as np
 import src.data.technicals as te
-import src.data.signal as sg
+import src.data.signals as sg
 import src.yfinance_api.yfinance_api as yf
-
 from pandas import DataFrame
+
 
 def process_data(df: DataFrame) -> DataFrame:
     '''
-    Adds additional columns with technical indicators based on OHLCV columns
+    Takes the YFinance DataFrame and fits it with our own technical
+    indicators of choice, and relationships to watch for. We can then
+    also add the buy or sell column
 
     Args:
 
-    df: DataFrame with OHLCV values
+    df (DataFrame) : DataFrame with OHLCV values
 
     Returns:
 
     A modified DataFrame with various technical indicators added
-    '''
-
-    '''
-    SMA 10
-    SMA 30
-    RSI
-    MACD -> EMA 12, 26, EMA of EMA_12-EMA_26
     '''
 
     df.dropna(inplace=True)
@@ -50,29 +44,22 @@ def process_data(df: DataFrame) -> DataFrame:
     df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line") # MACD
 
     # Crossovers
-    df = sg.crossover(df, "SMA(10)", "SMA(30)")
-    df = sg.crossover(df, "EMA(12-26)", "Signal Line(9)")
+    df = sg.crossover(df, "SMA(10)", "SMA(30)", "SMA Crossover")
+    df = sg.crossover(df, "EMA(12-26)", "Signal Line(9)", "MACD")
+
+    # BUY, SELL, or HOLD Signals
+    df = sg.signal(df, "SMA Crossover")
+    df = sg.signal(df, "MACD")
 
     df.dropna(inplace=True)
 
     return df
 
 
-def add_signals(df: DataFrame) -> DataFrame:
-    df["Signal"] = np.where((df['SMA(50)'].shift(1) > df['SMA(200)'].shift(1)) & (df['SMA(50)'] < df['SMA(200)']), -1, np.where((df['SMA(50)'].shift(1) < df['SMA(200)'].shift(1)) & (df['SMA(50)'] > df['SMA(200)']),1, 0))
-
-    df["Signal"] = np.where((df['SMA(20)'].shift(1) > df['SMA(50)'].shift(1)) & (df['SMA(20)'] <
-                                                             df['SMA(50)']),
-        -1, np.where((df['SMA(20)'].shift(1) < df['SMA(50)'].shift(1)) &
-                     (df['SMA(20)'] > df['SMA(50)']), 1, 0)
-    )
-
-    return df
-
 def get_df(ticker: str) -> DataFrame:
     '''
     Returns the modified dataframe of a stock with
-    technicals and signals
+    technicals and signals of the specificed ticker
     '''
     df = yf.get_data(ticker)
     df = process_data(df)

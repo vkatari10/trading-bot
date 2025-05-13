@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 from pandas import DataFrame
 
+
 def crossover(df: DataFrame, col1: str, col2: str,
               col_name: str) -> DataFrame:
     '''
@@ -38,6 +39,7 @@ def above(df: DataFrame, col1: str, col2: str,
     df[col_name] = np.where((df[col1] > df[col2]), 1, 0)
     return df
 
+
 def below(df: DataFrame, col1: str, col2: str,
           col_name: str) -> DataFrame:
     '''
@@ -45,4 +47,15 @@ def below(df: DataFrame, col1: str, col2: str,
     1, else 0
     '''
     df[col_name] = np.where((df[col1] > df[col2]), 0, 1)
+    return df
+
+
+def signal(df: DataFrame, col: str, col_name="Signal") -> DataFrame:
+    '''
+    Determines if the signal is "BUY" or "SELL" if the value is "1"
+    or "0", respectivley
+    '''
+    df[col_name] = np.where(df[col] == 1, "BUY",
+        np.where(df[col] == -1, "SELL", "HOLD"))
+
     return df
