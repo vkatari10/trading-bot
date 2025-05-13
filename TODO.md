@@ -18,20 +18,25 @@
 
 ## exceptions/
 
+### Low Level
 - if refining the `alpaca_api/` folder then add more exceptions as necessary
 
 ## finnhub_api/
 
+### Low Level
 - Comlpete engine first to decide if more live data needs to be pulled than just the live OHLCV data.
 
 ## live_data/
 
+
+### Medium Level
 - Complete model training first, may just be able to use the same methods from data/technicals.py just slightly modified
 
 ## models/
 
+### High Level
+- Fix the model to have higher overall F1 score instead of the current 32% accurate one.
 - Decide what specific model to use (Knearestneighbors, Gradient Boosting, Random Forest)
-- Somehow come up with a method to train the models and then return the model using `pickle`.
 
 ## server/
 
