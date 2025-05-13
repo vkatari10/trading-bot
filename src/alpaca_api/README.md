@@ -1,7 +1,13 @@
 # alpaca_api
 
-This folder contains several classes to interact with the Alpaca API.<br>
-More specifically, these files act as a way to place orders and manage positions by utilizing the Alpaca API. All classes here are just wrapper methods to interact with the API.
+This file contains API wrapper methods to interact with the Alpaca Broker API to place orders and execute trades.
+
+# Dependencies
+- requests
+- dotenv
+- os
+
+# Files
 
 ## account.py
 
