@@ -12,25 +12,29 @@ Date: 05/13/2025
 '''
 import pandas as pd
 from pandas import DataFrame
+import pickle
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
+from imblearn.under_sampling import RandomUnderSampler
 import warnings
-import pickle
 
+def train(df: DataFrame) -> RandomForestClassifier:
+    X = df.iloc[:, [0, 4]] # All columns except the signal (feature)
+    y = df.iloc[:, 10] # Just the signal column (label)
 
-# ====Pickle Usage====
-# filename = xyz
-# pickle.dump(model, open(filename, 'wb))
-#
-# load = pickle.load(open(filename, 'rb'))
+    rus = RandomUnderSampler(random_state=42)
+    X_res, y_res = rus.fit_resample(X, y)
 
+    X_train, X_test, y_train, y_test = train_test_split(X_res, y_res, test_size=0.2, random_state=42)
 
-def train(df: DataFrame):
-    '''
-    Trains a model on a given DataFrame
-    '''
+    # Initialize RandomForestClassifier
+    rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
 
-    '''
-    use randomforestclassifier() first
-    '''
+    # Fit the classifier to the training data
+    rf_classifier.fit(X_train, y_train)
+
+    # Make predictions
+    y_pred = rf_classifier.predict(X_test)
+
+    return rf_classifier
