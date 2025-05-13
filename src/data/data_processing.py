@@ -36,8 +36,8 @@ def process_data(df: DataFrame) -> DataFrame:
     df.dropna(inplace=True)
 
     # Technical Indicators
-    df = te.sma(df, 10)  # SMA(10)
-    df = te.sma(df, 30)  # SMA(30)
+    # df = te.sma(df, 10)  # SMA(10)
+    # df = te.sma(df, 30)  # SMA(30)
     df = te.ema(df, 12)  # EMA(12)
     df = te.ema(df, 26)  # EMA(26)
     df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)")  # MACD
@@ -45,12 +45,12 @@ def process_data(df: DataFrame) -> DataFrame:
     # MACD
 
     # Crossovers
-    df = sg.crossover(df, "SMA(10)", "SMA(30)", "SMA Crossover")
+    # df = sg.crossover(df, "SMA(10)", "SMA(30)", "SMA Crossover")
     df = sg.crossover(df, "EMA(12-26)", "Signal Line(9)", "MACD")
 
     # BUY, SELL, or HOLD Signals
-    df = sg.signal(df, "SMA Crossover", name="Signal")
-    df = sg.signal(df, "MACD", name="Signal")
+    # df = sg.signal(df, "SMA Crossover", name="Signal")# This doesnt work because the one below overwrites all the signals
+    df = sg.signal(df, "MACD", col_name="Signal")
 
     df.dropna(inplace=True)
 

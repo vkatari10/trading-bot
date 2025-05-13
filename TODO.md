@@ -18,15 +18,15 @@
 
 ## exceptions/
 
--if refining the `alpaca_api/` folder then add more exceptions as necessary
+- if refining the `alpaca_api/` folder then add more exceptions as necessary
 
 ## finnhub_api/
 
--Comlpete engine first to decide if more live data needs to be pulled than just the live OHLCV data.
+- Comlpete engine first to decide if more live data needs to be pulled than just the live OHLCV data.
 
 ## live_data/
 
--Complete model training first, may just be able to use the same methods from data/technicals.py just slightly modified
+- Complete model training first, may just be able to use the same methods from data/technicals.py just slightly modified
 
 ## models/
 
@@ -40,3 +40,8 @@
 ## yfinance_api/
 
 - If needed add a new method that can specify the start and end dates as necessary
+
+# Long Term Improvements
+- Move all API calls to use `Go` instead of python
+- Introduce more technical indicators to train ML models on (Bollinger Bands, RSI, etc.)
+- Potentially Adjust ML models to use a different learning technique

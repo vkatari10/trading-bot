@@ -56,6 +56,6 @@ def signal(df: DataFrame, col: str, col_name="Signal") -> DataFrame:
     or "0", respectivley
     '''
     df[col_name] = np.where(df[col] == 1, "BUY",
-                            np.where(df[col] == -1, "SELL", "HOLD"))
-
+                            np.where(df[col] == -1, "SELL", "HOLD")
+)
     return df
