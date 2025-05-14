@@ -57,3 +57,4 @@
 - [ ] Move DataFrame Processing to CPP code instead of python and external libraries
 - [ ] Determine a more complex set of technicals
 - [ ] Heighten buy, sell strictness
+- [ ] Find an alternative to `finnhub` that updates faster

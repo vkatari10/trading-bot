@@ -92,4 +92,8 @@ def get_df(ticker: str) -> DataFrame:
     '''
     df = yf.get_data(ticker)
     df = process_data(df)
+    # export_df(df) uncomment this when we are off notebook
     return df
+
+def export_df(df: DataFrame):
+    df.to_csv('technical_df.csv', index=False)
