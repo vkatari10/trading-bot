@@ -12,11 +12,10 @@ Date: 05/03/2025
 import pandas as pd
 import backtrader as bt
 import numpy as np
-import src.data.technicals as te
 import src.data.signals as sg
 import src.yfinance_api.yfinance_api as yf
 from pandas import DataFrame
-
+from finta import TA
 
 def process_data(df: DataFrame) -> DataFrame:
     '''
@@ -33,8 +32,9 @@ def process_data(df: DataFrame) -> DataFrame:
     A modified DataFrame with various technical indicators added
     '''
 
-    df.dropna(inplace=True)
 
+    df.dropna(inplace=True)
+    ''' MY CODE VVVVVVVVVVVVVVVVVVVVVVVVVVV
     # Technical Indicators
     # df = te.sma(df, 10)  # SMA(10)
     # df = te.sma(df, 30)  # SMA(30)
@@ -52,6 +52,24 @@ def process_data(df: DataFrame) -> DataFrame:
     # df = sg.signal(df, "SMA Crossover", name="Signal")# This doesnt work because the one below overwrites all the signals
     df = sg.signal(df, "MACD", col_name="Signal")
 
+    '''
+
+    # Fix multi-index columns if present
+    if isinstance(df.columns, pd.MultiIndex):
+        df.columns = df.columns.get_level_values(0)
+
+        # Rename to lowercase for btalib
+        df.columns = df.columns.str.upper()
+
+
+    df['RSI'] = TA.RSI(df)
+
+
+
+
+
+
+
     df.dropna(inplace=True)
 
     return df
@@ -65,3 +83,6 @@ def get_df(ticker: str) -> DataFrame:
     df = yf.get_data(ticker)
     df = process_data(df)
     return df
+
+df = get_df("AAPL")
+print(df)

@@ -54,9 +54,9 @@ class CustomStrategy(bt.Strategy):
             signal -= 1
 
         # RSI
-        if self.rsi < 30:
+        if self.rsi < 45:
             signal += 1
-        elif self.rsi > 70:
+        elif self.rsi > 50:
             signal -= 1
 
         # Bollinger Bands
@@ -67,15 +67,16 @@ class CustomStrategy(bt.Strategy):
             signal -= 1
 
         if signal > 0:
-            #if not self.position:
-                self.buy(size=100)
+            # if not self.position:
+                self.buy(size=1)
         elif signal < 0:
             if self.position:
-                self.close(size=100)
+                self.close(size=1)
 
 
-# Download data
-df = yf.download("F", start="2021-01-01", end="2024-12-31")
+#                Adjust ticker          Adjust Dates
+# Download data   vvvv            vvvvvvv          vvvvvvvvv
+df = yf.download("CPNG", start="2021-01-01", end="2024-12-31")
 df.dropna(inplace=True)
 
 # Because yfinance returns cols as a multiindex

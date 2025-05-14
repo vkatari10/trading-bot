@@ -12,17 +12,21 @@ import pandas as pd
 import numpy as np
 from pandas import DataFrame
 
+
+
 def ema(df: DataFrame, days: int, col="Close", name="EMA") -> DataFrame:
     '''Adds an EMA column based on Close Prices to a DataFrame'''
     label = f'{name}({days})'
     df[label] = df[col].ewm(span=days, adjust=False).mean()
     return df
 
+
 def sma(df: DataFrame, days: int, col="Close", name="SMA") -> DataFrame:
     '''Calcluates the SMA of Close prices in a dataframe'''
     label = f"{name}({days})"
     df[label] = df[col].rolling(days).mean()
     return df
+
 
 def subtract(df: DataFrame, col1: str, col2: str,
              name="Difference") -> DataFrame:
@@ -32,3 +36,7 @@ def subtract(df: DataFrame, col1: str, col2: str,
     '''
     df[name] = df[col1] - df[col2]
     return df
+
+
+def rsi_1(df: DataFrame, col="Close", name="RSI") -> DataFrame:
+    label = f"({name})"
