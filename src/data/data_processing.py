@@ -12,6 +12,7 @@ Date: 05/03/2025
 import pandas as pd
 import backtrader as bt
 import numpy as np
+import src.data.technicals as te
 import src.data.signals as sg
 import src.yfinance_api.yfinance_api as yf
 from pandas import DataFrame
@@ -31,13 +32,10 @@ def process_data(df: DataFrame) -> DataFrame:
 
     A modified DataFrame with various technical indicators added
     '''
-
-
     df.dropna(inplace=True)
     ''' MY CODE VVVVVVVVVVVVVVVVVVVVVVVVVVV
     # Technical Indicators
-    # df = te.sma(df, 10)  # SMA(10)
-    # df = te.sma(df, 30)  # SMA(30)
+
     df = te.ema(df, 12)  # EMA(12)
     df = te.ema(df, 26)  # EMA(26)
     df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)")  # MACD
@@ -59,18 +57,30 @@ def process_data(df: DataFrame) -> DataFrame:
         df.columns = df.columns.get_level_values(0)
 
         # Rename to lowercase for btalib
-        df.columns = df.columns.str.upper()
+        df.columns = df.columns.str.lower()
 
-
+    # Finta methods
     df['RSI'] = TA.RSI(df)
+    bbands = TA.BBANDS(df)
+    df['BB_LOWER'] = bbands['BB_LOWER']
+    df['BB_UPPER'] = bbands['BB_UPPER']
+    macd = TA.MACD(df)
+    df['MACD'] = macd['MACD']
+    df['SIGNAL'] = macd['SIGNAL']
 
-
-
-
-
-
+    # my own methods
+    df = te.sma(df, 10, col='close')  # SMA(10)
+    df = te.sma(df, 30, col='close')  # SMA(30)
 
     df.dropna(inplace=True)
+
+    df = sg.crossover(df, 'SMA(10)', 'SMA(30)', col_name='SMA_CROSS')
+    df = sg.crossover(df, 'MACD', 'SIGNAL', col_name='MACD_CROSS')
+    df = sg.above(df, 'close', 'BB_UPPER', col_name='BB_SELL')
+    df = sg.below(df, 'close', 'BB_LOWER', col_name='BB_BUY')
+
+    df = sg.rsi_signal(df, 'RSI', col_name='RSI_SIG')
+
 
     return df
 
@@ -83,6 +93,3 @@ def get_df(ticker: str) -> DataFrame:
     df = yf.get_data(ticker)
     df = process_data(df)
     return df
-
-df = get_df("AAPL")
-print(df)

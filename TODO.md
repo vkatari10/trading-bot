@@ -10,6 +10,10 @@
 
 ## data/
 
+### High Level
+- Create more methods in `signal.py` to allow for signal calculations to be easilyt done on realtionhip based columns on the `DataFrame`
+
+### Low Level
 -Add more methods into `technicals.py` in order to fit more complex technicals onto the dataframes to trade the ML models on.
 
 ## engine/
