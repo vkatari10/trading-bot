@@ -15,10 +15,11 @@ import numpy as np
 import src.data.technicals as te
 import src.data.signals as sg
 import src.yfinance_api.yfinance_api as yf
-from pandas import DataFrame
+
 from finta import TA
 
-def process_data(df: DataFrame) -> DataFrame:
+
+def process_data(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Takes the YFinance DataFrame and fits it with our own technical
     indicators of choice, and relationships to watch for. We can then
@@ -32,33 +33,22 @@ def process_data(df: DataFrame) -> DataFrame:
 
     A modified DataFrame with various technical indicators added
     '''
-    df.dropna(inplace=True)
-    ''' MY CODE VVVVVVVVVVVVVVVVVVVVVVVVVVV
-    # Technical Indicators
 
-    df = te.ema(df, 12)  # EMA(12)
-    df = te.ema(df, 26)  # EMA(26)
-    df = te.subtract(df, "EMA(12)", "EMA(26)", "EMA(12-26)")  # MACD
-    df = te.ema(df=df, days=9, col="EMA(12-26)", name="Signal Line")
-    # MACD
-
-    # Crossovers
-    # df = sg.crossover(df, "SMA(10)", "SMA(30)", "SMA Crossover")
-    df = sg.crossover(df, "EMA(12-26)", "Signal Line(9)", "MACD")
-
-    # BUY, SELL, or HOLD Signals
-    # df = sg.signal(df, "SMA Crossover", name="Signal")# This doesnt work because the one below overwrites all the signals
-    df = sg.signal(df, "MACD", col_name="Signal")
-
-    '''
-
-    # Fix multi-index columns if present
+    # for finta
     if isinstance(df.columns, pd.MultiIndex):
         df.columns = df.columns.get_level_values(0)
 
-        # Rename to lowercase for btalib
         df.columns = df.columns.str.lower()
+    '''
+    Remember that indexes 0-4 from yfinance API are:
+    close
+    high
+    low
+    open
+    volume (optional, usually excluded)
+    '''
 
+    df.dropna(inplace=True)
     # Finta methods
     df['RSI'] = TA.RSI(df)
     bbands = TA.BBANDS(df)
@@ -81,11 +71,12 @@ def process_data(df: DataFrame) -> DataFrame:
 
     df = sg.rsi_signal(df, 'RSI', col_name='RSI_SIG')
 
+    df['signal_final'] = sg.sum_to_sigs(df, 12)
 
     return df
 
 
-def get_df(ticker: str) -> DataFrame:
+def get_df(ticker: str) -> pd.DataFrame:
     '''
     Returns the modified dataframe of a stock with
     technicals and signals of the specificed ticker
@@ -95,5 +86,10 @@ def get_df(ticker: str) -> DataFrame:
     # export_df(df) uncomment this when we are off notebook
     return df
 
-def export_df(df: DataFrame):
-    df.to_csv('technical_df.csv', index=False)
+
+def export_df(df: pd.DataFrame):
+    df.to_csv('src/data/technical_df.csv', index=False)
+
+
+df = get_df("AAPL")
+print(df)

@@ -8,11 +8,9 @@ Modules Used
 '''
 import pandas as pd
 import numpy as np
-from pandas import DataFrame
 
-
-def crossover(df: DataFrame, col1: str, col2: str,
-              col_name: str) -> DataFrame:
+def crossover(df: pd.DataFrame, col1: str, col2: str,
+              col_name: str) -> pd.DataFrame:
     '''
     Finds the crossover between two indicators contained in two
     columns of a DataFrame.
@@ -30,8 +28,8 @@ def crossover(df: DataFrame, col1: str, col2: str,
     return df
 
 
-def above(df: DataFrame, col1: str, col2: str,
-          col_name: str) -> DataFrame:
+def above(df: pd.DataFrame, col1: str, col2: str,
+          col_name: str) -> pd.DataFrame:
     '''
     Finds if col1 is above col2, where true the value will be
     1, else 0
@@ -40,8 +38,8 @@ def above(df: DataFrame, col1: str, col2: str,
     return df
 
 
-def below(df: DataFrame, col1: str, col2: str,
-          col_name: str) -> DataFrame:
+def below(df: pd.DataFrame, col1: str, col2: str,
+          col_name: str) -> pd.DataFrame:
     '''
     Finds if col1 is below col2, where true the value will be
     1, else 0
@@ -49,19 +47,8 @@ def below(df: DataFrame, col1: str, col2: str,
     df[col_name] = np.where((df[col1] > df[col2]), 0, 1)
     return df
 
-
-def signal(df: DataFrame, col: str, col_name="SIGNAL") -> DataFrame:
-    '''
-    Determines if the signal is "BUY" or "SELL" if the value is "1"
-    or "0", respectivley
-    '''
-    df[col_name] = np.where(df[col] == 1, "BUY",
-                            np.where(df[col] == -1, "SELL", "HOLD")
-)
-    return df
-
-def rsi_signal(df: DataFrame, rsi_col: str, col_name: str,
-               bottom=30, top=60) -> DataFrame:
+def rsi_signal(df: pd.DataFrame, rsi_col: str, col_name: str,
+               bottom=30, top=60) -> pd.DataFrame:
     '''
     Finds the crossover between two indicators contained in two
     columns of a DataFrame.
@@ -74,3 +61,26 @@ def rsi_signal(df: DataFrame, rsi_col: str, col_name: str,
                             np.where(df[rsi_col] > 70, -1, 0))
 
     return df
+
+def sum_to_sigs(df: pd.DataFrame, start_col: int) -> pd.Series:
+    '''
+    Takes relationship columns after the indicators have been declared
+    and sums up their signs to produce the signal column where >0
+    signifies a buy signal, =0 singifies a hold signal, and <0
+    signifies a sell signal.
+
+    Args:
+
+    df (pd.DataFrame): the dataframe containing the relationship values
+    between technical indicators with values of {-1, 0, 1} to determine
+    the relationship
+    start_col (int): the column inclusive index that contains the first column
+    of relationship information
+
+    Return:
+
+    Series representing the sum of technical relationships to signify
+    a buy, sell, or hold action
+    '''
+    cols = len(df.columns)
+    return df.iloc[:, start_col:cols].sum(axis = 1)
