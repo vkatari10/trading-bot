@@ -62,3 +62,5 @@ while (True):
         print("saved")
         print("done")
         break
+    except ConnectionError:
+        continue

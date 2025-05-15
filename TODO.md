@@ -20,7 +20,7 @@
 
 ## engine/ <!--============================================== -->
 
-- [ ] Complete model training first
+- [ ] Use and queue and asyncio to handle the runtime loop better
 
 ## exceptions/ <!--============================================== -->
 
@@ -57,4 +57,4 @@
 - [ ] Move DataFrame Processing to CPP code instead of python and external libraries
 - [ ] Determine a more complex set of technicals
 - [ ] Heighten buy, sell strictness
-- [ ] Find an alternative to `finnhub` that updates faster
+- [ ] Figure out how to integrate charles schwab market data API
