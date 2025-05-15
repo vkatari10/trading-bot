@@ -14,42 +14,51 @@ import pickle as pkl
 import time
 import pandas as pd
 
-import src.finnhub_api.market_data as fb
+import src.finnhub_api.market_data as fh
 import src.alpaca_api.ordering as ao
 import src.live_data.live_data as ld
+from sklearn.ensemble import RandomForestClassifier
+
+
+print("Opening ML model")
 
 model_file = "src/models/model_v1.pkl"
 
 with open(model_file, 'rb') as f:
-    pkl.load(f)
+    model = pkl.load(f)
 
-df = pd.read_csv("notebooks/refined_df.csv")
-print(df)
+print("Opening Historical Data")
+
+# when finished rename the exported df to this file name below
+df = pd.read_csv("src/engine/refined_df.csv")
 
 ticker = "AAPL"
 
 while (True):
     try:
-        stock_price = fb.get_quote(ticker)
-        print(f"Quote ({ticker}): {stock_price['c']}")
+        price = fh.get_quote(ticker)
+        print(f"New Quote ({ticker}): {price['c']}")
+        df = ld.append_new(df, price['c'], price['h'],
+                           price['l'], price['o'])
 
-        # ADD this to the historical data chart to get new indicators
+        X = df.iloc[[-1]].drop(columns="ACTION")
+        prediction = model.predict(X)
+        action = prediction[0]
 
-        # Feed new technicals to ML bot
-
-        # make predict
-
-        # based on predict call alpaca to buy or sell
-
-        '''
-        recompute(stock_price, df)
-        '''
-
-
+        if action > 0:
+            print("BUY SIG") # hook alpaca orders here
+            ao.place_market_order(ticker, 1, "buy")
+        elif action < 0:
+            ao.place_market_order(ticker, 1, "sell")
+        else:
+            print("HOLD SIG")
 
         time.sleep(60)
     except KeyboardInterrupt:
-        print("exit")
+        print("saving collected data")
+        # rename this to the thing above when opening the df
+        # later we can just name the original file name to overwrite it
+        ld.make_csv('src/engine/runtime_df.csv', df)
+        print("saved")
+        print("done")
         break
-
-# make_csv(df)
