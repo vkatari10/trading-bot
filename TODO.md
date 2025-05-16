@@ -52,9 +52,15 @@
 - [ ] If needed add a new method that can specify the start and end dates as necessary
 
 # Long Term Improvements <!--===========================================-->
-- [ ] Move all API calls to use `Go` instead of python
+
 - [ ] Potentially Adjust ML models to use a different learning technique
-- [ ] Move DataFrame Processing to CPP code instead of python and external libraries
 - [ ] Determine a more complex set of technicals
-- [ ] Heighten buy, sell strictness
-- [ ] Figure out how to integrate charles schwab market data API
+- [ ] Heighten buy, sell strictness 
+- [ ] Figure out how to integrate charles schwab market data API, or use Alpaca API 
+
+## Structure
+- [ ] Move all API calls to use `Go` + websockets instead of Python 
+- [ ] Use `C++` to recompute technicals at runtime instead of using Python
+
+
+
