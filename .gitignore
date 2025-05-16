@@ -1,0 +1,22 @@
+# Node.js dependencies
+node_modules/
+.next/
+
+# Environment variables
+venv/
+.env
+
+# Python Cache
+.pyc
+__pycache__/
+
+# notebooks
+.pynb_checkpoints/
+.ipynb_checkpoints/
+
+# testing data sets
+.csv
+
+# pybind11
+.o
+.so
