@@ -89,7 +89,3 @@ def get_df(ticker: str) -> pd.DataFrame:
 
 def export_df(df: pd.DataFrame):
     df.to_csv('src/data/technical_df.csv', index=False)
-
-
-df = get_df("AAPL")
-print(df)
