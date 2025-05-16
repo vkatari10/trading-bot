@@ -58,4 +58,3 @@
 - [ ] Determine a more complex set of technicals
 - [ ] Heighten buy, sell strictness
 - [ ] Figure out how to integrate charles schwab market data API
-
