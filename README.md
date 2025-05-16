@@ -14,5 +14,5 @@ Trading in real time is hard to predict and make split second decisions. By hand
 
 ## Tech Stack
 
-All of the current code right now to load, process financial data and train machine learning models and run them in a live environment is all done in python. Future plans include to use websockets using `Go` for API calls and computing technical indicators on historical data using `C++` as a way to reduce runtime. Beyond this repo includes a future project to add a dashboard to moinitor the trading bot in its runtime environment that utliizes Next.js and Typescript.
+All of the current code right now to load, process financial data and train machine learning models and run them in a live environment is all done in python. Future plans include to use websockets using `Go` for API calls and computing technical indicators on historical data using `C++` as a way to reduce runtime. Beyond this repo includes a future project to add a dashboard to moinitor the trading bot in its runtime environment that utliizes `Next.js` and `Typescript`.
 
