@@ -17,10 +17,6 @@ import src.data.technicals as te
 from typing import List
 import datetime
 
-import example
-
-example.print()
-
 
 def initialize_row(df: pd.DataFrame, current: float, high: float,
                    low: float, _open:float) -> pd.DataFrame:
@@ -93,8 +89,7 @@ def append_new(df: pd.DataFrame, current: float,
     _new.iat[-1, 10] = sma10.iat[-1, 0]
     _new.iat[-1, 11] = sma30.iat[-1, 0]
 
-
-    _new.iat[-1, -1] = 0 # Leave 0 to let ML predict action
+    _new.iat[-1, -1] = 0  # Leave 0 to let ML predict action
 
     return _new
 
