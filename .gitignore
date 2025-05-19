@@ -20,3 +20,4 @@ __pycache__/
 # pybind11
 .o
 .so
+build/
