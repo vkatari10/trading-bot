@@ -15,21 +15,32 @@ namespace py = pybind11;
  * Date: 05/19/2025
  */
 
-/*
- * TODO
- * - sma
- * - ema
- * - bbands
- * - rsi
- * - macd (derived from ema)
- *
- */
+py::array_t<double> sma(py::array_t<double> closes) {
 
-py::array_t<double> sma(py::array_t<double> arr) {
-  throw std::logic_error("No implementation");
+  py::buffer_info buf = closes.request();
+
+  double *ptr = static_cast<double *>(buf.ptr);
+  int size = buf.size;
+
+  int terms = 0;
+  double total = 0.0;
+
+  // new array
+  std::vector<double> smas;
+
+  for (int i = 0; i < size; i++) {
+    total += ptr[i];
+    terms += 1;
+
+    double sma = total / terms;
+    smas.push_back(sma);
+  } // for
+
+  py::array_t<double> arr(smas.size(), smas.data());
+  return arr;
 } // sma
 
-py::array_t<double> ema(py::array_t<double> arr) {
+py::array_t<double> ema(py::array_t<double> closes) {
   throw std::logic_error("No implementation");
 } // ema
 
