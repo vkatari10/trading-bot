@@ -15,9 +15,9 @@ namespace py = pybind11;
  * Date: 05/19/2025
  */
 
-py::array_t<double> sma(py::array_t<double> closes) {
+py::array_t<double> sma(py::array_t<double> prices) {
 
-  py::buffer_info buf = closes.request();
+  py::buffer_info buf = prices.request();
 
   double *ptr = static_cast<double *>(buf.ptr);
   int size = buf.size;
@@ -40,8 +40,25 @@ py::array_t<double> sma(py::array_t<double> closes) {
   return arr;
 } // sma
 
-py::array_t<double> ema(py::array_t<double> closes) {
-  throw std::logic_error("No implementation");
+py::array_t<double> ema(py::array_t<double> prices, int smoothing = 2) {
+
+  py::buffer_info buf = prices.request();
+
+  double * ptr = static_cast<double *>(buf.ptr);
+  int size = buf.size;
+
+  std::vector<double> emas;
+  emas.push_back(ptr[0]);
+
+  for (int i = 1; i < size; i++) {
+    double alpha = smoothing / (i + 1);
+    double new_ema = alpha * ptr[i] + (1-alpha) * ptr[i-1];
+    emas.push_back(new_ema);
+  } // for
+
+  py::array_t<double> arr(emas.size(), emas.data());
+  return arr;
+
 } // ema
 
 py::array_t<double> bbands(py::array_t<double> arr) {
