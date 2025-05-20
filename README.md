@@ -1,12 +1,12 @@
 # Trading Bot
 
-Python based ML-based trading bot that can buy, sell, execute orders.
+Python based ML-based trading bot that can buy, sell, execute orders, with runtime optimizations in C++.
 
 ## Requirements
 
 In order to make and view trades you will need an Alpaca API account. The API keys will need to be stored in a `.env` file in the top level directory. You will also need to register for a finnhub account as well to your those associated keys as well. These should also be stored in the `.env` file.<br>
 
-Required packages are listed in the requirements.txt, those can be stored in a venv directory by calling `python -m venv venv` from the top level directory. There is a provided script to activate the virtual environment by calling `source env.sh`. You can also optionally use pypy3 to run this code instead of the default python3 intreperter.<br>
+Required packages are listed in the requirements.txt, those can be stored in a venv directory by calling `python -m venv venv` from the top level directory and then installed by calling `pip install -r requirememts.txt`. There is a provided script to activate the virtual environment by calling `source env.sh`. 
 
 ## Motivation
 
@@ -14,5 +14,15 @@ Trading in real time is hard to predict and make split second decisions. By hand
 
 ## Tech Stack
 
-All of the current code right now to load, process financial data and train machine learning models and run them in a live environment is all done in python. Future plans include to use websockets using `Go` for API calls and computing technical indicators on historical data using `C++` as a way to reduce runtime. Beyond this repo includes a future project to add a dashboard to moinitor the trading bot in its runtime environment that utliizes `Next.js` and `Typescript`.
+The majority of this project is done in Python thanks to its massive ML library ecosystem, however some optimziations were done in other lanaguages to increase the performance of critical runtime elements such as:<br>
+- C++ - used to handle the recomputation of technical indicators at runtime
+- Go - to be implemented to help speed up API calls by using websockets<br>
+
+Doing so helps the trading bot run far faster in real time which removes some of the overhead with Python, especially since we can take advantage of the fact that these two additional languages are compiled.
+
+# Limitations
+
+There are several limitaions with this trading bot, however the most signficant are<br>
+- Ingestion of delayed data
+- 
 
