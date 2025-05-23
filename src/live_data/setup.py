@@ -4,7 +4,7 @@ import numpy
 
 ext_modules = [
     Extension(
-        'example',
+        'live_recompute',
         ['live_recompute.cpp'],  # all your source files here
         include_dirs=[pybind11.get_include(), numpy.get_include()],
         language='c++',

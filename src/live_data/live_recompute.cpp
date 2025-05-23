@@ -10,12 +10,15 @@
 
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
-#include <string>
+#include <cmath>
 #include <iostream>
 #include <stdexcept>
 
 
 namespace py = pybind11;
+
+
+// =====================MOVING AVERAGES========================
 
 
 /*
@@ -51,6 +54,7 @@ py::array_t<double> sma(py::array_t<double> prices, int window) {
   return arr;
 } // sma
 
+
 /*
  * @brief Calculates the exponential moving average of a given array
  * of prices. Let the window = n, then thsi methods asusmes that we
@@ -83,9 +87,67 @@ py::array_t<double> ema(py::array_t<double> prices, int window,
 
 } // ema
 
-py::array_t<double> bbands(py::array_t<double> arr) {
+/*
+ * @brief Calculates the mean of a NumPy dataset
+ * of doubles
+ *
+ * @param arr the NumPy array containing doubles
+ * @return the mean value of the param arr
+ */
+double mean(py::array_t<double> arr) {
+
+  py::buffer_info buf = arr.request();
+
+  double * ptr = static_cast<double *>(buf.ptr);
+  int size = buf.size;
+
+  double sum = 0.0;
+
+  for (int i = 0; i < size; i++) {
+    sum += ptr[i];
+  } // for
+
+  return sum / size;
+} // mean
+
+/*
+ * @brief Calculates the standard deviation of a dataset
+ * of doubles contained in an NumPy Array
+ *
+ * @param arr the NumPy array containing doubles
+ * @return the standard deviation of the set
+ */
+double std_dev(py::array_t<double> arr) {
+
+  py::buffer_info buf = arr.request();
+
+  double arr_mean = mean(arr);
+  double sum = 0.0;
+
+  double * ptr = static_cast<double *>(buf.ptr);
+
+  unsigned int size = buf.size;
+  double diff;
+
+  // sum items - mean in entire array
+  for (unsigned int i = 0; i < size; i++) {
+    diff = ptr[i] - arr_mean;
+    sum += diff * diff;
+  } // for
+
+  sum /= size;
+  return std::sqrt(sum);
+} // std_dev
+
+py::array_t<double> bbands_upper(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
-} // bbands
+} // bbands_upper
+
+py::array_t<double> bbands_lower(py::array_t<double> arr) {
+  throw std::logic_error("No implementation");
+} // bbands_lower
+
+
 
 py::array_t<double> rsi(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
@@ -95,10 +157,13 @@ py::array_t<double> macd(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
 } // macd
 
-PYBIND11_MODULE(live_recomp, m) {
+PYBIND11_MODULE(live_recompute, m) {
   m.def("sma", &sma);
   m.def("ema", &ema);
-  m.def("bbands", &bbands);
+  m.def("mean", &mean);
+  m.def("std_dev", &std_dev);
+  m.def("bbands_upper", &bbands_upper);
+  m.def("bbands_lower", &bbands_lower);
   m.def("rsi", &rsi);
   m.def("macd", &macd);
 } // PYBIND11
