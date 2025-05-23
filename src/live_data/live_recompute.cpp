@@ -11,9 +11,9 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <cmath>
-#include <iostream>
+#include <iostream> // for debug
 #include <stdexcept>
-#include <deque>
+#include <deque> // for rolling averages
 
 namespace py = pybind11;
 
@@ -33,7 +33,7 @@ namespace py = pybind11;
  * @throws std::logic_error if the length of the array is less
  * than the window
  */
-py::array_t<double> sma(py::array_t<double> prices,
+py::array_t<double> sma(const py::array_t<double> &prices,
                         unsigned int window) {
 
   py::buffer_info buf = prices.request();
@@ -126,6 +126,10 @@ py::array_t<double> ema(py::array_t<double> prices,
   return arr;
 } // ema
 
+
+// ==========================STATISTICAL==============================
+
+
 /*
  * @brief Calculates the mean of a NumPy dataset
  * of doubles
@@ -152,6 +156,7 @@ double mean(py::array_t<double> arr) {
 
   return sum / size;
 } // mean
+
 
 /*
  * @brief Calculates the standard deviation of a dataset
@@ -182,21 +187,109 @@ double std_dev(py::array_t<double> arr) {
   return std::sqrt(sum);
 } // std_dev
 
-py::array_t<double> bbands_upper(py::array_t<double> arr) {
-  throw std::logic_error("No implementation");
+
+/*
+ * @brief calculates the upper Bollinger bands of a given
+ * array of doubles
+ *
+ * @param arr the array containing the doubles representing
+ * prices
+ * @param SMA the underlying SMA to calculate the upper
+ * Bollinger band, defaults to 20
+ * @return an array containing the upper Bollinger bands
+ * values
+ */
+py::array_t<double> bbands_upper(py::array_t<double> arr,
+                                 unsigned int SMA = 20) {
+
+  py::buffer_info buf = arr.request();
+
+  double * ptr = static_cast<double *>(buf.ptr);
+
+  unsigned int size = buf.size;
+
+  py::array_t<double> wrapper(size, ptr);
+
+  // find standard deviation of the dataset
+  double sdev = std_dev(wrapper);
+
+  // get SMA values of this input array
+  py::array_t<double> mod_arr = sma(wrapper, 20);
+
+  py::buffer_info mod_buf = mod_arr.request();
+  ptr = static_cast<double *>(mod_buf.ptr);
+  size = mod_buf.size;
+
+  std::vector<double> bbands;
+
+  for (unsigned int i = 0; i < size; i++) {
+    double result = ptr[i] + sdev;
+    bbands.push_back(result);
+  } // for
+
+  py::array_t<double> result(bbands.size(), bbands.data());
+  return result;
 } // bbands_upper
 
-py::array_t<double> bbands_lower(py::array_t<double> arr) {
-  throw std::logic_error("No implementation");
+
+/*
+ * @brief calculates the upper Bollinger bands of a given
+ * array of doubles
+ *
+ * @param arr the array containing the doubles representing
+ * prices
+ * @param SMA the underlying SMA to calculate the upper
+ * Bollinger band, defaults to 20
+ * @return an array containing the upper Bollinger bands
+ * values
+ */
+py::array_t<double> bbands_lower(py::array_t<double> arr,
+                                 unsigned int SMA = 20) {
+
+  py::buffer_info buf = arr.request();
+
+  double * ptr = static_cast<double *>(buf.ptr);
+
+  unsigned int size = buf.size;
+
+  py::array_t<double> wrapper(size, ptr);
+
+  // find standard deviation of the dataset
+  double sdev = std_dev(wrapper);
+
+  // get SMA values of this input array
+  py::array_t<double> mod_arr = sma(wrapper, 20);
+
+  py::buffer_info mod_buf = mod_arr.request();
+  ptr = static_cast<double *>(mod_buf.ptr);
+  size = mod_buf.size;
+
+  std::vector<double> bbands;
+
+  for (unsigned int i = 0; i < size; i++) {
+    double result = ptr[i] - sdev;
+    bbands.push_back(result);
+  } // for
+
+  py::array_t<double> result(bbands.size(), bbands.data());
+  return result;
 } // bbands_lower
+
 
 py::array_t<double> rsi(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
 } // rsi
 
+
 py::array_t<double> macd(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
 } // macd
+
+
+py::array_t<double> macd_sig() {
+  throw std::logic_error("No implementation");
+} // macd_sig
+
 
 PYBIND11_MODULE(live_recompute, m) {
   m.def("sma", &sma);
@@ -207,4 +300,5 @@ PYBIND11_MODULE(live_recompute, m) {
   m.def("bbands_lower", &bbands_lower);
   m.def("rsi", &rsi);
   m.def("macd", &macd);
+  m.def("macd_sig", &macd_sig);
 } // PYBIND11
