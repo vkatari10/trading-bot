@@ -24,5 +24,21 @@ Doing so helps the trading bot run far faster in real time which removes some of
 
 There are several limitaions with this trading bot, however the most signficant are<br>
 - Ingestion of delayed data
-- 
+- Burn-in period when running in real time (~30 minutes)
+
+# Version History 
+
+## v0.1.0-alpha
+- MVP proof of concept with no regard to performance.
+- Prototyped fully in Python.
+- Used Pandas directly to set up the data pipeline.
+- No server implementation.
+
+## v0.2.0-alpha (in progress)
+- Improve performance and remove reliance on the `finta` library
+- Replaces Pandas to use raw NumPy arrays.
+- Integrated `pybind11` and C++ code to improve performance of technical computations.
+- Still no server implmentation.
+
+
 

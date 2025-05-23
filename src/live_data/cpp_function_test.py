@@ -2,11 +2,11 @@ import live_recompute as lr
 import numpy as np
 
 
-test = [1, 2, 3, 4, 5, 6]
+test = [10, 12, 14, 13, 15]
 np_arr = np.array(test)
 
 print(np_arr)
-np_stdev = lr.std_dev(np_arr)
+np_stdev = lr.ema(np_arr, 3, 2)
 
 print(np_stdev)
 print(np_arr)
