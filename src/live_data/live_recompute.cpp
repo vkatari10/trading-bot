@@ -13,7 +13,7 @@
 #include <cmath>
 #include <iostream>
 #include <stdexcept>
-
+#include <deque>
 
 namespace py = pybind11;
 
@@ -28,26 +28,47 @@ namespace py = pybind11;
  *
  * @param prices the NumPy array containing doubles representing prices
  * @param window the window of the SMA
- * @return the SMA of the given prices array with the given windows
+ * @return the SMA of the given prices array with the given windows with
+ * a new array size of prices.size - window
+ * @throws std::logic_error if the length of the array is less
+ * than the window
  */
-py::array_t<double> sma(py::array_t<double> prices, int window) {
+py::array_t<double> sma(py::array_t<double> prices,
+                        unsigned int window) {
 
   py::buffer_info buf = prices.request();
 
   double *ptr = static_cast<double *>(buf.ptr);
-  int size = buf.size;
 
-  int terms = 0;
-  double total = 0.0;
+  unsigned int size = buf.size;
 
-  // new array
+  if (size < window) {
+    throw std::logic_error(
+       "Array size must be larger than the window"
+    );
+  } // if
+
+  double sum = 0.0;
+  std::deque<double> dq;
+
+  for (unsigned int i = 0; i < window; i++) {
+    dq.push_back(ptr[i]);
+    sum += ptr[i];
+  } // for
+
   std::vector<double> smas;
+  smas.push_back(sum / window);
 
-  for (int i = 0; i < size; i++) {
-    total += ptr[i];
+  for (unsigned int i = window; i < size; i++) {
+    double old_value = dq.front();
+    dq.pop_front();
 
-    double sma = total / window;
-    smas.push_back(sma);
+    sum -= old_value;
+
+    sum += ptr[i];
+    dq.push_back(ptr[i]);
+
+    smas.push_back(sum / window);
   } // for
 
   py::array_t<double> arr(smas.size(), smas.data());
@@ -63,28 +84,46 @@ py::array_t<double> sma(py::array_t<double> prices, int window) {
  * @param prices the NumPy arary containg double representing prices
  * @param window the window of the EMA
  * @param smoothing the smoothing value to apply to the EMA formula
- * defaults to 2
+ * defaults to
  */
-py::array_t<double> ema(py::array_t<double> prices, int window,
-                        int smoothing = 2) {
+py::array_t<double> ema(py::array_t<double> prices,
+                        unsigned int window,
+                        double smoothing = 2.0) {
 
   py::buffer_info buf = prices.request();
 
   double * ptr = static_cast<double *>(buf.ptr);
-  int size = buf.size;
+
+  unsigned int size = buf.size;
+
+  if (size < window) {
+   throw std::logic_error(
+      "Array size must be larger than window"
+    );
+  }
+
+  double sum = 0.0;
+
+  for (unsigned int i = 0; i < window; i++) {
+    sum += ptr[i];
+  } // for
 
   std::vector<double> emas;
-  emas.push_back(ptr[0]);
 
-  for (int i = 1; i < size; i++) {
-    double alpha = smoothing / (i + 1);
-    double new_ema = alpha * ptr[i] + (1-alpha) * ptr[i-1];
+  double old_ema = sum / window;
+  emas.push_back(old_ema);
+
+  double alpha = 0.0;
+  alpha = smoothing / (window + 1);
+
+  for (unsigned int i = window; i < size; i++) {
+    double new_ema = (ptr[i] * alpha) + ((1 - alpha) * old_ema);
     emas.push_back(new_ema);
+    old_ema = new_ema;
   } // for
 
   py::array_t<double> arr(emas.size(), emas.data());
   return arr;
-
 } // ema
 
 /*
@@ -99,11 +138,15 @@ double mean(py::array_t<double> arr) {
   py::buffer_info buf = arr.request();
 
   double * ptr = static_cast<double *>(buf.ptr);
-  int size = buf.size;
+  unsigned int size = buf.size;
+
+  if (size == 0) {
+    throw std::logic_error("Empty array");
+  }
 
   double sum = 0.0;
 
-  for (int i = 0; i < size; i++) {
+  for (unsigned int i = 0; i < size; i++) {
     sum += ptr[i];
   } // for
 
@@ -146,8 +189,6 @@ py::array_t<double> bbands_upper(py::array_t<double> arr) {
 py::array_t<double> bbands_lower(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
 } // bbands_lower
-
-
 
 py::array_t<double> rsi(py::array_t<double> arr) {
   throw std::logic_error("No implementation");
