@@ -281,13 +281,90 @@ py::array_t<double> rsi(py::array_t<double> arr) {
 } // rsi
 
 
-py::array_t<double> macd(py::array_t<double> arr) {
-  throw std::logic_error("No implementation");
+/*
+ * @brief Calculates Moving Average Convergence/Divergence
+ * based on a given array of doubles representing prices
+ * by calculating ema1 - ema2.
+ *
+ * @param arr an array of doubles representing prices
+ * @param ema1 the first EMA, defaults to 12
+ * @param ema32 the second EMA, defaults to 26
+ * @param ema_smoothing the smoothing variable to apply to both
+ * emas, defaults to 2
+ * @return the array containing the MCAD line
+ * @throws std::logic_error if the size of arr is 0
+ */
+py::array_t<double> macd(py::array_t<double> arr,
+                         unsigned int ema1 = 12,
+                         unsigned int ema2 = 26,
+                         double ema_smoothing = 2) {
+
+  py::buffer_info buf = arr.request();
+
+  double * ptr = static_cast<double *>(buf.ptr);
+  unsigned int size = buf.size;
+
+  if (size == 0) {
+   throw std::logic_error("Empty array");
+  } // if
+
+  py::array_t<double> wrapper(size, ptr);
+
+  // both emas
+  py::array_t<double> ema1_arr = ema(wrapper, ema1, ema_smoothing);
+  py::array_t<double> ema2_arr = ema(wrapper, ema2, ema_smoothing);
+
+  py::buffer_info ema1_buf = ema1_arr.request();
+  double * ptr1 = static_cast<double *>(ema1_buf.ptr);
+  unsigned int size1 = ema1_buf.size;
+
+  py::buffer_info ema2_buf = ema2_arr.request();
+  double * ptr2 = static_cast<double *>(ema2_buf.ptr);
+  unsigned int size2 = ema2_buf.size;
+
+  unsigned int end = size1 > size2 ? size1 : size2;
+
+  std::vector<double> macd;
+
+  for (unsigned int i = 0; i < size; i++) {
+    macd,push_back(ptr1[i] - ptr2[i]);
+  } // for
+
+  py::array_t<double> result(macd.size(), macd.data());
+
+  return result;
 } // macd
 
 
-py::array_t<double> macd_sig() {
-  throw std::logic_error("No implementation");
+/*
+ * @brief calculates the signal line of an array containing
+ * the MCAD values
+ *
+ * @param macd the array containing the MCAD values
+ * @param ema the ema value to use, defaults to 9
+ * @param smoothing, the smoothing value to apply to the ema
+ * calculations, defaults to 2
+ * @return the signal line of the given mcad values
+ * @throws std::logic_error if the size of the mcad is 0
+ */
+py::array_t<double> macd_sig(py::array_t<double> macd,
+                             unsigned int ema = 9,
+                             unsigned int smoothing = 2) {
+
+  py::buffer_info buf = macd.request();
+
+  double * ptr = static_cast<double *>(macd.ptr);
+  int size = macd.size;
+
+  if (size == 0) {
+    throw std::logic_error("Empty array");
+  } // if
+
+  py::array_t<double> wrapper(size, ptr);
+
+  py::array_t<double> result = ema(wrapper, ema, smoothing);
+
+  return result;
 } // macd_sig
 
 
