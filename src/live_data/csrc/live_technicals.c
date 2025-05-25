@@ -6,15 +6,19 @@
  * Date: 05/24/2025
  */
 
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "live_stats.h" // for mean / standard deviation methods
+#include "live_technicals.h"
 
 
-double * sma (const double * arr, size_t len, unsigned int window) {
+DoubleArray sma(const double * arr, size_t len, unsigned int window) {
+
+  DoubleArray result = {NULL, 0};
 
   if (window > len || len == 0) {
-    return NULL;
+    return result;
   } // if
 
   double sum = 0.0;
@@ -25,60 +29,73 @@ double * sma (const double * arr, size_t len, unsigned int window) {
 
   size_t final_len = len - (size_t)window + 1;
 
+  result.len = final_len;
+
   double * smas = (double *) malloc(sizeof(double) * final_len);
 
-  smas[0] = sum / (double)window;
+  for (size_t i = window; i <= len; i++) {
 
-  size_t front = 0;
-  size_t end = window;
-  size_t index = 1;
+    smas[i - window] = sum / (double)window;
 
-  for (size_t i = 0; i < final_len; i++) {
-
-    sum -= arr[front];
-    front++;
-
-    sum += arr[end];
-    end++;
-
-    smas[index] = sum / (double)window;
-    index++;
+    sum -= arr[i - window];
+    sum += arr[i];
 
   } // for
 
-  return smas;
+  result.data = smas;
+  return result;
 } // sma
 
 
-double * ema (const double * arr, size_t len, unsigned int window,
+DoubleArray ema(const double * arr, size_t len, unsigned int window,
               double smoothing) {
 
-  if (len < window) {
-    return NULL;
+  DoubleArray result = {NULL, 0};
+
+  if (len < window || len == 0) {
+    return result;
   } // if
 
-  double old_ema = arr[0];
+  double sum = 0.0;
 
-  double * emas = (double *) malloc(sizeof(double) * len);
-  emas[0] = old_ema;
+  for (size_t i = 0; i < window; i++) {
+    sum += arr[i];
+  } // for
+
+  size_t final_len = len - (size_t)window + 1;
+
+  result.len = final_len;
 
   double alpha = (double)smoothing / (1 + window);
 
-  for (size_t i = 1; i < len; i++) {
+  double * emas = (double *) malloc(sizeof(double) * final_len);
+
+  emas[0] = sum / (double)window;
+  double old_ema = sum / (double)window;
+
+  for (size_t i = window; i <= len; i++) {
     double new_ema = (arr[i] * alpha) + ((1 - alpha) * old_ema);
-    emas[i] = new_ema;
+    emas[i - window + 1] = new_ema;
     old_ema = new_ema;
   } // for
 
-  return emas;
+  result.data = emas;
+  return result;
 } // ema
 
 
 double * bbands_upper(const double * arr, size_t len,
                       unsigned int sma) {
 
+  if (len < sma) {
+    return NULL;
+  } // if
+
+
+
   static double dummy = 0.0;
   return &dummy;
+
 } // bbands_upper
 
 
@@ -108,24 +125,20 @@ static double dummy = 0.0;
 
 int main(void) {
 
-  double * data = (double *) malloc (sizeof(double) * 10);
+  double * doubles = (double *) malloc (sizeof(double) * 10);
 
   for (int i = 0; i < 10; i++) {
-    data[i] = i + 1;
-  } //for
-
-  double * result = ema(data, 10, 3, 2);
-
-  unsigned int final_len = 10 - 3 + 1;
-
-  for (int i = 0; i < final_len; i++) {
-    printf("result[i] = %lf\n", result[i]);
+    doubles[i] = i + 1;
   } // for
 
-  free(data);
-  free(result);
+  DoubleArray da = ema(doubles, 10, 3, 2);
 
+  for (size_t i = 0; i < da.len; i++) {
+    printf("Data -> %lf\n", da.data[i]);
+  } // for
+
+  free(doubles);
+  free(da.data);
 
   return 0;
-
 } // main
