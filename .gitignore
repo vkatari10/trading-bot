@@ -7,7 +7,7 @@ venv/
 .env
 
 # Python Cache
-.pyc
+*.pyc
 __pycache__/
 
 # notebooks
@@ -15,9 +15,12 @@ __pycache__/
 .ipynb_checkpoints/
 
 # testing data sets
-.csv
+*.csv
 
-# pybind11
-.o
-.so
-build/
+# C libraries
+*.o
+*.so
+*.a
+
+# ML models
+*.pkl
