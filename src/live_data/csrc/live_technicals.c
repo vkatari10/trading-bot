@@ -84,13 +84,25 @@ DoubleArray ema(const double * arr, size_t len, unsigned int window,
 } // ema
 
 
+// update SMA
+
+double get_ema(double old_value, double new_value, unsigned int window,
+               double smoothing) {
+
+  double alpha = smoothing / (double)window;
+  return (new_value * alpha) + ((1- alpha) * old_value);
+
+} // new_ema
+
+
+
+
 double * bbands_upper(const double * arr, size_t len,
                       unsigned int sma) {
 
   if (len < sma) {
     return NULL;
   } // if
-
 
 
   static double dummy = 0.0;
@@ -101,6 +113,7 @@ double * bbands_upper(const double * arr, size_t len,
 
 double * bbands_lower(const double * arr, size_t len,
                       unsigned int sma) {
+
   static double dummy = 0.0;
   return &dummy;
 } // bbands_lower
@@ -117,28 +130,12 @@ double * macd(const double * arr, size_t len,
 double * macd_sig(const double * arr, size_t len,
                   unsigned int ema, unsigned int smoothing) {
 
-
 static double dummy = 0.0;
   return &dummy;
 
 } // macd_sig
 
-int main(void) {
-
-  double * doubles = (double *) malloc (sizeof(double) * 10);
-
-  for (int i = 0; i < 10; i++) {
-    doubles[i] = i + 1;
-  } // for
-
-  DoubleArray da = ema(doubles, 10, 3, 2);
-
-  for (size_t i = 0; i < da.len; i++) {
-    printf("Data -> %lf\n", da.data[i]);
-  } // for
-
-  free(doubles);
-  free(da.data);
-
-  return 0;
-} // main
+void dummy_test() {
+  printf("Testing from C library into Go\n");
+  fflush(stdout);
+} // dummy

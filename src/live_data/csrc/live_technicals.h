@@ -101,5 +101,6 @@ double * macd_sig(const double * macd, size_t len, unsigned int ema,
                   unsigned int smoothing);
 
 
+void dummy_test();
 
 #endif // LIVE_TECHNICALS_H
