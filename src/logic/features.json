@@ -1,1 +1,11 @@
-["SMA_10", "SMA_30"]
+[
+    {
+        "tech": "SMA",
+        "window": 10
+    },
+
+    {
+        "tech": "SMA",
+        "window": 30
+    }
+]
