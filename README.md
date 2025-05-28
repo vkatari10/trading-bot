@@ -40,7 +40,7 @@ This project includes a mix of Python, Go, and C in the back end to take advanta
 
     Doing so allows for maximal runtime using Go and C while also taking advantage of the vast ecosystem of ML and Finance related libraries Python offers.
 
-# Limitations
+## Limitations
 
 There are several limitaions with this trading bot, however the most signficant are listed below.<br>
 - Ingestion of delayed data, up to 15 minutes
