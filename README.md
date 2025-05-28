@@ -14,7 +14,7 @@ The goal of this project is automate trading in real time by using a pre-trained
 
 ## Architecture
 
-![Architecture](docs/images/Architecture_graphic.jpg)
+![Architecture](docs/images/Architecture_diagram.svg)
 
 ### Legend
 
