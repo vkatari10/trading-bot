@@ -8,20 +8,20 @@
 
 echo -e "Starting virtual environment"
 source venv/bin/activate
-echo -e "Startup Sucessful"
 
-echo -e "===================================================\n"
+echo -e "==================================================="
 
-echo -e "Reading features and training models\n"
-python3 -m src.machine_learning.pipeline
-echo -e "Loaded retrained model into src/machine_learning/models/decider\n"
+echo -e "Training ML Model"
+python3 -m src.ml.pipeline
+echo -e "Dumped retrained model into src/machine_learning/models/decider"
 
-echo -e "===================================================\n"
+echo -e "==================================================="
 
-echo -e "Compiling C runtime dependencies"
+echo -e "Compiling C dependencies"
 cd src/runtime/recomputation/csrc/
 ./compile.sh
 cd ../../../
-echo -e "Compilation Sucessful"
 
-echo "done"
+echo -e "==================================================="
+
+echo "Build Stage Done"

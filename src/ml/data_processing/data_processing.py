@@ -22,8 +22,9 @@ from finta import TA
 
 
 # Python technical indicators
-import src.machine_learning.data_processing.technicals as te
+import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
+import src.ml.data_processing.signals as sig
 
 
 def process_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -48,8 +49,12 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
     with open("src/logic/features.json") as f:
         features = json.load(f)
 
+    with open("src/logic/signals.json") as f:
+        signals = json.load(f)
+
     # Load the features onto the DF
-    load_features(df, features)
+    df = load_features(df, features)
+    df = relationships(df, signals)
 
     df.dropna(inplace=True)
     return df
@@ -58,8 +63,8 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
 def load_features(df: pd.DataFrame,
                   features: List[Dict[str, Any]]) -> pd.DataFrame:
     '''
-    Loads features onto the given DataFrame based on user
-    defined technicals in src/logic/features.json
+    Loads user defined technical indicators to determine buy/sell
+    signals based on the definitions in src/logic/features.json
     '''
     for i in range(len(features)):
 
@@ -72,6 +77,39 @@ def load_features(df: pd.DataFrame,
             label = f"EMA_{window}"
             df[label] = te.ema(df, window)
 
+    return df
+
+def relationships(df: pd.DataFrame,
+                  signals: List[Dict[str, Any]]) -> pd.DataFrame:
+    '''
+    Loads user defined relationships to determine buy/sell signals
+    based on the definitions in src/logic/signals.json
+    '''
+
+    # DO NOT INCLUDE RELATIONSHIPS FOR TRAINING PURPOSES
+    # REMOVE THIS LATER WHEN WE TEST THE OTHER TRANING
+    # PROCESS
+    stop_col = signals[0]['name']
+
+    for i in range(len(signals)):
+
+        relationship = signals[i]['sig']
+        new_name = signals[i]['name']
+        col1 = signals[i]['col1']
+        col2 = signals[i]['col2']
+
+        if relationship == "crossover":
+            df[new_name] = sig.crossover(df, col1, col2)
+        elif relationship == "above":
+            df[new_name] = sig.above(df, col1, col2)
+        elif relationship == "below":
+            df[new_name] = sig.below(df, col1, col2)
+
+    # ==== replace index tuple with first relationship defined ====
+    index = df.columns.get_loc((stop_col,''))
+
+    # ==== do not modify ====
+    df['final_signal'] = sig.sum_to_sigs(df, index)
     return df
 
 

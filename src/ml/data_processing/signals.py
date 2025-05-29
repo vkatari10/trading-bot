@@ -5,6 +5,9 @@ contain technical indicators
 Modules Used
 - pandas
 - numpy
+
+Author: Vikas Kataru
+Date: 05/15/2025
 '''
 import pandas as pd
 import numpy as np
