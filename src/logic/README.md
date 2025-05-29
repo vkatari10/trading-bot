@@ -13,16 +13,21 @@ A quick example:<br>
 [
     {
         "tech": "SMA",
-        "window": 10
+        "window": 10,
+        "name": "SMA_10"
     },
     {
         "tech": "SMA",
-        "window": 30
+        "window": 30,
+        "name": "SMA_30"
+        
     }
 ]
 ```
 
 ### Supported Technical Indicators
+
+All entries must contain a `"name"` entry which signifies the name of the column, they should also be referred to as the same name in the `signals.json` file.
 
 Currently Supported Technical Indicators and associated arguments are found below.<br>
 
@@ -61,9 +66,9 @@ Currently supported signals are found below.<br>
   - `"col2"`: Other column
 - Cross Up Only (col1 crosses above col2: buy, else nothing)
   - `"col1"`: If this crosses above `col2` it signifies a buy signal, else 
-  - `"col2"`: 
+  - `"col2"`: Other column to compare to  
 - Cross Down Only (col1 crosses below col2, buy, else nothing)
   - `"col1"`: If this crosses below  `col2` it signifies a buy signal, else sell
-  - `"col2"`: Other column
+  - `"col2"`: Other column to compare to 
   
 

@@ -16,4 +16,4 @@ A brief overview of what each folder contains follows
 - `ml/`
   - Contains the entire process from constructing the Pandas DataFrame to trianing and exporting the machine learning model that can then be exposed to an API server. Trained and predicts buy/sell signals from technicals indicators declared in the `logic/` folder. 
 - `runtime/`
- - Contains the runtime environment that allows the main Go runtime to talk to the machine learning API and compute technical in real time and also provide info the expose the the `bot_api` which is the basis of the monitoring dashboard.
+  - Contains the runtime environment that allows the main Go runtime to talk to the machine learning API and compute technical in real time and also provide info the expose the the `bot_api` which is the basis of the monitoring dashboard.

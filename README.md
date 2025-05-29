@@ -14,19 +14,18 @@ The goal of this project is automate trading in real time by using a pre-trained
 
 ## Architecture
 
-![Architecture](docs/images/Architecture_diagram.svg)
+The following diagram highlights the modular back end architecture.
+
+![Architecture](docs/images/Architecture_diagram2.svg)
 
 ### Legend
 
 #### Box Colors
-
-Indicates implementing language<br>
 - Golang (Cyan)
 - Python (Blue)
 - C (Gray)
 
 #### Box Borders 
-Inidcates role<br>
 - ML Pipeline (Pink)
 - APIs (Red)
 - Runtime logic (Orange)
@@ -38,13 +37,25 @@ This project includes a mix of Python, Go, and C in the back end to take advanta
 - Go: Runtime environemnt
 - C: Runtime computations
 
-    Doing so allows for maximal runtime using Go and C while also taking advantage of the vast ecosystem of ML and Finance related libraries Python offers.
+Doing so allows for maximal runtime using Go and C while also taking advantage of the vast ecosystem of ML and Finance related libraries Python offers.
+    
+## Future Additions
+- General 
+  - More built-in technical indicators at training and run time
+  - Make extnernal broker/data streaming API structure to be modular
+- Machine Learning Pipeline
+  - Additions to train on multiple stocks
+  - Allow users to tune hyperparameters
+  - Allow uesrs to choose ML model (KNN, Linear Regression, etc.)
+- APIs
+  - Find a higher frequency market data streamer
+  - Convert ML API to use `FastAPI` instead of `Flask`
 
 ## Limitations
 
 There are several limitaions with this trading bot, however the most signficant are listed below.<br>
-- Ingestion of delayed data, up to 15 minutes
-- Burn-in period during live execution (~30 minutes)
+- Ingestion of delayed data, uo to 1-15 minutes
+- Burn-in period during live execution (~30 minutes) (Planned)
 
 ## Requirements
 

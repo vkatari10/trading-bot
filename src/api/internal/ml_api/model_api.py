@@ -24,16 +24,28 @@ we need to fit this to model and let it predict something
 and then push that back out for go to grab
 """
 
+'''
+The only responsbility of this is to recieve data and push
+out predictions based on recieved data
+'''
+
 # Load in deciding ML model
 with open('src/ml/models/decider/model.pkl', 'rb') as f:
     model = pickle.load(f)
+
+# Load in user defined features
+with open("src/logic/features.json") as f:
+    features = json.load(f)
+
+print(features)
+
 
 
 app = Flask(__name__)
 # Add find free socket method here
 
 
-@app.route('/predict')
+@app.route('/prediction')
 def send_prediction():
     pass
     # import model

@@ -16,8 +16,9 @@ This gives an overview of all tagged version of the repo and associated changes.
 Completed<br>
 - Restructures the entire back end architecture
 - Remove `pybind11` integration
+- Modularizes the Machine Learning Pipeline
 In Progress<br>
 - Recreate `pybind11` functions in C
 - Migrate runtime environment to Go
-- Develop a simple API to expose the ML model
-- Modularize feature engineering in the ML training pipeline to reduce hardcoded logic
+- Develop a simple local API server to expose the ML model
+

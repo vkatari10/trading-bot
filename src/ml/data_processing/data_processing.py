@@ -70,12 +70,12 @@ def load_features(df: pd.DataFrame,
 
         if features[i]['tech'] == "SMA":
             window = features[i]['window']
-            label = f"SMA_{window}"
-            df[label] = te.sma(df, window)
+            name = features[i]['name']
+            df[name] = te.sma(df, window)
         elif features[i]['tech'] == "EMA":
             window = features[i]['window']
-            label = f"EMA_{window}"
-            df[label] = te.ema(df, window)
+            name = features[i]['name']
+            df[name] = te.ema(df, window)
 
     return df
 

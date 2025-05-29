@@ -1,10 +1,12 @@
 [
     {
         "tech": "SMA",
-        "window": 10
+        "window": 10,
+        "name": "SMA_10"
     },
     {
         "tech": "SMA",
-        "window": 30
+        "window": 30,
+        "name": "SMA_30"
     }
 ]
