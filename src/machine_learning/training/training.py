@@ -16,10 +16,12 @@ from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 
+
 # Note we can use different training models
 
+
 def model_training(df: pd.DataFrame, to_col: int,
-          *args) -> RandomForestClassifier:
+                   *args) -> RandomForestClassifier:
     '''
     Method to train models given the features (as historical OHLC)
     data that finta expects plus technical indicators.
@@ -49,7 +51,8 @@ def model_training(df: pd.DataFrame, to_col: int,
     y = df.iloc[:, -1] # Just the signal column (label)
 
     X_train, X_test, y_train, y_test = train_test_split(X, y,
-                            test_size=0.2, random_state=42)
+                                                        test_size=0.2,
+                                                        random_state=42)
 
     # Model
     rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
@@ -57,8 +60,3 @@ def model_training(df: pd.DataFrame, to_col: int,
     rf_classifier.fit(X_train, y_train)
 
     return rf_classifier
-
-def dump_model(model: RandomForestClassifier, filename: str) -> None:
-    '''Dumps the model to the given file name'''
-    with open(filename, 'wb') as f:
-        pickle.dump(model, f)

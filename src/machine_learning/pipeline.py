@@ -20,13 +20,14 @@ import src.machine_learning.data_processing.data_processing as dp
 import src.machine_learning.training.training as train
 
 
-
 # ======== USER DEFINED FUNCTIONS ========
 
 training_ticker = "AAPL"
 
 
 df = dp.get_df(training_ticker) # DO NOT MODIFY
+
+stop = []
 
 
 def relationships(df: pd.DataFrame) -> pd.DataFrame:
@@ -42,10 +43,9 @@ def relationships(df: pd.DataFrame) -> pd.DataFrame:
     df["SMA_CROSS"] = sig.crossover(df, "SMA_10", "SMA_30")
 
 
-
-    # ==== replace with the first relationship defined ====
+    # ==== replace index tuple with first relationship defined ====
     index = df.columns.get_loc(('SMA_CROSS', ''))
-
+    stop.append(index)
 
     # ==== do not modify ====
     df['final_signal'] = sig.sum_to_sigs(df, index)
@@ -60,9 +60,10 @@ def relationships(df: pd.DataFrame) -> pd.DataFrame:
 df = relationships(df)
 
 # train model on this dataframe
-
+# we exclude volume for now
+model = train.model_training(df, stop[0], 4)
 
 # export model to runtime destination
 with open('src/machine_learning/models/decider/model.pkl', 'wb') as f:
     # replace the df with the actual model when its compelte
-    pickle.dump(df)
+    pickle.dump(model, f)
