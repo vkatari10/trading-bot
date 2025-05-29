@@ -26,8 +26,6 @@ import src.machine_learning.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
 
 
-
-
 def process_data(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Takes the YFinance DataFrame and fits it with our own technical
@@ -69,6 +67,10 @@ def load_features(df: pd.DataFrame,
             window = features[i]['window']
             label = f"SMA_{window}"
             df[label] = te.sma(df, window)
+        elif features[i]['tech'] == "EMA":
+            window = features[i]['window']
+            label = f"EMA_{window}"
+            df[label] = te.ema(df, window)
 
     return df
 
@@ -82,7 +84,6 @@ def get_df(ticker: str) -> pd.DataFrame:
     df = process_data(df)
     # export_df(df) uncomment this when we are off notebook
     return df
-
 
 def export_df(df: pd.DataFrame):
     df.to_csv('src/data/technical_df.csv', index=False)

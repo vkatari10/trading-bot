@@ -9,8 +9,7 @@ Modules Used
 import pandas as pd
 import numpy as np
 
-def crossover(df: pd.DataFrame, col1: str, col2: str,
-              col_name: str) -> pd.DataFrame:
+def crossover(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
     '''
     Finds the crossover between two indicators contained in two
     columns of a DataFrame.
@@ -19,13 +18,13 @@ def crossover(df: pd.DataFrame, col1: str, col2: str,
     Where col2 crosses below col1 -> -1
     Where no crossing occurs -> 0
     '''
-    df[col_name] = np.where(
+    crosses = np.where(
         (df[col1].shift(1) < df[col2].shift(1)) &
         (df[col1] > df[col2]),
         1,
         np.where((df[col1].shift(1) > df[col2].shift(1))
                  & (df[col1] < df[col2]), -1, 0))
-    return df
+    return crosses
 
 
 def above(df: pd.DataFrame, col1: str, col2: str,

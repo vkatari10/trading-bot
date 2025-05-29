@@ -7,22 +7,62 @@ Date: 05/28/2025
 '''
 
 import pandas as pd
+import pickle
 
 
-# load dataframe based on .json defined in ../logic/features.json
-# Insert method that can define relationships between the dataframe
-# train model
-# export model to models/decider
+# to declare signals to buy/sell
+import src.machine_learning.data_processing.signals as sig
+
+# to process dataframes
+import src.machine_learning.data_processing.data_processing as dp
+
+# to train models
+import src.machine_learning.training.training as train
+
+
 
 # ======== USER DEFINED FUNCTIONS ========
 
 training_ticker = "AAPL"
 
+
+df = dp.get_df(training_ticker) # DO NOT MODIFY
+
+
 def relationships(df: pd.DataFrame) -> pd.DataFrame:
-    pass
+    '''
+    Insert the relationships you would like to define
+    based on the technicals indicators defined in
+    src/logic/features.json
 
-# ======= SCRIPT =======
+    You can use the signals modules import as .sig
+    '''
 
-# load json
+    # ==== Insert relationships here here ====
+    df["SMA_CROSS"] = sig.crossover(df, "SMA_10", "SMA_30")
 
-# put json into get_df method with the prefered ticker
+
+
+    # ==== replace with the first relationship defined ====
+    index = df.columns.get_loc(('SMA_CROSS', ''))
+
+
+    # ==== do not modify ====
+    df['final_signal'] = sig.sum_to_sigs(df, index)
+    return df
+
+
+# DO NOT MODIFY THE FILE BELOW THIS LINE
+
+# ======= SCRIPT ========
+
+# add user defined relationships
+df = relationships(df)
+
+# train model on this dataframe
+
+
+# export model to runtime destination
+with open('src/machine_learning/models/decider/model.pkl', 'wb') as f:
+    # replace the df with the actual model when its compelte
+    pickle.dump(df)
