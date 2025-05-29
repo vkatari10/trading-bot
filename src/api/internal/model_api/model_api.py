@@ -17,7 +17,7 @@ import json
 
 
 # Load in deciding ML model
-with open('src/machine_learning/models/decider/model_v1.pkl', 'rb') as f:
+with open('src/machine_learning/models/decider/model.pkl', 'rb') as f:
     model = pickle.load(f)
 
 
