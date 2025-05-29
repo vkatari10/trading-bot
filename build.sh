@@ -13,14 +13,14 @@ echo -e "==================================================="
 
 echo -e "Training ML Model"
 python3 -m src.ml.pipeline
-echo -e "Dumped retrained model into src/machine_learning/models/decider"
+echo -e "Dumped retrained model into src/ml/models/decider"
 
 echo -e "==================================================="
 
 echo -e "Compiling C dependencies"
-cd src/runtime/recomputation/csrc/
+cd src/runtime/c-src/
 ./compile.sh
-cd ../../../
+cd ../../..
 
 echo -e "==================================================="
 

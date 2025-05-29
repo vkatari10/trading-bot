@@ -46,8 +46,6 @@ def send_prediction():
     return prediction
 
 
-
-
 # Run API server
 if __name__ == '__main__':
     app.run()
