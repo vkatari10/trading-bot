@@ -1,21 +1,15 @@
 package main
 
-/*
-#cgo CFLAGS: -I../c-src/include
-#cgo LDFLAGS: -L../c-src -llive_data
-
-#include "live_technicals.h"
-
-*/
-import "C"
-
 import "fmt"
-import "runtime"
+import "runtime" // for GC
+
+import engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 
 func main() {
-     runtime.GC() // force garbage collector
 
-     fmt.Println("Before C function Call")
-     C.dummy_test()
-     fmt.Println("After C function Call")
+     runtime.GC()
+
+     engine.TestC()
+     fmt.Println("Done")
+
 } // main

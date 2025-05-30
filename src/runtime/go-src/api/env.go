@@ -16,6 +16,8 @@ var (
     alpacaSec string
 )
 
+
+// init loads the environment variable keys
 func init() {
 
      godotenv.Load()
@@ -26,3 +28,19 @@ func init() {
      alpacaSec = os.Getenv("ALPACA_SECRET_KEY")
 
 } // init
+
+func alpacaApi() string {
+     return alpacaApi
+} // alpacaAPI
+
+func alapcaSecret() string {
+     return alpacaSec
+} // alpacaSecret
+
+func finnhubApi() string {
+     return finnhubApi
+} // finnhubApi
+
+func finnhubSecret() string {
+     return finnhubSec
+} // finnhubSecret

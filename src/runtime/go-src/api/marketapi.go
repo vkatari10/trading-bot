@@ -12,6 +12,6 @@ import (
     "io"
 )
 
-// TODO implement
-
-godotenv.Load()
+func init() {
+     // dummy
+} // init
