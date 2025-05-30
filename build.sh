@@ -24,4 +24,11 @@ cd ../../..
 
 echo -e "==================================================="
 
+echo -e "Compiling Go dependencies"
+cd src/runtime/go-src/
+go build
+cd ../../..
+
+echo -e "==================================================="
+
 echo "Build Stage Done"
