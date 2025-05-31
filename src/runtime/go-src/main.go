@@ -8,11 +8,15 @@ import engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 // Main Runtime Engine should be placed here
 func main() {
 
-     runtime.GC()
+     runtime.GC() // force GC before starting main loop
 
-     engine.TestC()
-     fmt.Println("Done")
+     doubles := []float64{3.0, 5.0, 7.0}
 
-     fmt.Println(engine.ParseLogicJSON("features.json"))
+     mean := engine.Mean(doubles)
+
+     stdDev := engine.StdDev(doubles)
+
+     fmt.Println(mean)
+     fmt.Println(stdDev)
 
 } // main
