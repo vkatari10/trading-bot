@@ -1,23 +1,6 @@
 #ifndef LIVE_TECHNICALS_H
 #define LIVE_TECHNICALS_H
 
-/**
- * @brief A simple wrapper for double arrays that contains
- * both the data and the length of the array.
- */
-typedef struct {
-  /**
-     @brief pointer to data
-   */
-  double * data;
-
-  /**
-     @brief length of the array
-   */
-  size_t len;
-
-} DoubleArray;
-
 
 /**
  * @brief Calculates the simple moving average of a given array of
@@ -29,7 +12,7 @@ typedef struct {
  * @return the SMA of the given input array with a final size of
  * len - window
  */
-DoubleArray sma(const double * arr, size_t len, unsigned int window);
+double * sma(const double * arr, size_t len, unsigned int window);
 
 
 /**
@@ -43,7 +26,7 @@ DoubleArray sma(const double * arr, size_t len, unsigned int window);
  * @return the EMA of the given input array with a final size of
  * len - window
  */
-DoubleArray ema(const double * arr, size_t len, unsigned int window,
+double * ema(const double * arr, size_t len, unsigned int window,
               double smoothing);
 
 
@@ -99,8 +82,5 @@ double * macd(const double * arr, size_t len, unsigned int ema1,
  */
 double * macd_sig(const double * macd, size_t len, unsigned int ema,
                   unsigned int smoothing);
-
-
-void dummy_test();
 
 #endif // LIVE_TECHNICALS_H

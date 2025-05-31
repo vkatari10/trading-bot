@@ -1,3 +1,3 @@
 #! /usr/bin/bash
-gcc -c src/*.c
+gcc -c -O2 src/*.c
 ar rcs liblive_data.a *.o

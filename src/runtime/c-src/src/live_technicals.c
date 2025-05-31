@@ -13,12 +13,10 @@
 #include "../include/live_technicals.h"
 
 
-DoubleArray sma(const double * arr, size_t len, unsigned int window) {
-
-  DoubleArray result = {NULL, 0};
+double * sma(const double * arr, size_t len, unsigned int window) {
 
   if (window > len || len == 0) {
-    return result;
+    return NULL;
   } // if
 
   double sum = 0.0;
@@ -28,8 +26,6 @@ DoubleArray sma(const double * arr, size_t len, unsigned int window) {
   } // for
 
   size_t final_len = len - (size_t)window + 1;
-
-  result.len = final_len;
 
   double * smas = (double *) malloc(sizeof(double) * final_len);
 
@@ -42,18 +38,15 @@ DoubleArray sma(const double * arr, size_t len, unsigned int window) {
 
   } // for
 
-  result.data = smas;
-  return result;
+  return smas;
 } // sma
 
 
-DoubleArray ema(const double * arr, size_t len, unsigned int window,
+double * ema(const double * arr, size_t len, unsigned int window,
               double smoothing) {
 
-  DoubleArray result = {NULL, 0};
-
   if (len < window || len == 0) {
-    return result;
+    return NULL;
   } // if
 
   double sum = 0.0;
@@ -63,8 +56,6 @@ DoubleArray ema(const double * arr, size_t len, unsigned int window,
   } // for
 
   size_t final_len = len - (size_t)window + 1;
-
-  result.len = final_len;
 
   double alpha = (double)smoothing / (1 + window);
 
@@ -79,22 +70,8 @@ DoubleArray ema(const double * arr, size_t len, unsigned int window,
     old_ema = new_ema;
   } // for
 
-  result.data = emas;
-  return result;
+  return emas;
 } // ema
-
-
-// update SMA
-
-double get_ema(double old_value, double new_value, unsigned int window,
-               double smoothing) {
-
-  double alpha = smoothing / (double)window;
-  return (new_value * alpha) + ((1- alpha) * old_value);
-
-} // new_ema
-
-
 
 
 double * bbands_upper(const double * arr, size_t len,
@@ -134,8 +111,3 @@ static double dummy = 0.0;
   return &dummy;
 
 } // macd_sig
-
-void dummy_test() {
-  printf("Testing from C library into Go\n");
-  fflush(stdout);
-} // dummy
