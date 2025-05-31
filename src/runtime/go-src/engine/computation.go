@@ -8,6 +8,7 @@ package engine
 
 #include "live_technicals.h"
 #include "live_stats.h"
+#include "live_updates.h"
 */
 import "C"
 
