@@ -66,7 +66,7 @@ double * ema(const double * arr, size_t len, unsigned int window,
 
   for (size_t i = window; i <= len; i++) {
     double new_ema = (arr[i] * alpha) + ((1 - alpha) * old_ema);
-    emas[i - window + 1] = new_ema;
+    emas[i - window + 1] = new_ema;         
     old_ema = new_ema;
   } // for
 

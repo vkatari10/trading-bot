@@ -4,7 +4,7 @@ package engine
 
 /*
 #cgo CFLAGS: -I../../c-src/include
-#cgo LDFLAGS: -L../../c-src -llive_data -lm 
+#cgo LDFLAGS: -L../../c-src -llive_data -lm
 
 #include "live_technicals.h"
 #include "live_stats.h"
@@ -12,31 +12,33 @@ package engine
 */
 import "C"
 
-/*
-TODO implement functions
-*/
-
 import (
-    "unsafe"
+	"unsafe"
 )
+
+type LiveData struct {
+	Data         map[string][]float64
+	CurrentClose float64
+	CurrentOpen  float64
+}
 
 // Mean test function to find the mean of an array calling C code
 func Mean(array []float64) float64 {
-    ptr := (*C.double)(unsafe.Pointer(&array[0]))
+	ptr := (*C.double)(unsafe.Pointer(&array[0]))
 
-    mean := C.mean(ptr, C.size_t(len(array)))
+	mean := C.mean(ptr, C.size_t(len(array)))
 
-    return float64(mean)
+	return float64(mean)
 } // Mean
 
-// StdDev test function to find the standard deviation of an array 
+// StdDev test function to find the standard deviation of an array
 // calling C code
 func StdDev(array []float64) float64 {
-     ptr := (*C.double)(unsafe.Pointer(&array[0]))
+	ptr := (*C.double)(unsafe.Pointer(&array[0]))
 
-     stdDev := C.std_dev(ptr, C.size_t(len(array)))
+	stdDev := C.std_dev(ptr, C.size_t(len(array)))
 
-     return float64(stdDev)
+	return float64(stdDev)
 } // StdDev
 
 /*
