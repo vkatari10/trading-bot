@@ -9,7 +9,7 @@
  * @param window the window of this EMA computation
  * @param smoothing the smoothing value to use in the EMA calculation
  */
-double get_ema(double old_ema, double new_value, unsigned int window,
+double new_ema(double old_ema, double new_value, unsigned int window,
                double smoothing);
 
 /**
@@ -20,7 +20,7 @@ double get_ema(double old_ema, double new_value, unsigned int window,
  * @param new_price the current price in the given window
  * @param window the window of this SMA calculation
  */
-double get_sma(double old_price, double new_price, 
+double new_sma(double old_price, double new_price, 
   unsigned int window);
 
 #endif // LIVE_UPDATES_H

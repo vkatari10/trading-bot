@@ -7,7 +7,7 @@ Author: Vikas Katari
 Date: 5/31/2025
 */
 
-double get_ema(double old_ema, double new_value, unsigned int window,
+double new_ema(double old_ema, double new_value, unsigned int window,
                double smoothing) {
 
   double alpha = smoothing / (double)window;
@@ -15,9 +15,12 @@ double get_ema(double old_ema, double new_value, unsigned int window,
 
 } // get_ema
 
-double get_sma(double old_price, double new_price, 
-  unsigned int window) {
+double new_sma(double old_price, double new_price, 
+  double sum,   unsigned int window) {
 
-    return 0.0; // TODO: Implement 
-  
+    sum -= old_price;
+    sum += new_price;
+
+    return sum / (double)window;
+
 } // get_sma
