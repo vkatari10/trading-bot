@@ -6,11 +6,12 @@ package engine
 type Indicator interface {
 	GetNew(newPrice float64) 	
 	Load() 		error
+	
 } // Inidicator
 
 // Used at runtime to store user indicaotors
-type LiveIndicators struct {
-	Data 		[]Indicator
+type LiveIndicator struct {
+	Ind 		[]Indicator
 } // LiveIndicators
 
 // SMA Simple Moving Average indicator 

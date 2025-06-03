@@ -9,6 +9,21 @@ import (
 	"fmt"
 )
 
+// InitUserLogic intitializes the JSON files founds in src/logic as
+// an array of technical indicators
+func InitUserLogic(file string) (LiveIndicator, error) {
+	var userArray LiveIndicator;
+
+	userJSON, err := ParseLogicJSON(file)
+	if err != nil {
+		return userArray, fmt.Errorf("A problem occured when parsing the JSON file in src/logic")
+	} // if
+
+	userArray, err = LoadIndicators(userJSON)
+
+	return userArray, nil
+} // InitUserLogic
+
 // ParseLogicJSON parses the JSONs files found in src/logic
 func ParseLogicJSON(f string) ([]map[string]any, error) {
 
@@ -32,23 +47,27 @@ func ParseLogicJSON(f string) ([]map[string]any, error) {
 } // ParseLogicJSON
 
 // Loads technical indicators from the JSON onto an Indicator array
-func LoadIndicators(json []map[string]any) ([]Indicator, error) {
-	var indicators []Indicator = make([]Indicator, 0)
+func LoadIndicators(json []map[string]any) (LiveIndicator, error) {
+
+	live := LiveIndicator {
+		Ind: []Indicator{},
+	}
 
 	for i := range json {
 
 		indicator, err := decideConstructor(json[i])
 		if err != nil {
-			return nil, fmt.Errorf("technical indicator does" + 
+			live.Ind = nil
+			return live, fmt.Errorf("technical indicator does" + 
 			 "not exist, or is not supported")
 		}
 		if indicator != nil {
-			indicators = append(indicators, indicator)
+			live.Ind = append(live.Ind, indicator)
 		} // if
 		
 	} // for
 
-	return indicators, nil
+	return live, nil
 } // LoadIndicators
 
 func decideConstructor(json map[string]any) (Indicator, error) {

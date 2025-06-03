@@ -19,7 +19,7 @@ func (sma *SMA) Load() (error) {
 
 	sum := 0.0
 
-	for i := 0; i < window; i++ {
+	for i := range window {
 		sum += sma.Data[i]
 	} // for
 
@@ -51,7 +51,7 @@ func (ema *EMA) Load() (error) {
 
 	sum := 0.0
 
-	for i := 0; i < window; i++ {
+	for i := range window {
 		sum += ema.Data[i]
 	} // for
 
