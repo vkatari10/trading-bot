@@ -16,10 +16,13 @@ func InitUserLogic(file string) (LiveIndicator, error) {
 
 	userJSON, err := ParseLogicJSON(file)
 	if err != nil {
-		return userArray, fmt.Errorf("A problem occured when parsing the JSON file in src/logic")
+		return userArray, fmt.Errorf("a problem occured when parsing the JSON file in src/logic")
 	} // if
 
 	userArray, err = LoadIndicators(userJSON)
+	if err != nil {
+		return userArray, fmt.Errorf("a problem occured when parsing the JSON file")
+	}
 
 	return userArray, nil
 } // InitUserLogic
