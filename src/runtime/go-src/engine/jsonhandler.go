@@ -54,36 +54,36 @@ func LoadIndicators(json []map[string]any) (LiveIndicator, error) {
 
 	live := LiveIndicator {
 		Ind: []Indicator{},
+		Techs: []string{},
 	}
 
 	for i := range json {
-
-		indicator, err := decideConstructor(json[i])
+		
+		indicator, err := decideConstructor(&live, json[i])
 		if err != nil {
-			live.Ind = nil
-			return live, fmt.Errorf("technical indicator does" + 
-			 "not exist, or is not supported")
-		}
+			return live, fmt.Errorf("constructor failed at index %d", i)
+		}      
 		if indicator != nil {
 			live.Ind = append(live.Ind, indicator)
-		} // if
+		} 
 		
 	} // for
 
 	return live, nil
 } // LoadIndicators
+func decideConstructor(li *LiveIndicator, json map[string]any) (Indicator, error) {
 
-func decideConstructor(json map[string]any) (Indicator, error) {
-
-	indicator, ok := json["name"].(string)
+	indicator, ok := json["tech"].(string)
 
 	if !ok {
 		return nil, fmt.Errorf("name field should be a string")
 	} // if
 
 	if indicator == "EMA" {
+		li.Techs = append(li.Techs, "EMA")
 		return NewEMA(json)
 	} else if indicator == "SMA" {
+		li.Techs = append(li.Techs, "SMA")
 		return NewSMA(json)
 	} else {
 		return nil, fmt.Errorf("invalid technical indicator field")

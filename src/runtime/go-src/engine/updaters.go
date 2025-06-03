@@ -17,7 +17,7 @@ func CopySlice(slice []float64) []float64 {
 // GetNew gets the new SMA value given a new price and
 // appends it to the SMA data field
 func (sma *SMA) GetNew(newPrice float64) {
-	if cap(sma.Data) > sma.Window {
+	if cap(sma.Data) > sma.Window * 2 {
 		sma.Data = CopySlice(sma.Data)
 	} // if
 
@@ -37,13 +37,14 @@ func (sma *SMA) GetNew(newPrice float64) {
 // GetNew gets the new EMA given a new price and 
 // appends it to the EMA data Field
 func (ema *EMA) GetNew(newPrice float64) {
-	if cap(ema.Data) > ema.Window {
+	if cap(ema.Data) > ema.Window * 2 {
 		ema.Data = CopySlice(ema.Data)
 	} // if
 
 	old_ema := ema.Data[len(ema.Data) - 1]
 	
-	new_ema := float64((newPrice * ema.Alpha) + ((1- ema.Alpha) * old_ema))
+	new_ema := float64((newPrice * ema.Alpha) + 
+	((1- ema.Alpha) * old_ema))
 
 	// Drop oldest EMA value in the window to keep len(Data)
 	// constant size

@@ -1,7 +1,6 @@
 package api
 
 import (
-       "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
        "github.com/joho/godotenv"
        "os"
 )
@@ -29,18 +28,18 @@ func init() {
 
 } // init
 
-func alpacaApi() string {
+func alpacaApiGet() string {
      return alpacaApi
 } // alpacaAPI
 
-func alapcaSecret() string {
+func alapcaSecretGet() string {
      return alpacaSec
 } // alpacaSecret
 
-func finnhubApi() string {
+func finnhubApiGet() string {
      return finnhubApi
 } // finnhubApi
 
-func finnhubSecret() string {
+func finnhubSecretGet() string {
      return finnhubSec
 } // finnhubSecret

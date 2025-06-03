@@ -11,6 +11,7 @@ type Indicator interface {
 // Used at runtime to store user indicaotors
 type LiveIndicator struct {
 	Ind 		[]Indicator
+	Techs 		[]string
 } // LiveIndicators
 
 // SMA Simple Moving Average indicator 
