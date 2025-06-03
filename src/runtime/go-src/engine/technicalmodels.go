@@ -6,7 +6,6 @@ package engine
 type Indicator interface {
 	GetNew(newPrice float64) 	
 	Load() 		error
-	
 } // Inidicator
 
 // Used at runtime to store user indicaotors
@@ -28,20 +27,3 @@ type EMA struct {
 	Data      	[]float64
 	Alpha  		float64 // intialized when Load() is called
 } // EMA
-
-// MACD Moving Average Convergence Divergence Indicator
-type MACD struct {
-	EMA1 		EMA
-	EMA2 		EMA
-	Signal 		EMA
-	MACDData 	[]float64
-	SignalData	[]float64
-} // MACD
-
-// BollingerBands Both upper and lower Bollinger Bands Indicator
-type BollingerBands struct {
-	SMA			SMA
-	SDev		float64
-	Upper 		[]float64
-	Lower 		[]float64
-} // BollingerBands

@@ -17,7 +17,7 @@ func main() {
 	} // if
 
 	for i := range inds.Ind {
-		print(inds.Ind[i].Data)
+		print(inds.Ind[i].Load())
 	} // for
 	
 
