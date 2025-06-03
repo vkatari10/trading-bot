@@ -2,7 +2,7 @@ package main
 
 import "fmt"
 import "runtime" // for GC
-import "sync"
+//import "sync"
 
 import engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 
@@ -11,14 +11,15 @@ func main() {
 
 	runtime.GC() // force GC before starting main loop
 
-	thing, err := engine.ParseLogicJSON("features.json")
-
+	inds, err := engine.InitUserLogic("features.json")
 	if err != nil {
-		fmt.Println("Idk")
+		fmt.Errorf(err.Error())
 	} // if
 
-	for i := range thing {
-		go fmt.Printf("tech: %s, window %f\n", thing[i]["name"], thing[i]["window"])
+	for i := range inds.Ind {
+		print(inds.Ind[i].Data)
 	} // for
+	
+
 
 } // main
