@@ -4,14 +4,8 @@ import (
     // go bul"fmt"
 )
 
-// TODO implement
-
 /*
 
-This file should expose the main runtime engine and serve as the basis
-of establishing the frontend
+The future use of this file is to move the entire main event loop into this file
 
-*/
-func init() {
-    // dumy
-}
+*/ 

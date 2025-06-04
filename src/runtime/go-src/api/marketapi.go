@@ -30,21 +30,21 @@ func GetQuote(ticker string) (float64, error) {
 
     var jsonMap map[string]any
 
-    json.Unmarshal(body, &jsonMap)
+    json.Unmarshal(body, &jsonMap) // CAN add goroutines here with mutex at each step
 
     quoteMap, ok := jsonMap["quotes"].(map[string]any)
     if !ok {
-        log.Printf("ERROR:  Market JSON 1st parse failed")
+        log.Println("ERROR:  Market JSON 1st parse failed")
     } // if
 
     tickerMap, ok := quoteMap[ticker].(map[string]any)
     if !ok {
-        log.Printf("ERROR: Market JSON 2nd parse failed")
+        log.Println("ERROR: Market JSON 2nd parse failed")
     } // if
 
-    result, ok := tickerMap["bp"].(float64)
+    result, ok := tickerMap["ap"].(float64)
     if !ok {
-        log.Printf("ERROR: Market JSON 3rd parse failed")
+        log.Println("ERROR: Market JSON 3rd parse failed")
     } // if
 
     return result, nil

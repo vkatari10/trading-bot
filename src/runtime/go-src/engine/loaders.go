@@ -20,6 +20,8 @@ func (sma *SMA) Load() (error) {
 
 	sum := 0.0
 
+
+	
 	for i := range window {
 		sum += sma.Data[i]
 	} // for

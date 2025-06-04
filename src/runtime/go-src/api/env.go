@@ -13,7 +13,7 @@ var (
     alpacaSec string
 )
 
-// init loads the environment variable keys
+// init loads the environment variable keys in this package
 func init() {
      godotenv.Load()
      alpacaApi = os.Getenv("ALPACA_API_KEY")

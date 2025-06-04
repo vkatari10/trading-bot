@@ -1,22 +1,15 @@
 package api
 
+// External API methods to place buy/sell orders on brokerage
+
 import (
 	"io"
 	"net/http"
-    // "fmt"
-	
+    "fmt"
+	"strings"
 )
 
-// TODO implement
-
-/*
-
-This file should talk to the broker api to get account information
-
-*/
-
-
-// Returns aspects of the Broe
+// Returns aspects of the Brokerage Account
 func Acct(data string) any {
 	url := "https://paper-api.alpaca.markets/v2/account"
 
@@ -35,16 +28,36 @@ func Acct(data string) any {
 
 } // Acct
 
+// PlaceMarketOrder places an "buy" or "sell" signal based on the 
+// input string
+func PlaceMarketOrder(ticker string, shares int, side string) {
+
+	url := "https://paper-api.alpaca.markets/v2/orders"
+
+	jsonString := fmt.Sprintf("{\"type\":\"market\",\"time_in_force\":\"day\",\"symbol\":\"%s\",\"qty\":\"%d\",\"side\":\"%s\"}", ticker, shares, side)
+
+	fmt.Println(jsonString)
+	fmt.Println(url)
+
+	payload := strings.NewReader(jsonString)
+
+	req, _ := http.NewRequest("POST", url, payload)
+			
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("content-type", "application/json")
+	req.Header.Add("APCA-API-KEY-ID", alpacaApi)
+	req.Header.Add("APCA-API-SECRET-KEY", alpacaSec)
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	
+} // PlaceMarketOrder
+
+
+
+// FUTURE --> Add these functions
 /*
-
-Account -> return entire account JSON
-
-Ordering
-1. place market order
-2. place limit order
-3. cancel all orders
-4. cancel order
-
 Positions
 ssss1. get all positions
 2. close all positions

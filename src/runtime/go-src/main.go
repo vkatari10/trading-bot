@@ -12,10 +12,10 @@ import (
 )	
 
 var ( 
-	ticker string = "AAPL"
-	burnInWindow int = 10
-	totalUpTime = 450 - burnInWindow
-	tickTime = time.Duration(60) // seconds
+	Ticker string = "AAPL"
+	BurnInWindow int = 30
+	TotalUpTime = 450 - BurnInWindow
+	TickTime = time.Duration(60) // seconds
 ) // Environment Variables 
 
 // Main Runtime Engine should be placed here
@@ -23,16 +23,16 @@ func main() {
 
 	log.Println("STAGE: BURN IN")
 	
-	var burn []float64 = make([]float64, burnInWindow) // Burn in for 30 minutes
+	var burn []float64 = make([]float64, BurnInWindow) // Burn in for 30 minutes
 
 	for i := range burn {
-		newQuote, err := api.GetQuote(ticker)
+		newQuote, err := api.GetQuote(Ticker)
 		if err != nil {
 			log.Printf("ERROR: market data could not be pulled")
 		} // if
 		burn[i] = newQuote
 		log.Printf("QUOTE: %f", newQuote)
-		time.Sleep(tickTime * time.Second) // wait 60 till next tick 
+		time.Sleep(TickTime * time.Second) // wait 60 till next tick 
 	} // for
 
 	userIndicators, err := engine.InitUserLogic("features.json") // Load user defined technicals
@@ -48,9 +48,9 @@ func main() {
 
 	// Main Runtime Loop
 	i := 0
-	for i < totalUpTime {
+	for i < TotalUpTime {
 
-		newQuote, err := api.GetQuote(ticker)
+		newQuote, err := api.GetQuote(Ticker)
 		if err != nil {
 			log.Print("ERROR: market data could not be pulled")
 		} // if
@@ -58,22 +58,27 @@ func main() {
 		// call GetNew methods on each indicator
 		engine.UpdateTechnicals(&userIndicators, newQuote)
 
+		// for j := range userIndicators.Techs {
+		// 	log.Println(userIndicators.Ind[j])
+		// }
+
+
 		// Send JSON to Flask API
+		// api.SendTechnicals(&userIndicators)
 
 		// Get prediction back as JSON
+		// pred, err := api.GetPrediction()
 
 		// depending on decision call method from broker API
+		// to buy/sell
+		// api.SignalDecide(pred)
+			
 
-		/*
-		3. Send Json
-		4. get predictoin
-		5. usd broker
-
-		*/
-
-		time.Sleep(tickTime * time.Second)
+		time.Sleep(TickTime * time.Second)
 		i++
 	} // for
 
 	log.Println("STAGE: IDLE")
+
+
 } // main
