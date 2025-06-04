@@ -3,62 +3,47 @@ package main
 // Execution file for the runtime environemnt
 
 import (
-	"fmt"
 	"runtime"
 	"time"
+
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	"github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+
 	// "sync"
 	//import engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 	"log"
 )
 
 var ticker string = "AAPL"
+var burnInWindow int = 1
 
 // Main Runtime Engine should be placed here
 func main() {
+
+	log.Println("STAGE: BURN IN")
 	
-	var burn []float32 = make([]float32, 30) // Burn in for 30 minutes
+	var burn []float64 = make([]float64, burnInWindow) // Burn in for 30 minutes
 
 	for i := range burn {
 		new_quote, err := api.GetQuote(ticker)
 		if err != nil {
-			log.Fatal("Market Data Streaming API Failure")
+			log.Printf("ERROR: market data could not be pulled")
 		}
 		burn[i] = new_quote
-		fmt.Println(new_quote)
-		time.Sleep(60 * time.Second)
+		log.Printf("QUOTE: %f", new_quote)
+		time.Sleep(1 * time.Second) // wait 60 till next tick 
 	} // for
+
+	userIndicators, err := engine.InitUserLogic("features.json") // Load user defined technicals
+	if err != nil {
+		log.Fatal("ERROR: could not parse user defined JSON in src/logic properly")
+	} // if
+
+	engine.LoadBurnData(&userIndicators, burn) // Intialize values for technical indicators
 
 	runtime.GC() // force GC before starting main loop
 
-
-
-	// Load user defined technicals as a LiveIndicator struct
-	// inds, err := engine.InitUserLogic("features.json")
-	// if err != nil {
-	// 	fmt.Errorf("%v", err.Error())
-	// } // if
-
-
-	// fmt.Println(inds.Techs)
-	// fmt.Println(inds.Ind)
-
-	// sma1, ok := inds.Ind[0].(*engine.SMA)
-
-	// if !ok {
-	// 	fmt.Println("Hello some error")
-	// }
-
-	// fmt.Println(sma1.Sum)
-
-	deez, err := api.GetQuote("AAPL")
-	if err != nil {
-		fmt.Printf("%w", err)
-	}
-
-	fmt.Println(deez)
-
+	log.Println("STAGE: LIVE")
 	
-
 
 } // main

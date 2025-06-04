@@ -3,30 +3,49 @@ package api
 // This file works with the market API to get real time market data
 
 import (
-    finnhub "github.com/Finnhub-Stock-API/finnhub-go/v2"
-    "context"
-    "github.com/joho/godotenv"
-    "os"
+	"net/http"
+	"io"
+    "encoding/json"
+    "log"
 )
 
-// Could use Alpaca Market API if we want to speed it up on 15m delayed data
-// for development purposes instead of waiting 30 minutes for burn in
-
 // GetQuote Gets the current price of a given ticker using the 
-// Finnhub API
-func GetQuote(ticker string) (float32, error) {
+// Alpaca API
+func GetQuote(ticker string) (float64, error) {
 
-    godotenv.Load()
-    apiKey := os.Getenv("FINNHUB_API_KEY")
+	url := "https://data.alpaca.markets/v2/stocks/quotes/latest?symbols="
 
-    cfg := finnhub.NewConfiguration()
-    cfg.AddDefaultHeader("X-Finnhub-Token", apiKey)
-    finnhubClient := finnhub.NewAPIClient(cfg).DefaultApi
+    url += ticker
 
-    res, _, err := finnhubClient.Quote(context.Background()).Symbol(ticker).Execute()
-    if err != nil {
-        return -1.0, err
-    }
+	req, _ := http.NewRequest("GET", url, nil)
 
-    return *res.C, nil // return current price
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("APCA-API-KEY-ID", "PK6VHZZLDHZSNSV1ISJR")
+	req.Header.Add("APCA-API-SECRET-KEY", "GWFHZ3FRlXsgHvblS5NQMK1oLbFhY660aMLMcn7A")
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+    var jsonMap map[string]any
+
+    json.Unmarshal(body, &jsonMap)
+
+    quoteMap, ok := jsonMap["quotes"].(map[string]any)
+    if !ok {
+        log.Printf("ERROR:  Market JSON 1st parse failed")
+    } // if
+
+    tickerMap, ok := quoteMap[ticker].(map[string]any)
+    if !ok {
+        log.Printf("ERROR: Market JSON 2nd parse failed")
+    } // if
+
+    result, ok := tickerMap["bp"].(float64)
+    if !ok {
+        log.Printf("ERROR: Market JSON 3rd parse failed")
+    } // if
+
+    return result, nil
 } // GetQuote
