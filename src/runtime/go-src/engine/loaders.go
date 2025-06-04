@@ -14,6 +14,7 @@ func (sma *SMA) Load() (error) {
 	window := sma.Window
 
 	if window > originalLength {
+		sma.Data = nil
 		return fmt.Errorf("window larger than array size")
 	} // if
 
@@ -25,13 +26,15 @@ func (sma *SMA) Load() (error) {
 
 	final_len := originalLength - sma.Window + 1
 
-	var smas []float64 = make([]float64, 0, final_len) // can remove the 0 param
+	var smas []float64 = make([]float64, final_len)
 
-	for i := sma.Window; i <= originalLength; i++ {
+	for i := sma.Window; i < originalLength; i++ {
 		smas[i-window] = sum / float64(window)
 		sum -= sma.Data[i-window]
 		sum += sma.Data[i]
 	} // for
+
+	smas[final_len - 1] = sum / float64(window) // do final
 
 	sma.Data = smas
 	sma.Sum = sum
