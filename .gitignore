@@ -24,3 +24,6 @@ __pycache__/
 
 # ML models
 *.pkl
+
+# Compiled Go
+go-src
