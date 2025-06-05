@@ -15,7 +15,7 @@ var (
 	Ticker string = "AAPL"
 	BurnInWindow int = 30
 	TotalUpTime = 450 - BurnInWindow
-	TickTime = time.Duration(1) // seconds
+	TickTime = time.Duration(60) // seconds
 ) // Environment Variables 
 
 //Main Runtime Engine should be placed here

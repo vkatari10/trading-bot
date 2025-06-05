@@ -24,8 +24,17 @@ def sma(df: pd.DataFrame, window: int, col="Close") -> pd.Series:
     smas = df[col].rolling(window).mean()
     return smas
 
+def delta(df: pd.DataFrame, col: str) -> pd.Series:
+    '''Creates a new column with the deltas for the given col'''
+    deltas = df[col].diff()
+    return deltas
 
-def subtract(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
+def delta_diff(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
+    '''Creates a new column with the delta for both columns'''
+    delta_diffs = (df[col1] - df[col2]).diff()
+    return delta_diffs
+
+def diff(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
     '''
     Returns a new data frame column where every value is
     computed where col1 - col2

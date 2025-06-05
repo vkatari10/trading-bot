@@ -19,6 +19,7 @@ type SMA struct {
 	Window 		int
 	Data   		[]float64
 	Sum			float64
+	Delta		bool
 } // SMA
 
 // EMA Exponential Moving Average Indicator
@@ -27,4 +28,5 @@ type EMA struct {
 	Smoothing 	int
 	Data      	[]float64
 	Alpha  		float64 // intialized when Load() is called
+	Delta 		bool
 } // EMA

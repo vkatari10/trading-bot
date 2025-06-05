@@ -12,13 +12,16 @@ This gives an overview of all tagged version of the repo and associated changes.
 - Introduce `pybind11` to speed up runtime technical computations using C++
 - Still no server implmentation.
 
-## [WIP]
-Completed<br>
-- Restructures the entire back end architecture
-- Remove `pybind11` integration
-- Modularizes the Machine Learning Pipeline
-In Progress<br>
-- Recreate `pybind11` functions in C
-- Migrate runtime environment to Go
-- Develop a simple local API server to expose the ML model
+## [v0.2.0]
+- Restructure entire back end architecture
+- Remove `pybind11` integration, use `Go` exclusively
+- Modularize ML training, runtime engine on JSONs in `src/logic`
+- Migrate runtime environment to `Go`
+- Develop `Flask` API to expose ML model to `Go` Runtime ("Server" implementation)
+- Introduce `src/runtime/c-src` folder for future C-based improvements that can be called in `Go`
 
+## [WIP]
+In Progress<br>
+- Improve features to include technical deltas
+- Develop internal API to expose the runtime environment 
+- Construct monitoring dashboard for the entire engine

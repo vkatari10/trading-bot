@@ -8,5 +8,29 @@
         "tech": "SMA",
         "window": 30,
         "name": "SMA_30"
+    },
+    {
+        "tech": "delta",
+        "col1": "SMA_10",
+        "col2": null,
+        "name": "SMA_10_delta"
+    },
+    {
+        "tech": "delta",
+        "col1": "SMA_30",
+        "col2": null,
+        "name": "SMA_30_delta"
+    },
+    {
+        "tech": "diff",
+        "col1": "SMA_10",
+        "col2": "SMA_30",
+        "name": "SMA_10_30_diff"
+    },
+    {
+        "tech": "delta",
+        "col1": "SMA_10",
+        "col2": "SMA_30",
+        "name": "SMA_10_30_delta"
     }
-]
+] 

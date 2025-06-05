@@ -16,11 +16,6 @@ import json
 from typing import Dict, Any, List
 
 
-# Contains technicals that cannot be computed in real time
-# only use for testing ML accuracy with more technicals
-from finta import TA
-
-
 # Python technical indicators
 import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
@@ -52,9 +47,16 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
     with open("src/logic/signals.json") as f:
         signals = json.load(f)
 
-    # Load the features onto the DF
+    # print(features)
+    # print(signals)
+
+    # put featurs on the training dataframe
+    df = OHCLV_diffs(df)
     df = load_features(df, features)
     df = relationships(df, signals)
+
+    # print("Number of things that are not hold")
+    # print(len(df[df['final_signal'] != 0]))
 
     df.dropna(inplace=True)
     return df
@@ -68,16 +70,42 @@ def load_features(df: pd.DataFrame,
     '''
     for i in range(len(features)):
 
-        if features[i]['tech'] == "SMA":
+        # Guranteed for each object
+        name = features[i]['name']
+        tech = features[i]['tech']
+
+        if tech == "SMA":
             window = features[i]['window']
-            name = features[i]['name']
             df[name] = te.sma(df, window)
-        elif features[i]['tech'] == "EMA":
+        elif tech == "EMA":
             window = features[i]['window']
-            name = features[i]['name']
             df[name] = te.ema(df, window)
+        elif tech in ("delta", "diff"):
+            col1 = features[i]["col1"]
+            col2 = features[i]["col2"]
+            df[name] = handle_relations(df, tech, col1, col2)
 
     return df
+
+
+def handle_relations(df: pd.DataFrame, tech: str, col1: str, 
+                     col2: str) -> pd.Series:
+    '''
+    Handles the user features.json file when the user delcares 
+    an object with an "tech" value of "delta" or "diff"
+    '''
+
+    result = None
+
+    if not col2 and tech == "delta":
+        result = te.delta(df, col1)
+    elif col1 and col2 and tech == "delta":
+        result = te.delta_diff(df, col1, col2)
+    elif col1 and col2 and tech == "diff":
+        result = te.diff(df, col1, col2)
+
+    return result
+
 
 def relationships(df: pd.DataFrame,
                   signals: List[Dict[str, Any]]) -> pd.DataFrame:
@@ -88,7 +116,7 @@ def relationships(df: pd.DataFrame,
 
     # DO NOT INCLUDE RELATIONSHIPS FOR TRAINING PURPOSES
     # REMOVE THIS LATER WHEN WE TEST THE OTHER TRANING
-    # PROCESS
+    # PROCESS (stop in training.py excludes these)
     stop_col = signals[0]['name']
 
     for i in range(len(signals)):
@@ -113,6 +141,17 @@ def relationships(df: pd.DataFrame,
     return df
 
 
+def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
+    '''Puts the difference cols of the OHCLV data from Yfinance'''
+    yf_cols = ['Close', 'High', 'Low', 'Open', 'Volume']
+
+    for col in yf_cols:
+        col_name = col + "_delta"
+        df[col_name] = te.delta(df, col)
+
+    return df
+
+
 def get_df(ticker: str) -> pd.DataFrame:
     '''
     Returns the modified dataframe of a stock with
@@ -120,9 +159,4 @@ def get_df(ticker: str) -> pd.DataFrame:
     '''
     df = yf.get_data(ticker)
     df = process_data(df)
-    # export_df(df) uncomment this when we are off notebook
     return df
-
-def export_df(df: pd.DataFrame):
-    df.to_csv('src/data/technical_df.csv', index=False)
-

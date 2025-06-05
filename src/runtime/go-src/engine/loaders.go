@@ -63,7 +63,6 @@ func (ema *EMA) Load() (error) {
 	final_len := originalLength - window + 1
 
 	alpha := float64((ema.Smoothing) / (1 + window))
-	ema.Alpha = alpha
 
 	var emas []float64 = make([]float64, final_len)
 
