@@ -11,9 +11,9 @@ import (
 
 // GetQuote Gets the current price of a given ticker using the 
 // Alpaca API
-func GetQuote(ticker string) (float64, error) {
+func GetQuote(ticker string, barType string) (float64, error) {
 
-	url := "https://data.alpaca.markets/v2/stocks/quotes/latest?symbols="
+	url := "https://data.alpaca.markets/v2/stocks/bars/latest?symbols="
 
     url += ticker
 
@@ -32,7 +32,7 @@ func GetQuote(ticker string) (float64, error) {
 
     json.Unmarshal(body, &jsonMap) // CAN add goroutines here with mutex at each step
 
-    quoteMap, ok := jsonMap["quotes"].(map[string]any)
+    quoteMap, ok := jsonMap["bars"].(map[string]any)
     if !ok {
         log.Println("ERROR:  Market JSON 1st parse failed")
     } // if
@@ -42,10 +42,10 @@ func GetQuote(ticker string) (float64, error) {
         log.Println("ERROR: Market JSON 2nd parse failed")
     } // if
 
-    result, ok := tickerMap["ap"].(float64)
+    result, ok := tickerMap[barType].(float64)
     if !ok {
         log.Println("ERROR: Market JSON 3rd parse failed")
     } // if
-
+    
     return result, nil
 } // GetQuote

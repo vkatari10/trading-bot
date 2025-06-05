@@ -11,7 +11,7 @@ Author: Vikas Katari
 Date: 05/28/2025
 '''
 
-from flask import Flask
+from flask import Flask, request, jsonify
 import pickle
 import json
 import numpy as np
@@ -27,24 +27,37 @@ with open('src/logic/features.json') as f:
 app = Flask(__name__)
 # Add find free socket method here
 
+final_pred = None
 
-@app.route('api/ml-hotline', methods=['GET', 'POST'])
+@app.route('/api/prediction', methods=['POST', 'GET'])
 def send_prediction():
     '''
-    The runtime engine (in this case Go) will Post an array as JSON
-    to this endpoint and in this file we will use this array to
-    use the ML model to predict with and then from this side
-    Post again back to the same endpoint the prediction where
-    Go can GET the new prediction and determine further action
+    This method allows the Go runtime engine to interact
+    with the Machine Learning model in real time using
+    a local server
     '''
+    global final_pred
 
-    features  = get_new_features()
-    features_np = np.array(features)
+    if request.method == 'POST':
+        data = request.get_json()
 
-    prediction = model.predict(features_np)
+        features = []
 
-    return prediction
+        for k, v in data.items():
+            features.append(v)
 
+        features_np = np.array(features).reshape(1, -1)
+
+        prediction = model.predict(features_np)
+
+        final_pred = int(prediction[0])
+
+        return jsonify({"status": "recieved", "prediction": int(prediction[0])})
+
+    elif request.method == 'GET':
+        if final_pred is None:
+            return jsonify({'status': 'none'}), 404
+        return jsonify({'prediction': final_pred})
 
 # Run API server
 if __name__ == '__main__':

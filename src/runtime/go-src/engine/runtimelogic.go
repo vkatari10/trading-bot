@@ -41,9 +41,9 @@ func LoadBurnData(obj *LiveIndicator, burn []float64) {
 				obj.Ind[i] = nil
 			}
 
-			sma.Data = burn
-			sma.Load()
-
+			sma.Data = burn // put burn data as the SMA's data
+			sma.Load() // initialize SMA values based on burn data
+				
 		} else if obj.Techs[i] == "EMA" {
 
 			ema, ok := obj.Ind[i].(*EMA) 

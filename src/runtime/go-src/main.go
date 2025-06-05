@@ -7,7 +7,7 @@ import (
 	"time"
 	"github.com/vkatari10/trading-bot/src/runtime/go-src/api" // api
 	"github.com/vkatari10/trading-bot/src/runtime/go-src/engine" // engine
-	// "sync"
+	//"sync"
 	"log"
 )	
 
@@ -15,10 +15,10 @@ var (
 	Ticker string = "AAPL"
 	BurnInWindow int = 30
 	TotalUpTime = 450 - BurnInWindow
-	TickTime = time.Duration(60) // seconds
+	TickTime = time.Duration(1) // seconds
 ) // Environment Variables 
 
-// Main Runtime Engine should be placed here
+//Main Runtime Engine should be placed here
 func main() {
 
 	log.Println("STAGE: BURN IN")
@@ -26,7 +26,7 @@ func main() {
 	var burn []float64 = make([]float64, BurnInWindow) // Burn in for 30 minutes
 
 	for i := range burn {
-		newQuote, err := api.GetQuote(Ticker)
+		newQuote, err := api.GetQuote(Ticker, "c")
 		if err != nil {
 			log.Printf("ERROR: market data could not be pulled")
 		} // if
@@ -50,35 +50,49 @@ func main() {
 	i := 0
 	for i < TotalUpTime {
 
-		newQuote, err := api.GetQuote(Ticker)
+		// use close price to update technicals
+		
+		newQuote, err := api.GetQuote(Ticker, "c")
 		if err != nil {
 			log.Print("ERROR: market data could not be pulled")
 		} // if
+
+		log.Printf("QUOTE: %f\n", newQuote)
 		
 		// call GetNew methods on each indicator
+		log.Println("UPDATE: Updated Technicals")
 		engine.UpdateTechnicals(&userIndicators, newQuote)
-
+		
+		// DEBUG for seeing live updates of technicals
 		// for j := range userIndicators.Techs {
 		// 	log.Println(userIndicators.Ind[j])
 		// }
 
-
-		// Send JSON to Flask API
-		// api.SendTechnicals(&userIndicators)
+		// Send JSON of features to ML API
+		log.Println("UPDATE: Sent Features to ML model")
+		api.SendData(&userIndicators, Ticker)
 
 		// Get prediction back as JSON
-		// pred, err := api.GetPrediction()
+		log.Println("UPDATE: Got prediction from ML model")
+		pred := api.GetPrediction()
 
-		// depending on decision call method from broker API
-		// to buy/sell
-		// api.SignalDecide(pred)
+		if pred > 0 {
+			log.Printf("DECIDE: Buy 1 share of %s\n", Ticker)
+			api.PlaceMarketOrder(Ticker, 1, "buy")
+		} else if pred < 0 {
+			log.Printf("DECIDE: Buy 1 share of %s\n", Ticker)
+			api.PlaceMarketOrder(Ticker, 1, "sell")
+		} else {
+			log.Printf("DECIDE: Do nothing\n")
+		} // if-else
 			
-
+		log.Printf("STAGE: WAIT (%d seconds)\n", TickTime)
 		time.Sleep(TickTime * time.Second)
 		i++
 	} // for
 
-	log.Println("STAGE: IDLE")
-
+	log.Println("STAGE: STOP")
 
 } // main
+
+
