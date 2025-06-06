@@ -1,18 +1,37 @@
-# Trading Bot
+# Mid-Frequency Trading Bot
 
-A platform to develop machine Learning based trading bots that execute orders in real time on predefined technical indicator patterns.
+A machine learning based mid-frquency trading bot for equities, with real time signal generation.
+
+## Motivation
+
+The goal of this project is to automate trading in real time by using an trained Machine Learning (ML) model at runtime to predict in real-time buy and sell signals.<br>
 
 ## Goals
 
 - Complete Machine Learning Pipeline
 - Real-time trading engine
-- Modular Structure to easily replace trading logic
+- User Defined Trading Logic
+- Monitoring Dashboard
+- Modular structure
+- Hot-swapping ML models at runtime
 
-## Motivation
+## Tech Stack
 
-The goal of this project is automate trading in real time by using a pre-trained Machine Learning (ML) model that can predict buy and sell signals. By including various financial technical indicators at training time we can test different models and their effectivness. 
+This project uses `Go` and `Python` to split the runtime engine and ML training repsonsibilities
+- Python was used to train ML models due to its extensive library ecosystem
+- Go was used as the runtime engine due to its low latency
 
-## Architecture
+### Ok but why Go?
+We could use `Python` or even `C++` as the runtime engine, but:
+- `Python` is intreperted and has GIL overhead
+- `C++` has higher complexity than `Go`, especially for multithreading and API calls
+
+`Go` is a well balanced choice between enjoying low-level performance while allowing fast iteration.<br>
+
+Likewise because this is a Mid-Freq Trading System there is an concern of overehead, but not to the extend of High-Freq Trading Systems which is why even with a Garbage Collector Overhead, `Go` is still an acceptable choice.
+
+
+<!-- ## Architecture
 
 The following diagram highlights the modular back end architecture.
 
@@ -30,19 +49,11 @@ The following diagram highlights the modular back end architecture.
 - APIs (Red)
 - Runtime logic (Orange)
 
-## Tech Stack
-
-This project includes a mix of Python, Go, and C in the back end to take advantage of the unique benefits each language offers. In a high level sense, this is what each language is used for<br>
-- Python: ML training and execution
-- Go: Runtime environemnt
-- C: Runtime computations
-
-Doing so allows for maximal runtime using Go and C while also taking advantage of the vast ecosystem of ML and Finance related libraries Python offers.
+-->
     
 ## Future Additions
 - General 
   - More built-in technical indicators at training and run time
-  - Make extnernal broker/data streaming API structure to be modular
 - Machine Learning Pipeline
   - Additions to train on multiple stocks
   - Allow users to tune hyperparameters
@@ -54,8 +65,8 @@ Doing so allows for maximal runtime using Go and C while also taking advantage o
 ## Limitations
 
 There are several limitaions with this trading bot, however the most signficant are listed below.<br>
-- Ingestion of delayed data, uo to 1-15 minutes
-- Burn-in period during live execution (~30 minutes) (Planned)
+- Ingestion of delayed data, up to 1-15 minutes
+- Burn-in period during live execution (~30 minutes)
 
 ## Requirements
 

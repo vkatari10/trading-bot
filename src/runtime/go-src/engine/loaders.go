@@ -80,6 +80,15 @@ func (ema *EMA) Load() (error) {
 
 } // Load (EMA)
 
+// Load (Delta) Dummy Method to fufill the Indicator Interface
+func (delta *Delta) Load() error {
+	return nil
+} // Load (Delta)
+
+// Load (Diff) Dummy Method to fufill the Indicator Interface
+func (diff *Diff) Load() error {
+	return nil
+} // Load (Diff)
 
 
 

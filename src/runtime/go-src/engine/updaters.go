@@ -54,3 +54,9 @@ func (ema *EMA) GetNew(newPrice float64) {
 
 } // GetNew (EMA)
 
+// GetNew (Delta) Gets the new 	
+func (delta *Delta) GetNew(tech *Indicator) {
+
+	
+
+} // GetNew (Delta)

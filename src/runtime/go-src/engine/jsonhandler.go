@@ -1,12 +1,12 @@
 package engine
 
-// file containing JSON related methods during runtime to interact 
+// file containing JSON related methods during runtime to interact
 // with APIs and files in src/logic
 
 import (
-	"os"
 	"encoding/json"
 	"fmt"
+	"os"
 )
 
 // InitUserLogic intitializes the JSON files founds in src/logic as
@@ -55,6 +55,7 @@ func LoadIndicators(json []map[string]any) (LiveIndicator, error) {
 	live := LiveIndicator {
 		Ind: []Indicator{},
 		Techs: []string{},
+		ColNames: []string{},
 	}
 
 	for i := range json {
@@ -76,17 +77,44 @@ func decideConstructor(li *LiveIndicator, json map[string]any) (Indicator, error
 	indicator, ok := json["tech"].(string)
 
 	if !ok {
-		return nil, fmt.Errorf("name field should be a string")
+		return nil, fmt.Errorf("tech field should be a string")
 	} // if
+
+	colName, ok := json["name"].(string)
+	if !ok {
+		return nil, fmt.Errorf("name field should be a string")
+	}
 
 	if indicator == "EMA" {
 		li.Techs = append(li.Techs, "EMA")
+		li.ColNames = append(li.ColNames, colName)
 		return NewEMA(json)
 	} else if indicator == "SMA" {
 		li.Techs = append(li.Techs, "SMA")
+		li.ColNames = append(li.ColNames, colName)
 		return NewSMA(json)
+	} else if indicator == "delta" {
+		li.Techs = append(li.Techs, "DELTA")
+		li.ColNames = append(li.ColNames, colName)
+		return NewDelta(json)
+	} else if indicator == "diff" {
+		li.Techs = append(li.Techs, "DIFF")
+		li.ColNames = append(li.ColNames, colName)
+		return NewDiff(json)
 	} else {
 		return nil, fmt.Errorf("invalid technical indicator field")
 	} // if-else
+
+	/*
+
+
+		Determine how we will decide delta and based on what ? (use col names)
+
+		OK HERES WHAT WE DO MAKE THE TECHS JUST BE UP THE COLUMN NAME NOT THE TECH 
+		OR JUST ADD A NEW STRING ARRAY THAT STORES RAW COL NAMES AND WE CAN USE 
+		THE DELTAS THERE AS THE INDEX VALUE AS TECHS TO THE ACTUAL OBJECTS
+
+
+	*/
 
 } // decideConstructor
