@@ -9,19 +9,20 @@ import (
 	"os"
 )
 
-// InitUserLogic intitializes the JSON files founds in src/logic as
+// InitUserLogic intitiadatazes the JSON files founds in src/logic as
 // an array of technical indicators
-func InitUserLogic(file string) (LiveIndicator, error) {
-	var userArray LiveIndicator;
+func InitUserLogic(file string) (UserData, error) {
+	var userArray UserData;
 
 	userJSON, err := ParseLogicJSON(file)
 	if err != nil {
-		return userArray, fmt.Errorf("a problem occured when parsing the JSON file in src/logic")
+		return userArray, fmt.Errorf("could not read src/logic/features.json")
 	} // if
 
 	userArray, err = LoadIndicators(userJSON)
 	if err != nil {
-		return userArray, fmt.Errorf("a problem occured when parsing the JSON file")
+		return userArray, 
+		fmt.Errorf("could not parse, check src/logic/features.json")
 	}
 
 	return userArray, nil
@@ -50,29 +51,32 @@ func ParseLogicJSON(f string) ([]map[string]any, error) {
 } // ParseLogicJSON
 
 // Loads technical indicators from the JSON onto an Indicator array
-func LoadIndicators(json []map[string]any) (LiveIndicator, error) {
+func LoadIndicators(json []map[string]any) (UserData, error) {
 
-	live := LiveIndicator {
-		Ind: []Indicator{},
-		Techs: []string{},
+	data := UserData {
 		ColNames: []string{},
-	}
+		Objects: []Indicator{},
+		OHLCVDelta: [5]float64{},
+	} // UserData
 
 	for i := range json {
 		
-		indicator, err := decideConstructor(&live, json[i])
+		indicator, err := decideConstructor(&data, json[i])
 		if err != nil {
-			return live, fmt.Errorf("constructor failed at index %d", i)
-		}      
+			return data, err
+		} // if
 		if indicator != nil {
-			live.Ind = append(live.Ind, indicator)
-		} 
+			data.Objects = append(data.Objects, indicator)
+		} // if
 		
 	} // for
 
-	return live, nil
+	return data, nil
 } // LoadIndicators
-func decideConstructor(li *LiveIndicator, json map[string]any) (Indicator, error) {
+
+// decideConstructor calls constructors based on each JSON objected 
+// defined in the features.json file
+func decideConstructor(data *UserData, json map[string]any) (Indicator, error) {
 
 	indicator, ok := json["tech"].(string)
 
@@ -86,35 +90,22 @@ func decideConstructor(li *LiveIndicator, json map[string]any) (Indicator, error
 	}
 
 	if indicator == "EMA" {
-		li.Techs = append(li.Techs, "EMA")
-		li.ColNames = append(li.ColNames, colName)
+		// data.ObjectNames = append(data.ObjectNames, "EMA")
+		data.ColNames = append(data.ColNames, colName)
 		return NewEMA(json)
 	} else if indicator == "SMA" {
-		li.Techs = append(li.Techs, "SMA")
-		li.ColNames = append(li.ColNames, colName)
+		// data.ObjectNames = append(data.ObjectNames, "SMA")
+		data.ColNames = append(data.ColNames, colName)
 		return NewSMA(json)
 	} else if indicator == "delta" {
-		li.Techs = append(li.Techs, "DELTA")
-		li.ColNames = append(li.ColNames, colName)
+		// data.ObjectNames = append(data.ObjectNames, "DELTA")
+		data.ColNames = append(data.ColNames, colName)
 		return NewDelta(json)
 	} else if indicator == "diff" {
-		li.Techs = append(li.Techs, "DIFF")
-		li.ColNames = append(li.ColNames, colName)
+		// data.ObjectNames = append(data.ObjectNames, "DIFF")
+		data.ColNames = append(data.ColNames, colName)
 		return NewDiff(json)
 	} else {
-		return nil, fmt.Errorf("invalid technical indicator field")
+		return nil, fmt.Errorf("invadatad technical indicator field")
 	} // if-else
-
-	/*
-
-
-		Determine how we will decide delta and based on what ? (use col names)
-
-		OK HERES WHAT WE DO MAKE THE TECHS JUST BE UP THE COLUMN NAME NOT THE TECH 
-		OR JUST ADD A NEW STRING ARRAY THAT STORES RAW COL NAMES AND WE CAN USE 
-		THE DELTAS THERE AS THE INDEX VALUE AS TECHS TO THE ACTUAL OBJECTS
-
-
-	*/
-
 } // decideConstructor

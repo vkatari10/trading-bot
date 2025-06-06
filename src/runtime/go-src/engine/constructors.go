@@ -53,8 +53,9 @@ func NewDelta(json map[string]any) (*Delta, error) {
 
 	col2, ok := json["col2"].(string)
 	if !ok {
-		return nil, fmt.Errorf("col2 should be a string")
-	} // if
+		 // col2 is optional for deltas if we dont want diff of deltas
+		col2 = ""
+	} 	
 
 	return &Delta {
 		Col1: col1,
