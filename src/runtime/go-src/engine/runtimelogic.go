@@ -27,44 +27,49 @@ package engine
 
 // LoadBurnData loads the burn-in data into every technical 
 // indicator and calls the Load() method for each indicator
-func LoadBurnData(obj *LiveIndicator, burn []float64) {
+func LoadBurnData(obj *UserData, burn []float64) {
 
 	// TODO: ADD go routines since burn is always read only (no mutex needed)
 
-	for i := range obj.Techs {
+	// for i := range obj.ObjectNames {
 
-		if obj.Techs[i] == "SMA" {
+	// 	if obj.ObjectNames[i] == "SMA" {
 
-			sma, ok := obj.Ind[i].(*SMA)
+	// 		sma, ok := obj.Objects[i].(*SMA)
 
-			if !ok {
-				obj.Ind[i] = nil
-			}
+	// 		if !ok {
+	// 			obj.Objects[i] = nil
+	// 		}
 
-			sma.Data = burn // put burn data as the SMA's data
-			sma.Load() // initialize SMA values based on burn data
+	// 		sma.Data = burn // put burn data as the SMA's data
+	// 		sma.Load() // initialize SMA values based on burn data
 				
-		} else if obj.Techs[i] == "EMA" {
+	// 	} else if obj.ObjectNames[i] == "EMA" {
 
-			ema, ok := obj.Ind[i].(*EMA) 
+	// 		ema, ok := obj.Objects[i].(*EMA) 
 
-			if !ok {
-				obj.Ind[i] = nil
-			}
+	// 		if !ok {
+	// 			obj.Objects[i] = nil
+	// 		}
 
-			ema.Data = burn
-			ema.Load()
+	// 		ema.Data = burn
+	// 		ema.Load()
 
-		} else {
-			obj.Ind[i] = nil
-		}
-	} // for
+	// 	} else {
+	// 		obj.Objects[i] = nil
+	// 	}
+	// } // for
 } // AssertType
 
-// UpdateTechnicals updates the current technical indicators
-// given a new price from the market API
-func UpdateTechnicals(obj *LiveIndicator, newPrice float64) {
-	for i := range obj.Techs {
-		obj.Ind[i].GetNew(newPrice)
-	} // for
-} // UpdateTechnicals
+// // UpdateTechnicals updates the current technical indicators
+// // given a new price from the market API
+// func UpdateTechnicals(obj *LiveIndicator, newPrice float64) {
+// 	for i := range obj.ObjectNames {
+// 		obj.Ind[i].GetNew(newPrice)
+// 	} // for
+// } // UpdateTechnicals
+
+//	
+func UpdateOHLCVDeltas (obj *UserData, json map[string]float64) {
+	return 
+} // UpdateOHLCVDeltas

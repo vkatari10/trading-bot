@@ -42,27 +42,27 @@ func PutPrices(json map[string]any, ticker string) (map[string]any) {
 
 // GetLatestData returns back a JSON representation of the lastest values in 
 // order as the defined JSON in src/logic/features.json
-func GetLatestData(obj *engine.LiveIndicator, ticker string) (res map[string]any, err error) {
+func GetLatestData(obj *engine.UserData, ticker string) (res map[string]any, err error) {
 
     var json map[string]any = make(map[string]any)
 
     json = PutPrices(json, ticker)
 
-    for i := range obj.Techs {
+    for i := range obj.Objects {
             name := fmt.Sprintf("%d", i + 4)
 
             var insertValue float64;
 
-            if obj.Techs[i] == "SMA" {
-                sma, ok := obj.Ind[i].(*engine.SMA) 
+            if obj.Objects[i].Type() == "SMA" {
+                sma, ok := obj.Objects[i].(*engine.SMA) 
                 if !ok {
                     return nil, err
                 } // if
 
                 // grab latest value
                 insertValue = sma.Data[len(sma.Data) - 1]
-            } else if obj.Techs[i] == "EMA" {
-                ema, ok := obj.Ind[i].(*engine.EMA)
+            } else if obj.Objects[i].Type() == "EMA" {
+                ema, ok := obj.Objects[i].(*engine.EMA)
                 if !ok {
                     return nil, err
                 } // if
@@ -80,7 +80,7 @@ func GetLatestData(obj *engine.LiveIndicator, ticker string) (res map[string]any
 
 // SendData sends data to the shared ML API to give updated
 // Data
-func SendData(obj *engine.LiveIndicator, ticker string) error {
+func SendData(obj *engine.UserData, ticker string) error {
 
     data, err := GetLatestData(obj, ticker)
     if err != nil {
