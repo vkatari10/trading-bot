@@ -1,5 +1,8 @@
 package api
 
+// This file interact with the ML model in Python to send data and get 
+// predictions back to inform the broker API
+
 import (
     "fmt"
     engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine" 
@@ -10,24 +13,18 @@ import (
     "io"
 )
 
-// TODO implement
-
-/*
-
-This file should talk to the python based Flask API that exposes
-the machine learning model to send recent data from runtime/computation.go
-and get back predictions to send back to the main driver engine
-
-*/
-
-var ServerLink string = "http://127.0.0.1:5000/api/prediction"
+// Use local server right now
+var (
+    ServerLink string = "http://127.0.0.1:5000/api/prediction"
+    FixedCols = 5
+)
 
 // PutPrices loads the intial close, high, low, and open prices that 
 // the ML models was trained on (Yfinance includes these by deafult)
 func PutPrices(json map[string]any, ticker string) (map[string]any) {
     bars := []string{"c", "h", "l", "o"} // close, high, low, open
 
-    for i := 0; i < 4; i++ {
+    for i := range FixedCols {
         name := fmt.Sprintf("%d", i)
         val, err := GetQuote(ticker, bars[i])
         if err != nil {
@@ -46,10 +43,10 @@ func GetLatestData(obj *engine.UserData, ticker string) (res map[string]any, err
 
     var json map[string]any = make(map[string]any)
 
-    json = PutPrices(json, ticker)
+    json = PutPrices(json, ticker)  
 
     for i := range obj.Objects {
-            name := fmt.Sprintf("%d", i + 4)
+            name := fmt.Sprintf("%d", i + FixedCols)
 
             var insertValue float64;
 
