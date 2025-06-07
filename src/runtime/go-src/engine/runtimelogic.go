@@ -8,21 +8,6 @@ package engine
 #cgo LDFLAGS: -L../../c-src -llive_data -lm
 */
 
-// get user JSON
-// load onto a LiveIndicator struct (
-// burn in data for 30 minutes on a float32 array
-
-// ====================== ^^^ DONE ||| vvv WIP =============================
-
-
-// cycle that needs to take in a new price every 60 seconds and call update
-// on each element of the LiveIndicator Array (MAKE METHOD)
-
-// send back as JSON to ML model somehow and get prediction back from the
-// Flask local server (MAKE METHODS)
-
-// if we get buy sig utilze broker commands (just 1 share for now)
-
 // need to do something to export this info for the bot API to expose to the frontend
 
 // LoadBurnData loads the burn-in data into every technical 
@@ -31,45 +16,60 @@ func LoadBurnData(obj *UserData, burn []float64) {
 
 	// TODO: ADD go routines since burn is always read only (no mutex needed)
 
-	// for i := range obj.ObjectNames {
-
-	// 	if obj.ObjectNames[i] == "SMA" {
-
-	// 		sma, ok := obj.Objects[i].(*SMA)
-
-	// 		if !ok {
-	// 			obj.Objects[i] = nil
-	// 		}
-
-	// 		sma.Data = burn // put burn data as the SMA's data
-	// 		sma.Load() // initialize SMA values based on burn data
-				
-	// 	} else if obj.ObjectNames[i] == "EMA" {
-
-	// 		ema, ok := obj.Objects[i].(*EMA) 
-
-	// 		if !ok {
-	// 			obj.Objects[i] = nil
-	// 		}
-
-	// 		ema.Data = burn
-	// 		ema.Load()
-
-	// 	} else {
-	// 		obj.Objects[i] = nil
-	// 	}
-	// } // for
+	for _, ind := range obj.Objects {
+		switch v := ind.(type) {
+		case SMA:
+			v.Data = burn // put burn data as the SMA's data
+			v.Load() // initialize SMA values based on burn data
+		case EMA:
+			v.Data = burn	
+			v.Load()
+		default:
+			v = nil
+		} // swtich
+	} // for
 } // AssertType
 
-// // UpdateTechnicals updates the current technical indicators
-// // given a new price from the market API
-// func UpdateTechnicals(obj *LiveIndicator, newPrice float64) {
-// 	for i := range obj.ObjectNames {
-// 		obj.Ind[i].GetNew(newPrice)
-// 	} // for
-// } // UpdateTechnicals
+// UpdateTechnicals updates the current technical indicators
+// given a new price from the market API
+func UpdateTechnicals(obj *UserData, newPrice float64) {
+	for _, ind := range obj.Objects {
+		switch v := ind.(type) {
+		case SMA:
+			v.GetNew(newPrice)
+		case EMA:
+			v.GetNew(newPrice)
+		} // switch
+	} // for
+} // UpdateTechnicals
 
-//	
-func UpdateOHLCVDeltas (obj *UserData, json map[string]float64) {
-	return 
+// UpdateOHLCVDeltas Updates the Deltas for OHCLV bars that all 
+// Dataframes at train time contain
+func UpdateOHLCVDeltas(obj *UserData, json map[string]float64) {
+	bars := [5]string{"o", "h", "c", "l", "v"}
+	for i := range 5 {
+		obj.OHLCVDelta[i] = json[bars[i]] - obj.OHLCVDelta[i] 
+	} // for
 } // UpdateOHLCVDeltas
+
+// UpdateDeltasDiff Updates All objects in the UserData struct
+// with the new Deltas or Differences based on new Techical Comps
+func UpdateDeltasDiffs(obj *UserData) {
+	for _, ind := range obj.Objects {
+		switch v := ind.(type) {
+		case Delta:
+			if v.Col2 == "" {
+
+			} else {
+
+			}
+			v.Value = 0
+		case Diff:
+			v.Value = 0
+		} // switch
+	} // for
+} // UpdateDeltasDiffs
+
+
+
+

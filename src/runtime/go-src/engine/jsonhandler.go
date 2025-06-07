@@ -54,58 +54,63 @@ func ParseLogicJSON(f string) ([]map[string]any, error) {
 func LoadIndicators(json []map[string]any) (UserData, error) {
 
 	data := UserData {
-		ColNames: []string{},
+		ColNames: map[string]int{},
 		Objects: []Indicator{},
 		OHLCVDelta: [5]float64{},
 	} // UserData
 
-	for i := range json {
-		
-		indicator, err := decideConstructor(&data, json[i])
-		if err != nil {
-			return data, err
-		} // if
-		if indicator != nil {
-			data.Objects = append(data.Objects, indicator)
-		} // if
-		
-	} // for
+	decideConstructor(&data, json) // load all objects onto array
 
 	return data, nil
 } // LoadIndicators
 
 // decideConstructor calls constructors based on each JSON objected 
 // defined in the features.json file
-func decideConstructor(data *UserData, json map[string]any) (Indicator, error) {
+func decideConstructor(data *UserData, json []map[string]any) (error) {
 
-	indicator, ok := json["tech"].(string)
+	for i := range json {
 
-	if !ok {
-		return nil, fmt.Errorf("tech field should be a string")
-	} // if
+	indicator, ok := json[i]["tech"].(string)
 
-	colName, ok := json["name"].(string)
-	if !ok {
-		return nil, fmt.Errorf("name field should be a string")
-	}
+		if !ok {
+			return fmt.Errorf("tech field should be a string")
+		} // if
 
-	if indicator == "EMA" {
-		// data.ObjectNames = append(data.ObjectNames, "EMA")
-		data.ColNames = append(data.ColNames, colName)
-		return NewEMA(json)
-	} else if indicator == "SMA" {
-		// data.ObjectNames = append(data.ObjectNames, "SMA")
-		data.ColNames = append(data.ColNames, colName)
-		return NewSMA(json)
-	} else if indicator == "delta" {
-		// data.ObjectNames = append(data.ObjectNames, "DELTA")
-		data.ColNames = append(data.ColNames, colName)
-		return NewDelta(json)
-	} else if indicator == "diff" {
-		// data.ObjectNames = append(data.ObjectNames, "DIFF")
-		data.ColNames = append(data.ColNames, colName)
-		return NewDiff(json)
-	} else {
-		return nil, fmt.Errorf("invadatad technical indicator field")
-	} // if-else
+		colName, ok := json[i]["name"].(string)
+		if !ok {
+			return fmt.Errorf("name field should be a string")
+		} // if
+
+		if indicator == "EMA" {
+			ema, err := NewEMA(json[i])
+			if err != nil {
+				return fmt.Errorf("construction failed -> object index %d", i)
+			} // if
+			data.Objects = append(data.Objects, ema)
+		} else if indicator == "SMA" {
+			sma, err := NewSMA(json[i])
+			if err != nil {
+				return fmt.Errorf("construction failed -> object index %d", i)
+			} // if
+			data.Objects = append(data.Objects, sma)
+		} else if indicator == "delta" {
+			delt, err := NewDelta(json[i])
+			if err != nil {
+				return fmt.Errorf("construction failed -> object index %d", i)
+			} // if
+			data.Objects = append(data.Objects, delt)
+		} else if indicator == "diff" {
+			diff, err := NewDiff(json[i])
+			if err != nil {
+				return fmt.Errorf("construction failed -> object index %d", i)
+			} // if
+			data.Objects = append(data.Objects, diff)
+		} else {
+			return fmt.Errorf("\"tech\" field for object at index %d is not recognized", i)
+		} // if-else
+
+		data.ColNames[colName] = i // store index for the colName
+		} // for 
+		
+	return nil
 } // decideConstructor

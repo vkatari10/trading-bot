@@ -4,11 +4,14 @@ package main
 
 import (
 	//eventLoop "github.com/vkatari10/trading-bot/src/runtime/go-src/eventloop" // eventloop
-	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 	"fmt"
-)	
 
-//Main Runtime Engine 
+	//api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+	
+)
+
+//Main Runtime Engine
 func main() {
 	//eventLoop.Run()
 	
@@ -24,5 +27,7 @@ func main() {
 	for i := range userData.Objects {
 		fmt.Println(userData.Objects[i].Type())
 	}
+
+	
 
 } // main
