@@ -43,8 +43,8 @@ def send_prediction():
 
         features = []
 
-        for k, v in data.items():
-            features.append(v)
+        for i in range(len(data)):
+            features.append(data[str(i)])
 
         features_np = np.array(features).reshape(1, -1)
 
