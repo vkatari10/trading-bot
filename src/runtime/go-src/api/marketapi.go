@@ -10,7 +10,7 @@ import (
 )
 
 // GetQuote returns the OHLCV bars of a given ticker (15m Delay)
-func GetQuote(ticker string, barType string) ([5]float64, error) {
+func GetQuote(ticker string) ([5]float64, error) {
 
 	url := "https://data.alpaca.markets/v2/stocks/bars/latest?symbols="
     url += ticker
@@ -40,7 +40,8 @@ func GetQuote(ticker string, barType string) ([5]float64, error) {
         log.Println("ERROR: Market JSON 2nd parse failed")
     } // if
 
-    bars := [5]string{"o", "h", "c", "l", "v"}
+    // format we want of the array (YFinance format)
+    bars := [5]string{"c", "h", "l", "o", "v"}
     finalBars := [5]float64{}
 
     for i := range bars {

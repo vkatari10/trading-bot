@@ -18,10 +18,10 @@ func LoadBurnData(obj *UserData, burn []float64) {
 
 	for _, ind := range obj.Objects {
 		switch v := ind.(type) {
-		case SMA:
+		case *SMA:
 			v.Data = burn // put burn data as the SMA's data
 			v.Load() // initialize SMA values based on burn data
-		case EMA:
+		case *EMA:
 			v.Data = burn	
 			v.Load()
 		default:
@@ -35,41 +35,25 @@ func LoadBurnData(obj *UserData, burn []float64) {
 func UpdateTechnicals(obj *UserData, newPrice float64) {
 	for _, ind := range obj.Objects {
 		switch v := ind.(type) {
-		case SMA:
+		case *SMA:
 			v.GetNew(newPrice)
-		case EMA:
+		case *EMA:
 			v.GetNew(newPrice)
+		case *Delta:
+			v.GetNew(obj)
+		case *Diff:
+			v.GetNew(obj)
 		} // switch
 	} // for
 } // UpdateTechnicals
 
 // UpdateOHLCVDeltas Updates the Deltas for OHCLV bars that all 
 // Dataframes at train time contain
-func UpdateOHLCVDeltas(obj *UserData, json map[string]float64) {
-	bars := [5]string{"o", "h", "c", "l", "v"}
+func UpdateOHLCVDeltas(obj *UserData, json [5]float64) {
 	for i := range 5 {
-		obj.OHLCVDelta[i] = json[bars[i]] - obj.OHLCVDelta[i] 
+		obj.OHLCVDelta[i] = json[i] - obj.OHLCVDelta[i] 
 	} // for
 } // UpdateOHLCVDeltas
-
-// UpdateDeltasDiff Updates All objects in the UserData struct
-// with the new Deltas or Differences based on new Techical Comps
-func UpdateDeltasDiffs(obj *UserData) {
-	for _, ind := range obj.Objects {
-		switch v := ind.(type) {
-		case Delta:
-			if v.Col2 == "" {
-
-			} else {
-
-			}
-			v.Value = 0
-		case Diff:
-			v.Value = 0
-		} // switch
-	} // for
-} // UpdateDeltasDiffs
-
 
 
 
