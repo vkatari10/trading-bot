@@ -70,7 +70,7 @@ func decideConstructor(data *UserData, json []map[string]any) (error) {
 
 	for i := range json {
 
-	indicator, ok := json[i]["tech"].(string)
+		indicator, ok := json[i]["tech"].(string)
 
 		if !ok {
 			return fmt.Errorf("tech field should be a string")

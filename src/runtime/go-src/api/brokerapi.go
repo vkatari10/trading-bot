@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// Returns aspects of the Brokerage Account
+// Returns aspects of the Brokerage Account probably to use in API
 func Acct(data string) any {
 	url := "https://paper-api.alpaca.markets/v2/account"
 
@@ -31,13 +31,11 @@ func Acct(data string) any {
 // PlaceMarketOrder places an "buy" or "sell" signal based on the 
 // input string
 func PlaceMarketOrder(ticker string, shares int, side string) {
-
 	url := "https://paper-api.alpaca.markets/v2/orders"
 
 	jsonString := fmt.Sprintf("{\"type\":\"market\",\"time_in_force\":\"day\",\"symbol\":\"%s\",\"qty\":\"%d\",\"side\":\"%s\"}", ticker, shares, side)
 
-	fmt.Println(jsonString)
-	fmt.Println(url)
+	//fmt.Println(jsonString) // DEBUG for payload
 
 	payload := strings.NewReader(jsonString)
 
@@ -51,7 +49,6 @@ func PlaceMarketOrder(ticker string, shares int, side string) {
 	res, _ := http.DefaultClient.Do(req)
 
 	defer res.Body.Close()
-	
 } // PlaceMarketOrder
 
 

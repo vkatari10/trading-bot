@@ -45,6 +45,8 @@ def send_prediction():
 
         for i in range(len(data)):
             features.append(data[str(i)])
+        
+        print(features)
 
         features_np = np.array(features).reshape(1, -1)
 

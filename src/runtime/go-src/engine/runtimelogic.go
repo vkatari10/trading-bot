@@ -24,6 +24,10 @@ func LoadBurnData(obj *UserData, burn []float64) {
 		case *EMA:
 			v.Data = burn	
 			v.Load()
+		case *Diff:
+			v.Load(obj)
+		case *Delta:
+			v.Load(obj)
 		default:
 			v = nil
 		} // swtich

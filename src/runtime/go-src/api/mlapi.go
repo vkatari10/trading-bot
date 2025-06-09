@@ -34,11 +34,8 @@ func PutPrices(data *engine.UserData, json map[string]any, ticker string) (map[s
     json["3"] = bars[3]
     json["4"] = bars[4]
 
-    
-
     for i := range data.OHLCVDelta {
         name := fmt.Sprintf("%d", i + FixedCols)
-
         json[name] = data.OHLCVDelta[i]
     } // for
 
@@ -88,7 +85,7 @@ func SendData(obj *engine.UserData, ticker string) error {
     data, err := MakeMLPayload(obj, ticker)
     if err != nil {
         log.Fatal(err)
-    }
+    } // if
 
     fmt.Println(data)
 
@@ -134,7 +131,6 @@ func GetPrediction() (float64) {
     if !ok {
         log.Println("ERROR: Could not get ML prediction")
     } // ok
-
 
     return prediction
 
