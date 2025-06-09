@@ -16,73 +16,81 @@ import (
 // Use local server right now
 var (
     ServerLink string = "http://127.0.0.1:5000/api/prediction"
-    FixedCols = 5
+    FixedCols = 5 // The OHLCV bars are fixed (from yfinance DF)
 )
 
 // PutPrices loads the intial close, high, low, and open prices that 
 // the ML models was trained on (Yfinance includes these by deafult)
-func PutPrices(json map[string]any, ticker string) (map[string]any) {
-    bars := []string{"c", "h", "l", "o"} // close, high, low, open
+func PutPrices(data *engine.UserData, json map[string]any, ticker string) (map[string]any) {
+    bars, err := GetQuote(ticker)
+    if err != nil {
+        log.Println("ERROR: Failed to get market data")
+        return nil
+    } // if
 
-    for i := range FixedCols {
-        name := fmt.Sprintf("%d", i)
-        val, err := GetQuote(ticker, bars[i])
-        if err != nil {
-            log.Println("ERROR: Failed to get quote for ML inference")
-            return json
-        } // if
-        json[name] = val
+    json["0"] = bars[0]
+    json["1"] = bars[1]
+    json["2"] = bars[2]
+    json["3"] = bars[3]
+    json["4"] = bars[4]
+
+    
+
+    for i := range data.OHLCVDelta {
+        name := fmt.Sprintf("%d", i + FixedCols)
+
+        json[name] = data.OHLCVDelta[i]
     } // for
 
     return json
 } // PutPrices
 
-// GetLatestData returns back a JSON representation of the lastest values in 
-// order as the defined JSON in src/logic/features.json
-func GetLatestData(obj *engine.UserData, ticker string) (res map[string]any, err error) {
+// PutNewTechnicals inserts the new Technical Values after updating 
+// Values of the Indicators that are not Diff, or Delta
+func PutNewTechnicals(data *engine.UserData, json map[string]any) (map[string]any) {
 
-    var json map[string]any = make(map[string]any)
+    for i, ind := range data.Objects {
 
-    json = PutPrices(json, ticker)  
+         name := fmt.Sprintf("%d", i + FixedCols * 2)
 
-    for i := range obj.Objects {
-            name := fmt.Sprintf("%d", i + FixedCols)
+        switch v := ind.(type) {
 
-            var insertValue float64;
+        case *engine.SMA:
+            json[name] = v.Data[len(v.Data) - 1]
+        case *engine.EMA:
+            json[name] = v.Data[len(v.Data) - 1]
+        case *engine.Delta:
+            json[name] = v.Value
+        case *engine.Diff:
+            json[name] = v.Value
+        } // switch
 
-            if obj.Objects[i].Type() == "SMA" {
-                sma, ok := obj.Objects[i].(*engine.SMA) 
-                if !ok {
-                    return nil, err
-                } // if
-
-                // grab latest value
-                insertValue = sma.Data[len(sma.Data) - 1]
-            } else if obj.Objects[i].Type() == "EMA" {
-                ema, ok := obj.Objects[i].(*engine.EMA)
-                if !ok {
-                    return nil, err
-                } // if
-
-                insertValue = ema.Data[len(ema.Data) - 1]
-            } // if-else
-
-            json[name] = insertValue
     } // for
 
+    return json
+   
+} // PutNewTechnicals
 
+
+// GetLatestData returns back a JSON representation of the lastest values in 
+// order as the defined JSON in src/logic/features.json
+func MakeMLPayload(obj *engine.UserData, ticker string) (res map[string]any, err error) {
+    var json map[string]any = make(map[string]any)
+    json = PutPrices(obj, json, ticker)  // Put OHCLV Values
+    json = PutNewTechnicals(obj, json) 
     return json, nil
-
-} // GetLatestData
+} // Construct
 
 // SendData sends data to the shared ML API to give updated
 // Data
 func SendData(obj *engine.UserData, ticker string) error {
 
-    data, err := GetLatestData(obj, ticker)
+    data, err := MakeMLPayload(obj, ticker)
     if err != nil {
         log.Fatal(err)
     }
+
+    fmt.Println(data)
 
     json, err := json.Marshal(data)
     if err != nil {
