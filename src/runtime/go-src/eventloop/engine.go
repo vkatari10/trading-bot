@@ -23,26 +23,28 @@ func Run() {
 
 	// dummy data 
 	burn := []float64{163.42, 199.08, 184.21, 216.77, 152.93,
-189.35, 173.88, 201.67, 218.19, 167.04,
-153.21, 174.66, 211.05, 197.48, 158.89,
-205.76, 161.57, 182.10, 194.33, 159.62,
-212.98, 188.71, 168.25, 200.83, 178.55,
-215.60, 166.09, 209.40, 170.46, 185.79, 145.5}
+					189.35, 173.88, 201.67, 218.19, 167.04,
+					153.21, 174.66, 211.05, 197.48, 158.89,
+					205.76, 161.57, 182.10, 194.33, 159.62,
+					212.98, 188.71, 168.25, 200.83, 178.55,
+					215.60, 166.09, 209.40, 170.46, 185.79, 145.5}
+
+	burnQuote, err := api.GetQuote(Ticker)	
+	if err != nil {
+		log.Printf("ERROR: market data could not be pulled")
+	} // if		
 
 	userIndicators, err := engine.InitUserLogic("features.json") // Load user defined technicals
 	if err != nil {
 		log.Fatal("ERROR: could not parse user defined JSON in src/logic properly")
 	} // if
 
-	burnQuote, err := api.GetQuote(Ticker)
-	if err != nil {
-		log.Printf("ERROR: market data could not be pulled")
-	} // if
+	
+
+	
 	
 	engine.LoadBurnData(&userIndicators, burn) // Intialize values for technical indicators
 	engine.UpdateOHLCVDeltas(&userIndicators, burnQuote)
-
-	log.Println(userIndicators)
 
 	runtime.GC() // force GC before starting main loop
 
@@ -99,9 +101,11 @@ func Run() {
 } // eventLoop
 
 //BurnIn Loads the Burn in Data to intialize technical indicators
-func BurnIn() ([]float64) {
+func BurnIn() (arr []float64, finalQuote [5]float64) {
 
 	var burn []float64 = make([]float64, BurnInWindow);
+
+	var newQuote [5]float64
 
 	for i := range burn {
 		newQuote, err := api.GetQuote(Ticker)
@@ -113,5 +117,5 @@ func BurnIn() ([]float64) {
 		time.Sleep(TickTime * time.Second) // wait 60 till next tick 
 	} // for
 
-	return burn
+	return burn, newQuote
 } // BurnIn

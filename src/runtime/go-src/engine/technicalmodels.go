@@ -24,6 +24,7 @@ type UserData struct {
 	ColNames 	map[string]int // Raw Col Names and index from user JSON
 	Objects  	[]Indicator // feature refs from user JSON "tech"s
 	OHLCVDelta	[5]float64 // Store deltas for all 5 values
+	OHLCVRaw 	[5]float64 // Store raw values
 } // UserData
 
 // SMA Simple Moving Average indicator 

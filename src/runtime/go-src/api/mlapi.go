@@ -87,7 +87,7 @@ func SendData(obj *engine.UserData, ticker string) error {
         log.Fatal(err)
     } // if
 
-    fmt.Println(data)
+    //fmt.Println(data) // DEBUG Print JSON PAYLOAD
 
     json, err := json.Marshal(data)
     if err != nil {

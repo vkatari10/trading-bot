@@ -1,5 +1,6 @@
 package engine
 
+// Contains logic for the Delta Object 
 
 import (
 	"fmt"
@@ -25,7 +26,6 @@ func NewDelta(json map[string]any) (*Delta, error) {
 	}, nil
 } // NewDelta
 
-
 // GetNew (Delta) Gets the new Delta Value based on the specificed
 // col names (NOT DESIGNED TO UPDATE THE OCHLV VALUES)
 // should be called after updating underlying data
@@ -45,8 +45,6 @@ func (delta *Delta) GetNew(data *UserData) {
 		} // if
 		switch v := ind.(type) {
 		case *SMA:
-			fmt.Println(v.Data)
-		
 			results[i] = v.Data[len(v.Data) - 1] - v.Data[len(v.Data) - 2]
 		case *EMA:
 			results[i] = v.Data[len(v.Data) - 1] - v.Data[len(v.Data) - 2]

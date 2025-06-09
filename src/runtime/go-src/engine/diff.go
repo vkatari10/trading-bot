@@ -1,6 +1,6 @@
 package engine
 
-// File Containing Logic For Diff Objects
+// Contains Logic For Diff(erence) Objects
 
 import (
 	"fmt"

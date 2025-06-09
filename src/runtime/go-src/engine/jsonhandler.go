@@ -57,6 +57,7 @@ func LoadIndicators(json []map[string]any) (UserData, error) {
 		ColNames: map[string]int{},
 		Objects: []Indicator{},
 		OHLCVDelta: [5]float64{},
+		OHLCVRaw: [5]float64{},
 	} // UserData
 
 	decideConstructor(&data, json) // load all objects onto array
