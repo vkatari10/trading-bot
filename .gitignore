@@ -25,4 +25,5 @@ __pycache__/
 # ML models
 *.pkl
 
-# Compiled Go
+# VS Code
+.vscode
