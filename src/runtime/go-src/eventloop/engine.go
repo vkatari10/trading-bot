@@ -40,9 +40,6 @@ func Run() {
 	} // if
 
 	
-
-	
-	
 	engine.LoadBurnData(&userIndicators, burn) // Intialize values for technical indicators
 	engine.UpdateOHLCVDeltas(&userIndicators, burnQuote)
 

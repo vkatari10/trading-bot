@@ -61,7 +61,7 @@ func UpdateOHLCVDeltas(obj *UserData, json [5]float64) {
 	for i := 0; i < 5; i++ {
 		newVal := json[i] - obj.OHLCVRaw[i] 
 		obj.OHLCVDelta[i] = newVal
-		
+		obj.OHLCVRaw[i] = json[i]
 	} // for
 	fmt.Printf("OHLCV DELTAS --> %v\n", obj.OHLCVDelta)
 } // UpdateOHLCVDeltas
