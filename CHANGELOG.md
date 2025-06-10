@@ -22,6 +22,6 @@ This gives an overview of all tagged version of the repo and associated changes.
 
 ## [WIP]
 In Progress<br>
-- Improve features to include technical deltas
+- Improve features to include technical deltas and differences
 - Develop internal API to expose the runtime environment 
 - Construct monitoring dashboard for the entire engine

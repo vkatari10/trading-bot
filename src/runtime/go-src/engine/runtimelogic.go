@@ -8,7 +8,7 @@ package engine
 #cgo LDFLAGS: -L../../c-src -llive_data -lm
 */
 
-import "fmt"
+//import "fmt"
 
 // need to do something to export this info for the bot API to expose to the frontend
 
@@ -56,14 +56,14 @@ func UpdateTechnicals(obj *UserData, newPrice float64) {
 // UpdateOHLCVDeltas Updates the Deltas for OHCLV bars that all 
 // Dataframes at train time contain
 func UpdateOHLCVDeltas(obj *UserData, json [5]float64) {
-	fmt.Printf("INCOMING PRICE JSON -> %v\n", json)
+	//fmt.Printf("INCOMING PRICE JSON -> %v\n", json)
 
 	for i := 0; i < 5; i++ {
 		newVal := json[i] - obj.OHLCVRaw[i] 
 		obj.OHLCVDelta[i] = newVal
 		obj.OHLCVRaw[i] = json[i]
 	} // for
-	fmt.Printf("OHLCV DELTAS --> %v\n", obj.OHLCVDelta)
+	//fmt.Printf("OHLCV DELTAS --> %v\n", obj.OHLCVDelta)
 } // UpdateOHLCVDeltas
 
 

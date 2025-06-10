@@ -9,10 +9,9 @@ import (
 
 var (
 	logLink = "http://locahost:3000/api/log" 			// send logging information
-	quoteLink = "http://localhost:3000/api/quote" 		// send quote update information
 	envLink = "http://localhost:3000/api/env"			// send environment variables (done once)
 	brokerLink = "http://localhost:3000/api/broker" 	// send brokerage account infromation (done on sell/buy)
-	technicalLink = "http://localhost:3000/api/technical" // send technical update information
+	dataLink = "http://localhost:3000/api/data" 		// send technical update information
 )
 
 // SendPayload should send the JSON as an Object to the frontend
