@@ -18,10 +18,13 @@ func GetQuote(ticker string) ([5]float64, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", alpacaApi)
-	req.Header.Add("APCA-API-SECRET-KEY", alpacaSec)
+	req.Header.Add("APCA-API-KEY-ID", getAlpacaKey())
+	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSecret())
 
-	res, _ := http.DefaultClient.Do(req)
+	res, err := http.DefaultClient.Do(req)
+    if err != nil {
+        log.Println(err)
+    }
 
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
@@ -30,14 +33,18 @@ func GetQuote(ticker string) ([5]float64, error) {
 
     json.Unmarshal(body, &jsonMap) // CAN add goroutines here with mutex at each step
 
+    //log.Println(jsonMap)
+
     quoteMap, ok := jsonMap["bars"].(map[string]any)
     if !ok {
         log.Println("ERROR:  Market JSON 1st parse failed")
+        return [5]float64{}, nil
     } // if
 
     tickerMap, ok := quoteMap[ticker].(map[string]any)
     if !ok {
         log.Println("ERROR: Market JSON 2nd parse failed")
+        return [5]float64{}, nil
     } // if
 
     // format we want of the array (YFinance format)
@@ -47,7 +54,7 @@ func GetQuote(ticker string) ([5]float64, error) {
     for i := range bars {
         result, ok := tickerMap[bars[i]].(float64)
         if !ok  {
-            log.Printf("ERROR: Could not get %c bar value\n", bars[i])
+            log.Printf("ERROR: Could not get %s bar value\n", bars[i])
         } // if
 
         finalBars[i] = result

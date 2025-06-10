@@ -1,6 +1,6 @@
 # Mid-Frequency Trading Bot
 
-A machine learning based mid-frquency trading bot for equities, with real time signal generation.
+A AI/ML based mid-frquency trading bot for equities, with real time signal generation.
 
 ## Motivation
 
@@ -14,6 +14,7 @@ The goal of this project is to automate trading in real time by using an trained
 - Monitoring Dashboard
 - Modular structure
 - Hot-swapping ML models at runtime
+- Ability to Support High Frequency Trading
 
 ## Tech Stack
 
@@ -21,7 +22,7 @@ This project uses `Go` and `Python` to split the runtime engine and ML training 
 - Python was used to train ML models due to its extensive library ecosystem
 - Go was used as the runtime engine due to its low latency
 
-### Ok but why Go?
+### Why Go?
 We could use `Python` or even `C++` as the runtime engine, but:
 - `Python` is intreperted and has GIL overhead
 - `C++` has higher complexity than `Go`, especially for multithreading and API calls
@@ -61,11 +62,14 @@ The following diagram highlights the modular back end architecture.
 - APIs
   - Find a higher frequency market data streamer
   - Convert ML API to use `FastAPI` instead of `Flask`
+- Runtime
+  - Be able to track multiple stocks at once
 
 ## Limitations
 
 There are several limitaions with this trading bot, however the most signficant are listed below.<br>
 - Ingestion of delayed data, up to 1-15 minutes
+- Data refresh rates of 1 minute, limiting predictions to every minute
 - Burn-in period during live execution (~30 minutes)
 
 ## Requirements
