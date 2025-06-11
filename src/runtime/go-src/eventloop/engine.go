@@ -42,6 +42,8 @@ func Run() {
 	engine.LoadBurnData(&userIndicators, burn) // Intialize values for technical indicators
 	engine.UpdateOHLCVDeltas(&userIndicators, burnQuote)
 
+	apiBuf := newAPIBuffer() // store logging info in here
+
 	runtime.GC() // force GC before starting main loop
 
 	go SendPayload(map[string]any{
@@ -61,14 +63,17 @@ func Run() {
 
 		engine.UpdateOHLCVDeltas(&userIndicators, newQuote)
 		log.Printf("QUOTE: $%.2f\n", newQuote[0])
-		go SendPayload(map[string]any{
-			"msg": fmt.Sprintf("QUOTE: $%.2f\n", newQuote[0]),
-		}, logLink)
+
+		go apiBuf.enqueue(
+			map[string]any{
+				"msg": fmt.Sprintf("QUOTE: $%.2f", newQuote[0]),
+			}, logLink)
 		
 		engine.UpdateTechnicals(&userIndicators, newQuote[0])  // Close values
-		go SendPayload(map[string]any{
-			"msg": "UPDATE: Updated Technicals",
-		}, logLink)
+		go apiBuf.enqueue(
+			map[string]any{
+				"msg": "UPDATE: Updated Technicals",
+			}, logLink)
 		log.Println("UPDATE: Updated Technicals")
 		
 		// DEBUG for seeing live updates of technicals
@@ -77,19 +82,22 @@ func Run() {
 		// }
 
 		// Send JSON of features to ML API
-		log.Println("UPDATE: Sent Features to ML model")
 		api.SendData(&userIndicators, Ticker)
-		go SendPayload(map[string]any{
-			"msg": "UPDATE: Sent Data to ML model",
-		}, logLink)
+		log.Println("UPDATE: Sent Features to ML model")
+		go apiBuf.enqueue(
+			map[string]any{
+				"msg": "UPDATE: Sent New Features to ML API",
+			}, logLink)
+		
 
 		// Get prediction back as JSON
 	
 		pred := api.GetPrediction()
 		log.Println("UPDATE: Got prediction from ML model")
-		go SendPayload(map[string]any{
-			"msg": "UPDATE: Recieved ML Prediction",
-		}, logLink)
+		go apiBuf.enqueue(
+			map[string]any{
+				"msg": "UPDATE: Prediction recieved from ML API",
+			}, logLink)
 
 		if pred > 0 { // buy
 			log.Printf("DECIDE: Buy 1 share of %s\n", Ticker)
@@ -103,6 +111,8 @@ func Run() {
 				"msg": "DECISION: HOLD",
 			}, logLink)
 		} // if-else
+
+		go apiBuf.offload(3, 100) // milliseconds
 			
 		log.Printf("STAGE: WAIT (%d seconds)\n", TickTime)
 		time.Sleep(TickTime * time.Second)
@@ -110,9 +120,10 @@ func Run() {
 	} // for
 
 	log.Println("STAGE: STOP")
-	go SendPayload(map[string]any{
-		"msg": "STAGE: STOP",
-	}, logLink)
+	go apiBuf.enqueue(
+		map[string]any{
+			"msg": "STAGE: STOP",
+		}, logLink)
 
 } // eventLoop
 
