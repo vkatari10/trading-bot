@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 	"runtime"
-	//"fmt"
+	"fmt"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
@@ -15,7 +15,6 @@ var (
 	TotalUpTime = 450 - BurnInWindow
 	TickTime = time.Duration(10) // seconds (use 1 for testing)
 ) // Environment Variables 
-
 
 
 func Run() {
@@ -55,21 +54,21 @@ func Run() {
 		
 		newQuote, err := api.GetQuote(Ticker)
 		if err != nil {
-			// go SendPayload(map[string]any {
-			// 	"msg" : "ERROR: Could not get market data",
-			// }, logLink)
+			go SendPayload(map[string]any {
+				"msg" : "ERROR: Could not get market data",
+			}, logLink)
 		} // 
 
 		engine.UpdateOHLCVDeltas(&userIndicators, newQuote)
 		log.Printf("QUOTE: $%.2f\n", newQuote[0])
-		// go SendPayload(map[string]any{
-		// 	"msg": fmt.Sprintf("QUOTE: $%.2f\n", newQuote[0]),
-		// }, logLink)
+		go SendPayload(map[string]any{
+			"msg": fmt.Sprintf("QUOTE: $%.2f\n", newQuote[0]),
+		}, logLink)
 		
 		engine.UpdateTechnicals(&userIndicators, newQuote[0])  // Close values
-		// go SendPayload(map[string]any{
-		// 	"msg": "UPDATE: Updated Technicals",
-		// }, logLink)
+		go SendPayload(map[string]any{
+			"msg": "UPDATE: Updated Technicals",
+		}, logLink)
 		log.Println("UPDATE: Updated Technicals")
 		
 		// DEBUG for seeing live updates of technicals
@@ -80,17 +79,17 @@ func Run() {
 		// Send JSON of features to ML API
 		log.Println("UPDATE: Sent Features to ML model")
 		api.SendData(&userIndicators, Ticker)
-		// go SendPayload(map[string]any{
-		// 	"msg": "UPDATE: Sent Data to ML model",
-		// }, logLink)
+		go SendPayload(map[string]any{
+			"msg": "UPDATE: Sent Data to ML model",
+		}, logLink)
 
 		// Get prediction back as JSON
 	
 		pred := api.GetPrediction()
 		log.Println("UPDATE: Got prediction from ML model")
-		// go SendPayload(map[string]any{
-		// 	"msg": "UPDATE: Recieved ML Prediction",
-		// }, logLink)
+		go SendPayload(map[string]any{
+			"msg": "UPDATE: Recieved ML Prediction",
+		}, logLink)
 
 		if pred > 0 { // buy
 			log.Printf("DECIDE: Buy 1 share of %s\n", Ticker)
@@ -111,9 +110,9 @@ func Run() {
 	} // for
 
 	log.Println("STAGE: STOP")
-	// go SendPayload(map[string]any{
-	// 	"msg": "STAGE: STOP",
-	// }, logLink)
+	go SendPayload(map[string]any{
+		"msg": "STAGE: STOP",
+	}, logLink)
 
 } // eventLoop
 

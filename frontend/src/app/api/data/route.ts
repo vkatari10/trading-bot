@@ -15,7 +15,5 @@ export async function GET() {
     if (technicalData === null) {
         return NextResponse.json({ error: "No data yet" }, { status: 404 });
     } // if
-    console.log("Data recieved below")
-    console.log(technicalData)
     return NextResponse.json(technicalData);
 } // GET()
