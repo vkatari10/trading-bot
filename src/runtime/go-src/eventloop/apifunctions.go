@@ -30,7 +30,7 @@ func sendBrokerData() {
 func sendTechnicalData(data engine.UserData) {
 	go func(engine.UserData) {
 		
-		columnNames := data.ColNames
+		columnNames := data.ColNames // this is constant 
 		prices := data.OHLCVRaw
 		priceDeltas := data.OHLCVDelta
 
@@ -57,4 +57,4 @@ func sendTechnicalData(data engine.UserData) {
 		}, dataLink)
 
 	}(engine.UserData{})
-}
+} // sendTechnicalData
