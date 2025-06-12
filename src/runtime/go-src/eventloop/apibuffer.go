@@ -14,10 +14,6 @@ import (
 
 var (
 	initialSize = 30
-	logLink = "http://localhost:3000/api/log" 			// send logging information
-	envLink = "http://localhost:3000/api/env"			// send environment variables (done once)
-	brokerLink = "http://localhost:3000/api/broker" 	// send brokerage account infromation (done on sell/buy)
-	dataLink = "http://localhost:3000/api/data" 		// send technical update information
 )
 
 // DataStream contains a queue implmentation to send API JSONs

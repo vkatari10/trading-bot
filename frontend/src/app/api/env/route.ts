@@ -1,8 +1,19 @@
-import { NextResponse } from "next/server";
+// File-scope variable to hold last payload
+let technicalData: any = null;
 
-// GET will get the posted data from Go and return it to the server
+import { NextRequest, NextResponse } from "next/server";
+
+// POST is called by your Go backend
+export async function POST(req: NextRequest) {
+    const data = await req.json();
+    technicalData = data;
+    return NextResponse.json({ status: "success"});
+} // POST
+
+// GET is called by your Next.js frontend to retrieve the latest data
 export async function GET() {
-    const response = await fetch("http://localhost:3000/api/env");
-    const data = await response.json();
-    return NextResponse.json(data)
+    if (technicalData === null) {
+        return NextResponse.json({ error: "No data yet" }, { status: 404 });
+    } // if
+    return NextResponse.json(technicalData);
 } // GET()
