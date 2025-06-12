@@ -1,10 +1,13 @@
 package eventloop
 
-// this file contains methods to send specific non logging 
+// this file contains methods to send specific non logging
 // information to the front end
 
 import (
-	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	//api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	// "fmt"
+
+	"github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
 
@@ -13,18 +16,37 @@ import (
 func sendEnvironmentData() {
 	go func() {
 	SendPayload(map[string]any {
-		"REFRESH_RATE": refreshRate,
-		"TICKER": ticker,
-		"BURN_TIME": burnWindow,
+		"refresh_rate": refreshRate,
+		"ticker": ticker,
+		"burn_time": burnWindow,
 	},envLink)
 	}()
 } // sendEnvironmentData
 
 func sendBrokerData() {
-	api.Acct("hello")
-	// get cash and other stuff from here every time a 
-	// a trade is place to get new position data, account 
-	// and cash values
+	go func() {
+
+	qty, avgCost, marketVal, err := api.GetPositions()
+	if err != nil {
+		qty = 0
+		avgCost = 0
+		marketVal = 0
+	} // if
+
+	cash, accountValue, err := api.GetCashValue()
+	if err != nil {
+		cash = 0
+		accountValue = 0
+	} // if
+
+	SendPayload(map[string]any{
+		"cash": cash,
+		"account_value": accountValue,
+		"stock_qty": qty,
+		"stock_cost": avgCost,
+		"market_value": marketVal,
+	}, brokerLink)
+	}()
 } // sendBrokerData
 
 func sendTechnicalData(data engine.UserData) {
@@ -50,11 +72,14 @@ func sendTechnicalData(data engine.UserData) {
 		} // for
 
 		SendPayload(map[string]any{
-			"TECHNICALS": technicals,
-			"COL_NAMES": columnNames,
-			"PRICE": prices,
-			"PRICE_DELTAS": priceDeltas,
+			"technicals": technicals,
+			"col_names": columnNames,
+			"quotes": prices,
+			"quotes_delta": priceDeltas,
 		}, dataLink)
 
-	}(engine.UserData{})
+
+	}(data)
 } // sendTechnicalData
+
+

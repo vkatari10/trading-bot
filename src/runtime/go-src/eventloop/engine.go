@@ -109,6 +109,7 @@ func Run() {
 			map[string]any{
 				"msg": fmt.Sprintf("DECIDE: BUY %s", thisTicker),
 			}, logLink)
+			go sendBrokerData()
 		} else if pred < 0 { // sell
 			log.Printf("DECIDE: Sell 1 share of %s\n", thisTicker)
 			go api.PlaceMarketOrder(thisTicker, 1, "sell")
@@ -116,12 +117,14 @@ func Run() {
 			map[string]any{
 				"msg": fmt.Sprintf("DECIDE: SELL %s", thisTicker),
 			}, logLink)
+			go sendBrokerData()
 		} else {
 			log.Printf("DECIDE: Do nothing\n")
 			go apiBuf.enqueue(
 			map[string]any{
 				"msg": fmt.Sprintf("DECIDE: HOLD %s", thisTicker),
 			}, logLink)
+			go sendBrokerData()
 		} // if-else
 			
 		log.Printf("STAGE: WAIT (%d seconds)\n", thisRefreshRate)
