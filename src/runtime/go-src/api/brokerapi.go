@@ -11,25 +11,6 @@ import (
 	"strconv"
 )
 
-// Returns aspects of the Brokerage Account probably to use in API
-func Acct(data string) any {
-	url := "https://paper-api.alpaca.markets/v2/account"
-
-	req, _ := http.NewRequest("GET", url, nil)
-
-	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", alpacaApi)
-	req.Header.Add("APCA-API-SECRET-KEY", alpacaSec)
-
-	res, _ := http.DefaultClient.Do(req)
-
-	defer res.Body.Close()
-	body, _ := io.ReadAll(res.Body)
-
-    return body
-
-} // Acct
-
 // GetCashValue gets the brokerage account value of cash and 
 // account total value
 func GetCashValue() (cashAvail float64, totalValue float64, err error) {
@@ -130,18 +111,6 @@ func PlaceMarketOrder(ticker string, shares int, side string) {
 	defer res.Body.Close()
 } // PlaceMarketOrder
 
-
-
-// FUTURE --> Add these functions
-/*
-Positions
-ssss1. get all positions
-2. close all positions
-3. get position
-4. close position
-4. close position by shares
-*/
-
 // getDoubleValue helps type assert and convert JSON values 
 // back to float64 values
 func getDoubleValue(json map[string]any, key string) (result float64, err error) {
@@ -157,3 +126,13 @@ func getDoubleValue(json map[string]any, key string) (result float64, err error)
 	
 	return result, nil
 } // getDoubleValue
+
+// FUTURE --> Add these functions
+/*
+Positions
+ssss1. get all positions
+2. close all positions
+3. get position
+4. close position
+4. close position by shares
+*/
