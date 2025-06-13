@@ -51,8 +51,11 @@ func sendBrokerData() {
 
 func sendTechnicalData(data engine.UserData) {
 	go func(engine.UserData) {
+		colNameArray := make([]string, len(data.ColNames))
+		for key, val := range data.ColNames {
+			colNameArray[val] = key
+		}
 		
-		columnNames := data.ColNames // this is constant 
 		prices := data.OHLCVRaw
 		priceDeltas := data.OHLCVDelta
 
@@ -73,12 +76,10 @@ func sendTechnicalData(data engine.UserData) {
 
 		SendPayload(map[string]any{
 			"technicals": technicals,
-			"col_names": columnNames,
+			"col_names": colNameArray,
 			"quotes": prices,
 			"quotes_delta": priceDeltas,
 		}, dataLink)
-
-
 	}(data)
 } // sendTechnicalData
 

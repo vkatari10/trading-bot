@@ -20,7 +20,7 @@ type BrokerPayload = {
 }
 
 type DataPayload = {
-  [key: string]: number | number[]
+  col_names: string[]
   quotes: number[]
   quotes_delta: number[]
   technicals: number[]
@@ -93,23 +93,62 @@ export default function Home() {
       <h1 className="text-2xl font-bold">Trading Bot Dashboard</h1>
 
       <section className="bg-neutral-900 p-4 rounded">
-        <h2 className="text-xl font-semibold">Environment Data (/api/env)</h2>
-        <pre>{envData ? JSON.stringify(envData, null, 2) : 'Loading...'}</pre>
+        <h2 className="text-xl font-semibold">Environment Data</h2>
+        {envData ? (
+          <ul className="list-disc pl-4">
+            <li><strong>Burn Time:</strong> {envData.burn_time}</li>
+            <li><strong>Refresh Rate:</strong> {envData.refresh_rate}</li>
+            <li><strong>Ticker:</strong> {envData.ticker}</li>
+          </ul>
+        ) : (
+          <div>Loading...</div>
+        )}
       </section>
 
       <section className="bg-neutral-900 p-4 rounded">
-        <h2 className="text-xl font-semibold">Log (/api/log)</h2>
-        <pre>{logData ? JSON.stringify(logData, null, 2) : 'Loading...'}</pre>
+        <h2 className="text-xl font-semibold">Log</h2>
+        {logData ? (
+          <ul className="list-disc pl-4">
+            <li><strong>Message:</strong> {logData.msg}</li>
+          </ul>
+        ) : (
+          <div>Loading...</div>
+        )}
       </section>
 
       <section className="bg-neutral-900 p-4 rounded">
-        <h2 className="text-xl font-semibold">Data (/api/data)</h2>
-        <pre>{data ? JSON.stringify(data, null, 2) : 'Loading...'}</pre>
+        <h2 className="text-xl font-semibold">Data</h2>
+        {data ? (
+          <ul className="list-disc pl-4">     
+             <li><strong>Open:</strong>{data.quotes[3]} ({(data.quotes_delta[3].toFixed(2))})</li>
+             <li><strong>High:</strong> {data.quotes[1]} ({(data.quotes_delta[1].toFixed(2))})</li>
+             <li><strong>Low:</strong> {data.quotes[2]} ({(data.quotes_delta[2].toFixed(2))})</li>
+             <li><strong>Close:</strong> {data.quotes[0]} ({(data.quotes_delta[0].toFixed(2))})</li>
+             <li><strong>Volume:</strong> {data.quotes[4]} ({(data.quotes_delta[4].toFixed(2))})</li>
+            {data.col_names.map((key, index) => (
+              <li key={key}>
+                {key}: {data.technicals[index].toFixed(2)}
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <div>Loading...</div>
+        )}
       </section>
 
       <section className="bg-neutral-900 p-4 rounded">
-        <h2 className="text-xl font-semibold">Brokerage Information (/api/broker)</h2>
-        <pre>{brokerData ? JSON.stringify(brokerData, null, 2) : 'Loading...'}</pre>
+        <h2 className="text-xl font-semibold">Brokerage Information</h2>
+        {brokerData ? (
+          <ul className="list-disc pl-4">
+            <li><strong>Account Value:</strong> {brokerData.account_value}</li>
+            <li><strong>Cash:</strong> {brokerData.cash}</li>
+            <li><strong>Market Value:</strong> {brokerData.market_value}</li>
+            <li><strong>Stock Cost:</strong> {brokerData.stock_cost}</li>
+            <li><strong>Stock Quantity:</strong> {brokerData.stock_qty}</li>
+          </ul>
+        ) : (
+          <div>Loading...</div>
+        )}
       </section>
     </main>
   )
