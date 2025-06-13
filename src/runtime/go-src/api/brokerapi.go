@@ -68,6 +68,10 @@ func GetPositions() (quantity float64, averageCost float64, marketValue float64,
 
 	// this is an array
 
+	if len(data) == 0 { // no positions yet
+		return 0, 0, 0, fmt.Errorf("no positions yet -> %v", err)
+	}
+
 	qty, err := getDoubleValue(data[0], "qty")
 	if err != nil {
 		return 0, 0, 0, fmt.Errorf("%v", err)

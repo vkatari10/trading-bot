@@ -30,3 +30,4 @@ This gives an overview of all tagged version of the repo and associated changes.
 In Progress<br>
 - Clean frontend styling, utility
 - Continue refactoring `src/runtime/go-src` (Introduce generic methods)
+- Add Custom backtesting engine
