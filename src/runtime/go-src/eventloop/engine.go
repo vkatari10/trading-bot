@@ -22,23 +22,13 @@ func Run() {
 	// COULD move this up before the burn in data to intialize the OHCLV Deltas better 
 	userIndicators, err := engine.InitUserLogic("features.json") // Load user defined technicals
 	if err != nil {
-		log.Fatal("ERROR: could not parse user defined JSON in src/logic properly")
+		// log.Fatal("ERROR: could not parse user defined JSON in src/logic properly")
+		go SendPayload(map[string]any{
+			"msg": "ERROR: could not parse user defined JSON in src/logic properly",
+		}, logLink)
 	} // if
 
-	//burn := BurnIn(thisBurnTime, thisTicker, thisRefreshRate) // intialize burn in data
-
-	// dummy data to avoid waiting for input data
-	burn := []float64{163.42, 199.08, 184.21, 216.77, 152.93,
-					189.35, 173.88, 201.67, 218.19, 167.04,
-					153.21, 174.66, 211.05, 197.48, 158.89,
-					205.76, 161.57, 182.10, 194.33, 159.62,
-					212.98, 188.71, 168.25, 200.83, 178.55,
-					215.60, 166.09, 209.40, 170.46, 185.79, 145.5}
-
-	burnQuote, err := api.GetQuote(thisTicker)	 // can remove later (use when not calling BurnIn())
-	if err != nil {
-		log.Printf("ERROR: market data could not be pulled")
-	} // if		
+	burn, burnQuote := BurnIn(thisBurnTime, thisTicker, thisRefreshRate) // intialize burn in data
 
 	engine.LoadBurnData(&userIndicators, burn) // Intialize values for technical indicators
 	engine.UpdateOHLCVDeltas(&userIndicators, burnQuote)
@@ -102,31 +92,8 @@ func Run() {
 				"msg": "UPDATE: Prediction recieved from ML API",
 			}, logLink)
 
-		if pred > 0 { // buy
-			log.Printf("DECIDE: Buy 1 share of %s\n", thisTicker)
-			go api.PlaceMarketOrder(thisTicker, 1, "buy")
-			go apiBuf.enqueue(
-			map[string]any{
-				"msg": fmt.Sprintf("DECIDE: BUY %s", thisTicker),
-			}, logLink)
-			go sendBrokerData()
-		} else if pred < 0 { // sell
-			log.Printf("DECIDE: Sell 1 share of %s\n", thisTicker)
-			go api.PlaceMarketOrder(thisTicker, 1, "sell")
-			go apiBuf.enqueue(
-			map[string]any{
-				"msg": fmt.Sprintf("DECIDE: SELL %s", thisTicker),
-			}, logLink)
-			go sendBrokerData()
-		} else {
-			log.Printf("DECIDE: Do nothing\n")
-			go apiBuf.enqueue(
-			map[string]any{
-				"msg": fmt.Sprintf("DECIDE: HOLD %s", thisTicker),
-			}, logLink)
-			go sendBrokerData()
-		} // if-else
-			
+		handlePrediction(apiBuf, pred, thisTicker) // decide if we need to buy or sell
+
 		log.Printf("STAGE: WAIT (%d seconds)\n", thisRefreshRate)
 		go apiBuf.enqueue(map[string]any{ 
 			"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", thisRefreshRate),
@@ -164,13 +131,16 @@ func BurnIn(burnTime int, ticker string, refresh time.Duration) (arr []float64, 
 	for i := range burn {
 		newQuote, err := api.GetQuote(ticker)
 		if err != nil {
-			log.Printf("ERROR: market data could not be pulled")
+			// log.Printf("ERROR: market data could not be pulled")
 			go SendPayload(map[string]any {
 			"msg" : "ERROR: Could not get market data",
 			}, logLink)
 		} // if
 		burn[i] = newQuote[0]
-		log.Printf("QUOTE: %f", newQuote)
+		// log.Printf("QUOTE: %f", newQuote)
+		go SendPayload(map[string]any {
+			"msg": fmt.Sprintf("QUOTE: $%.2f", newQuote[0]),
+		}, logLink)
 		time.Sleep(refresh * time.Second) // burn in rate at same tick time for main loop
 	} // for
 
@@ -191,4 +161,34 @@ func intializeVariables() (int, time.Duration, error) {
 	} // if
 
 	return burn, tick, nil
-}
+} // intializeVariables
+
+// handlePrediction handles the prediction made by the ML model by 
+// working with the broker API
+func handlePrediction(apiBuffer *APIBuffer, prediction float64, ticker string) {
+
+	decisionMsg := "DECIDE: "
+		var decision string;
+
+		if prediction > 0 { // buy
+			// log.Printf("DECIDE: Buy 1 share of %s\n", thisTicker)
+			decision = "buy"
+			go api.PlaceMarketOrder(ticker, 1, decision)
+			decisionMsg += "BUY"
+		} else if prediction < 0 { // sell
+			// log.Printf("DECIDE: Sell 1 share of %s\n", thisTicker)
+			decision = "sell"
+			go api.PlaceMarketOrder(ticker, 1, decision)
+			decisionMsg += "SELL"
+		} else {
+			// log.Printf("DECIDE: Do nothing\n")
+			decisionMsg += "HOLD"
+		} // if-else
+		
+		go apiBuffer.enqueue(
+			map[string]any{
+				"msg": fmt.Sprintf("DECIDE: %s %s", decisionMsg, ticker),
+			}, logLink)
+		go sendBrokerData()
+
+} // handlePrediction

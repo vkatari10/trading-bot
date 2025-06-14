@@ -116,8 +116,6 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  if (error) return <div className="p-4 text-red-500">Error: {error}</div>
-
   return (
     <main className="main-dashboard">
       <style>{`
@@ -309,11 +307,11 @@ export default function Home() {
                 </tbody>
               </table>
             ) : (
-              <div>Loading...</div>
+              <div className="text-gray-400">Could not load data, or still inside Burn-In Stage.</div>
             )}
           </div>
           <div className="glass p-4 env-container" style={{marginLeft: '0.5rem', minWidth: 220, maxWidth: 320}}>
-            <h2 className="text-xl font-semibold">Brokerage Information</h2>
+            <h2 className="text-xl font-semibold">Account Information</h2>
             {brokerData ? (
               <ul className="list-disc pl-4">
                 <li><strong>Account Value:</strong> {brokerData.account_value}</li>
@@ -323,7 +321,7 @@ export default function Home() {
                 <li><strong>Stock Quantity:</strong> {brokerData.stock_qty}</li>
               </ul>
             ) : (
-              <div>Loading...</div>
+              <div className="text-gray-400">Could not load brokerage info.</div>
             )}
           </div>
         </div>
@@ -331,12 +329,12 @@ export default function Home() {
           <h2 className="text-xl font-semibold">Environment Data</h2>
           {envData ? (
             <ul className="list-disc pl-4">
-              <li><strong>Burn Time:</strong> {envData.burn_time}</li>
-              <li><strong>Refresh Rate:</strong> {envData.refresh_rate}</li>
+              <li><strong>Burn Time (Minutes):</strong> {envData.burn_time}</li>
+              <li><strong>Refresh Rate (Seconds):</strong> {envData.refresh_rate}</li>
               <li><strong>Ticker:</strong> {envData.ticker}</li>
             </ul>
           ) : (
-            <div>Loading...</div>
+            <div className="text-gray-400">Could not load environment data.</div>
           )}
         </section>
       </div>
@@ -345,7 +343,7 @@ export default function Home() {
           <h2 className="text-xl font-semibold">Log Stream</h2>
           <div className="log-scroll">
             {logHistory.length === 0 ? (
-              <div>Loading...</div>
+              <div className="text-gray-400">No log data available.</div>
             ) : (
               logHistory.map((entry, idx) => (
                 <div className="log-entry" key={idx}>
