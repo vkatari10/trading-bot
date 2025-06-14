@@ -1,27 +1,21 @@
 # TODO
 
-# High Priority 
-- Make the frontend not look as rough, improve the CSS styling
-- Create way to check if we have the stock are not stop negative shares on Alpaca
+## High Priority (Next 2 weeks)
+- Improve frontend CSS styling to reduce rough UI  
+- Prevent negative share orders on Alpaca (check holdings before trade)  
+- Implement tests folder and add basic unit/integration tests  
 
-
-## Long Term Improvements <!--===========================================-->
-
-- Add custom backtesting engine on trained models to test performance on historical data
+## Long Term Improvements (Q3–Q4)
+- Add custom backtesting engine to evaluate models on historical data  
+- Support trading multiple stocks concurrently  
 
 ### ML
-- [ ] Potentially allow user to decide which ML model to use (JSONs)
-- [ ] Add support for different ML model types (KNN)
+- [ ] Allow user to choose ML model via JSON config  
+- [ ] Add support for additional ML models (e.g., KNN)  
 
 ### Trading Logic
-- [ ] Heighten buy, sell strictness (one indicator should not dictate a buy/sell action). Also include a way to determine the sensitivity of a signal to increase and decrease the ordering amount of shares accordingly.
+- [ ] Increase buy/sell signal strictness; implement sensitivity control for order sizing  
 
 ### API
-
-- [ ] Figure out how use websockets and gRPC to improve ML <-> Go communication
-- [ ] Also use websockets in Go to work with Alpaca to improve Broker commumincation
-
-
-
-
-
+- [ ] Integrate websockets and gRPC for improved ML <-> Go communication  
+- [ ] Use websockets to optimize Alpaca broker interaction  
