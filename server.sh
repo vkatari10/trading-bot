@@ -1,2 +1,3 @@
 #! /usr/bin/bash
-python -m src.api.internal.model_api.model_api
+# script to start the ML API Server
+python3 -m src.api.internal.model_api.model_api

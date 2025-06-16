@@ -2,23 +2,28 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-# server implementation 
+# Server Implementaion
 COPY src/api/internal/model_api src/api/internal/model_api
 
-# serialized model 
+# Build, Train, and Dump Model
+COPY train.sh .
+RUN chmod +x train.sh
+RUN ./build.sh
+
+# Serialized ML Model
 COPY src/ml/models/decider/ src/ml/models/decider/
 
 # JSON config file
 COPY src/logic/ src/logic/
 
-# install requirements (just do all of them for now)
+# Install Python side requirements
 COPY requirements.txt . 
 RUN pip install -r requirements.txt
 
 # Expose the server port (default is 5000)
 EXPOSE 5000
 
-# start the server 
+# Start server  
 COPY server.sh . 
 RUN chmod +x server.sh
 CMD ["./server.sh"]

@@ -4,8 +4,6 @@
 # set up all local servers
 # and train/load models
 
-
-
 echo -e "Starting virtual environment"
 source venv/bin/activate
 
