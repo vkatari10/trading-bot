@@ -1,19 +1,34 @@
 # Trading Bot Source Files
 
-This folder contains the backend logic of the trading bot from the testing of technical indicators on historical data to the actual runtime environment.<br>
+The `src/` folder contains the backend logic of the trading bot and its runtime environment.  
 
-Future Additions to this folder will contain dedicated README's to explain which each individual component does, however since this repo is a work in progress there can be sudden changes and I will avoid writing entire README's until there is a full stack MVP that implements the current structure.<br>
+A brief overview:
+## Overview of `src/` Structure
 
-A brief overview of what each folder contains follows
+This platform is a modular, ML-powered trading system built for strategy experimentation, live inference, and end-to-end automation. Key components:  
 - `api/`
-  - Contains both external APIs for brokers, market data, and historical data as well as internal APIs for local machine learning API servers and to expose the runtime environment.
+  - Python service that:
+    - Pulls historical data via `YFinance`
+    - Serves trained ML models over REST for real-time inference
+  - Interfaces directly with the live `runtime/` engine
 - `backtesting/`
-  - Standalone folder that allows users to test their own strategies utilizing the `Backtrader` library in python to test the effectiveness of certain technical indicators on historical data. This folder has no impact on the machine learning model traning pipeline or the runtime environment.
-- `exceptions/`
-  - Standalone folder that allows for the creation of custom exceptions that external APIs may throw and other custom execptions that may need to be declared.
+  - Strategy sandbox using `Backtrader` for testing indicator-based strategies on historical data
+  - Future: will integrate ML models for simulated validation
 - `logic/`
-  - Standalone folde that allows users to declare in a JSON format what features they would like to train the ML models on and also informs the runtime environment which technicals to recompute in real time to advise the machien learning model.
+  - Central config layer (JSON) that defines:
+    - Technical indicators and feature sets
+    - Labeling logic
+    - Shared across training (`ml/`) and live execution (`runtime/`)
 - `ml/`
-  - Contains the entire process from constructing the Pandas DataFrame to trianing and exporting the machine learning model that can then be exposed to an API server. Trained and predicts buy/sell signals from technicals indicators declared in the `logic/` folder. 
+  - Full training pipeline that:
+    - Loads config from `/logic`
+    - Uses `/api` to source historical price data
+    - Engineers features, trains models, and serializes them for deployment
+  - Model-agnostic and designed for plug-and-play extensibility
 - `runtime/`
-  - Contains the runtime environment that allows the main Go runtime to talk to the machine learning API and compute technical in real time and also provide info the expose the the `bot_api` which is the basis of the monitoring dashboard.
+  - Production trading engine written in `Go` that:
+    - Ingests live market data (`Alpaca`)
+    - Recomputes indicators per config
+    - Calls `api/` for predictions
+    - Places trades
+    - Exposes its own API (repsented in `/frontend` and live dashboard)

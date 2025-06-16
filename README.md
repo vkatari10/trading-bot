@@ -1,23 +1,17 @@
-# Mid-Frequency Trading Bot
+# AI/ML Based Trading Platform
 
-A AI/ML based mid-frquency trading bot for equities, with real time signal generation.
+This project is a modular, end-to-end trading platform that combines machine learning with real-time execution to empower users to develop, backtest, and deploy custom trading strategies seamlessly. Featuring a Python-based ML pipeline, a high-performance Go runtime engine, and a configurable monitoring dashboard, it supports hot-swappable models and live broker integration — making it ideal for low- to mid-frequency trading. Designed with flexibility and extensibility in mind, it enables both researchers and developers to experiment with technical indicators and ML-driven signals in a production-ready environment.
 
-## Motivation
-
-The goal of this project is to automate trading in real time by using an trained Machine Learning (ML) model at runtime to predict in real-time buy and sell signals.<br>
-
-## Goals
-
+## Features
 - Complete Machine Learning Pipeline
 - Real-time trading engine
 - User Defined Trading Logic
 - Monitoring Dashboard
 - Modular structure
 - Hot-swapping ML models at runtime
-- Ability to Support High Frequency Trading
+- Ability to Support Low to Mid Frequency Trading
 
 ## Tech Stack
-
 This project uses `Go` and `Python` to split the runtime engine and ML training repsonsibilities
 - Python was used to train ML models due to its extensive library ecosystem
 - Go was used as the runtime engine due to its low latency
