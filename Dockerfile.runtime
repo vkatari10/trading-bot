@@ -6,7 +6,7 @@ WORKDIR /app
 COPY src/runtime/ src/runtime
 
 # JSON config file
-COPY src/logic/features.json src/logic/features.json
+COPY src/logic/ src/logic/
 
 # ML API Server
 EXPOSE 5000

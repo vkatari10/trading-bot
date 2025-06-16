@@ -6,10 +6,10 @@ WORKDIR /app
 COPY src/api/internal/model_api src/api/internal/model_api
 
 # serialized model 
-COPY src/ml/models/decider/model.pkl src/ml/models/decider/model.pkl
+COPY src/ml/models/decider/ src/ml/models/decider/
 
 # JSON config file
-COPY src/logic/features.json src/logic/features.json
+COPY src/logic/ src/logic/
 
 # install requirements (just do all of them for now)
 COPY requirements.txt . 
