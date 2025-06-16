@@ -1,0 +1,14 @@
+services:
+  ml_api:
+    build: 
+      context: .
+      dockerfile: Dockerfile.ml_api
+    ports:
+      - "5000:5000"
+  
+  runtime:
+    build: 
+      context: .
+      dockerfile: Dockerfile.runtime
+    ports:
+      - "6000:5000"

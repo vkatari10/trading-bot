@@ -1,0 +1,24 @@
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# server implementation 
+COPY src/api/internal/model_api src/api/internal/model_api
+
+# serialized model 
+COPY src/ml/models/decider/model.pkl src/ml/models/decider/model.pkl
+
+# JSON config file
+COPY src/logic/features.json src/logic/features.json
+
+# install requirements (just do all of them for now)
+COPY requirements.txt . 
+RUN pip install -r requirements.txt
+
+# Expose the server port (default is 5000)
+EXPOSE 5000
+
+# start the server 
+COPY server.sh . 
+RUN chmod +x server.sh
+CMD ["./server.sh"]

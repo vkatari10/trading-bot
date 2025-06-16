@@ -1,0 +1,15 @@
+FROM golang:1.22
+
+WORKDIR /app
+
+# Go and C source files
+COPY src/runtime/ src/runtime
+
+# JSON config file
+COPY src/logic/features.json src/logic/features.json
+
+# ML API Server
+EXPOSE 5000
+
+# RUN main.go
+CMD ["go", "run", "src/runtime/go-src/main.go"]
