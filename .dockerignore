@@ -1,0 +1,12 @@
+node_modules
+dist
+build
+.git
+.env
+*.log
+.vscode
+*.swp
+.DS_Store
+__pycache__/
+*.md 
+LICENSE
