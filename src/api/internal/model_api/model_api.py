@@ -15,6 +15,7 @@ from flask import Flask, request, jsonify
 import pickle
 import json
 import numpy as np
+import os
 
 # Load in deciding ML model
 with open('src/ml/models/decider/model.pkl', 'rb') as f:
@@ -63,4 +64,4 @@ def send_prediction():
 
 # Run API server
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False, host='0.0.0.0', port=int(os.environ.get("PORT", 5000)))

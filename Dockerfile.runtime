@@ -15,4 +15,4 @@ COPY src/logic/features.json src/logic/features.json
 EXPOSE 5000
 
 # RUN main.go
-CMD ["go", "run", "src/runtime/go-src/main.go"]             
+CMD ["go", "run", "src/runtime/go-src/main.go"]
