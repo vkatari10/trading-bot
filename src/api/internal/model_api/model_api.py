@@ -60,6 +60,31 @@ def send_prediction():
         if final_pred is None:
             return jsonify({'status': 'none'}), 404
         return jsonify({'prediction': final_pred})
+    
+@app.route('/api/prediction_test', methods=['POST', 'GET'])
+def send_prediction_test():
+    '''
+    This method is identical to the one above but for testing
+    purposes without an ML model to ensure that the server
+    structure works as intended
+    '''
+    global final_pred
+
+    if request.method == 'POST':
+        data = request.get_json()
+
+        features = []
+
+        for i in range(len(data)):
+            features.append(data[str(i)])
+        
+
+        return jsonify({"status": "recieved", "prediction": int(1)})
+
+    elif request.method == 'GET':
+        if final_pred is None:
+            return jsonify({'status': 'none'}), 404
+        return jsonify({'prediction': final_pred})
 
 # Run API server
 if __name__ == '__main__':
