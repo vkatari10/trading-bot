@@ -1,29 +1,31 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
 WORKDIR /app
-
-# Server Implementaion
-COPY src/api/internal/model_api src/api/internal/model_api
-
-# Build, Train, and Dump Model
-COPY train.sh .
-RUN chmod +x train.sh
-RUN ./build.sh
-
-# Serialized ML Model
-COPY src/ml/models/decider/ src/ml/models/decider/
-
-# JSON config file
-COPY src/logic/ src/logic/
 
 # Install Python side requirements
 COPY requirements.txt . 
 RUN pip install -r requirements.txt
 
-# Expose the server port (default is 5000)
+RUN 
+
+# Copy the entire src/ dir
+COPY src/ml src/ml 
+COPY src/ml/data_processing src/ml/data_processing
+COPY src/ml/pipeline.py src/ml/pipeline.py
+COPY src/api/internal/model_api src/api/internal/model_api
+COPY src/api/external/historical_api src/api/external/historical_api
+COPY src/logic/features.json src/logic/features.json
+COPY src/logic/signals.json src/logic/signals.json
+COPY src/ml/training/training.py src/ml/training/training.py 
+
+# Build, Train, and Dump Model
+RUN python3 -m src.ml.pipeline
+
+# Serialized ML Model
+COPY src/ml/models/decider/model.pkl src/ml/models/decider/model.pkl
+
+# Expose the server port (default is 5000 for flask)
 EXPOSE 5000
 
 # Start server  
-COPY server.sh . 
-RUN chmod +x server.sh
-CMD ["./server.sh"]
+CMD ["python3", "-m", "src.api.internal.model_api.model_api"]
