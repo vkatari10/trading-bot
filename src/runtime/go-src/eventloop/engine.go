@@ -9,15 +9,36 @@ import (
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
 
+// Run is the constant running that runs the eventloop if the market is open
+// else puts the program to sleep
 func Run() {
-	go sendEnvironmentData() // send env variables to front end
+	// poll if market open if so go into the event loop else just sleep for like an hour (for now)
+	open, err := api.MarketStatus()
+	if err != nil {
+		go SendPayload(map[string]any{
+			"msg": "ERROR: Could not determine market status",
+		}, logLink)
+		return
+	} // if
 
+	if open {
+		EventLoop()
+	} else {
+		time.Sleep(time.Hour * 17) // market closed sleep until nearing open
+	} // if-else
+} // Run
+
+
+func EventLoop() {
+	
 	thisBurnTime, thisRefreshRate, err := intializeVariables()
 	if err != nil {
 		log.Fatal(err)
 	}
-	thisRunTime := int(450 - thisBurnTime)
+	thisRunTime := int(390 - thisBurnTime)
 	thisTicker := getTicker()
+
+	go sendEnvironmentData() // send env variables to front end
 
 	// COULD move this up before the burn in data to intialize the OHCLV Deltas better 
 	userIndicators, err := engine.InitUserLogic("features.json") // Load user defined technicals
@@ -41,11 +62,17 @@ func Run() {
 		"msg": "STAGE: LIVE",
 	}, logLink)
 
-
-
 	// Main Runtime Loop
 	i := 0
 	for i < thisRunTime {
+
+		open, err := api.MarketStatus()
+		if !open {
+			go SendPayload(map[string]any {
+				"msg" : "UPDATE: Market is closed",
+			}, logLink)
+			return
+		}
 		
 		newQuote, err := api.GetQuote(thisTicker)
 		if err != nil {
@@ -55,7 +82,7 @@ func Run() {
 		} // 
 
 		engine.UpdateOHLCVDeltas(&userIndicators, newQuote)
-		log.Printf("QUOTE: $%.2f\n", newQuote[0])
+		//log.Printf("QUOTE: $%.2f\n", newQuote[0])
 
 		go apiBuf.enqueue(
 			map[string]any{
@@ -67,7 +94,7 @@ func Run() {
 			map[string]any{
 				"msg": "UPDATE: Updated Technicals",
 			}, logLink)
-		log.Println("UPDATE: Updated Technicals")
+		//log.Println("UPDATE: Updated Technicals")
 		
 		// DEBUG for seeing live updates of technicals
 		// for j := range userIndicators.Techs {
@@ -76,7 +103,7 @@ func Run() {
 
 		// Send JSON of features to ML API
 		api.SendData(&userIndicators, thisTicker)
-		log.Println("UPDATE: Sent Features to ML model")
+		//log.Println("UPDATE: Sent Features to ML model")
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Sent New Features to ML API",
@@ -94,21 +121,22 @@ func Run() {
 
 		handlePrediction(apiBuf, pred, thisTicker) // decide if we need to buy or sell
 
-		log.Printf("STAGE: WAIT (%d seconds)\n", thisRefreshRate)
+		//log.Printf("STAGE: WAIT (%d seconds)\n", thisRefreshRate)
 		go apiBuf.enqueue(map[string]any{ 
 			"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", thisRefreshRate),
 		}, logLink)
 
 		// dump whatever we enqueued to the frontend 
 		// issues may arise from using go here bc something could be enqueuing (use wait groups maybe?)
-		go apiBuf.offload(6, 2000) // milliseconds
+		go apiBuf.offload(6, 2000) // items, milliseconds buffer 
 		go sendTechnicalData(userIndicators) // send new technical data
 
+		
 		time.Sleep(time.Duration(thisRefreshRate) * time.Second)
 		i++
 	} // for
 
-	log.Println("STAGE: STOP")
+	//log.Println("STAGE: STOP")
 	go SendPayload(map[string]any{
 		"msg": "STAGE: STOP",
 	}, logLink)
@@ -120,7 +148,7 @@ func BurnIn(burnTime int, ticker string, refresh time.Duration) (arr []float64, 
 	go SendPayload(map[string]any{
 		"msg": "STAGE: BURN IN",
 		}, logLink)
-	log.Println("STAGE: BURN IN")
+	//log.Println("STAGE: BURN IN")
 
 	// stores burn data
 	var burn []float64 = make([]float64, burnTime);

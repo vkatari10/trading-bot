@@ -10,5 +10,7 @@ import (
 )
 
 func main() {
-	eventLoop.Run() 
+	for {
+		eventLoop.Run()
+	} // for
 } // main
