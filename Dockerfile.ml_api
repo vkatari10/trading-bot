@@ -6,17 +6,17 @@ WORKDIR /app
 COPY requirements.txt . 
 RUN pip install -r requirements.txt
 
-RUN 
-
 # Copy the entire src/ dir
-COPY src/ml src/ml 
-COPY src/ml/data_processing src/ml/data_processing
-COPY src/ml/pipeline.py src/ml/pipeline.py
-COPY src/api/internal/model_api src/api/internal/model_api
-COPY src/api/external/historical_api src/api/external/historical_api
-COPY src/logic/features.json src/logic/features.json
-COPY src/logic/signals.json src/logic/signals.json
-COPY src/ml/training/training.py src/ml/training/training.py 
+# COPY src/ml src/ml 
+# COPY src/ml/data_processing src/ml/data_processing
+# COPY src/ml/pipeline.py src/ml/pipeline.py
+# COPY src/api/internal/model_api src/api/internal/model_api
+# COPY src/api/external/historical_api src/api/external/historical_api
+# COPY src/logic/features.json src/logic/features.json
+# COPY src/logic/signals.json src/logic/signals.json
+# COPY src/ml/training/training.py src/ml/training/training.py 
+
+COPY . /app/
 
 # Build, Train, and Dump Model
 RUN python3 -m src.ml.pipeline

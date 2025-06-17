@@ -2,14 +2,7 @@ FROM golang:1.22
 
 WORKDIR /app
 
-# Go and C source files
-COPY src/runtime/go-src src/runtime/go-src
-COPY src/runtime/go-src/api/ src/runtime/go-src/api/
-COPY src/runtime/go-src/engine src/runtime/go-src/engine
-COPY src/runtime/go-src/eventloop src/runtime/go-src/eventloop
-
-# JSON config file
-COPY src/logic/features.json src/logic/features.json
+COPY . /app/
 
 # ML API Server
 EXPOSE 5000
