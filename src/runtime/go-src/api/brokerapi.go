@@ -131,6 +131,35 @@ func getDoubleValue(json map[string]any, key string) (result float64, err error)
 	return result, nil
 } // getDoubleValue
 
+// MarketStatus will return a boolean stating if the market
+// is currently open or not
+func MarketStatus() (bool, error) {
+
+	url := "https://paper-api.alpaca.markets/v2/clock"
+
+	req, _ := http.NewRequest("GET", url, nil)
+
+	req.Header.Add("accept", "application/json")
+	req.Header.Add("APCA-API-KEY-ID", getAlpacaKey())
+	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSecret())
+
+	res, _ := http.DefaultClient.Do(req)
+
+	defer res.Body.Close()
+	body, _ := io.ReadAll(res.Body)
+
+	var data map[string]any;
+
+	json.Unmarshal(body, &data)
+
+	result, ok := data["is_open"].(bool)
+	if !ok {
+		return false, fmt.Errorf("%v", ok)
+	} // if
+
+	return result, nil
+} // marketStatus
+
 // FUTURE --> Add these functions
 /*
 Positions
