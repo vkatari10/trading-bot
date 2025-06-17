@@ -6,11 +6,10 @@ WORKDIR /app
 COPY frontend/package*.json app/
 RUN npm install
 
-# Copy all frontend source code
+
 COPY frontend/ app/
 
-# Expose default React dev server port
 EXPOSE 3000
 
-# Run React dev server
+# Run 
 CMD ["npm", "run", "dev"]
