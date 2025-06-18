@@ -2,13 +2,15 @@ services:
   ml_api:
     build: 
       context: .
-      dockerfile: Dockerfile.ml_api
+      dockerfile: docker/Dockerfile.ml_api
     ports:
       - "5000:5000"
   
   runtime:
     build: 
       context: .
-      dockerfile: Dockerfile.runtime
+      dockerfile: docker/Dockerfile.runtime
     ports:
       - "6000:5000"
+    depends_on:
+      - ml_api
