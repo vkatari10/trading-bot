@@ -1,8 +1,0 @@
-# contains features for ML to train on, check config/features.json for an example
-FEATURE_CONFIG=config/features.json
-
-# contains label logic for ML to recognize buy/sell signals, check config/signals.json
-LABEL_CONFIG=config/signals.json
-
-# stock to train on (Only supports one stock right now)
-TRAIN_TICKER=AAPL

@@ -1,0 +1,27 @@
+# CONFIG FILE for determining MLtraining settings
+
+# contains features for ML to train on, check config/features.json for an example
+FEATURE_CONFIG=features.json
+
+# contains label logic for ML to recognize buy/sell signals, check config/signals.json
+LABEL_CONFIG=signals.json
+
+# stock to train on (Only supports one stock right now)
+TRAIN_TICKER=AAPL
+
+# ====================UNUSED======================
+
+# FUTURE: Type of model to use 
+# ie run a KNN, linear regressor, or others we can support
+TRAIN_MODEL_TYPE=RandomForestClassifier
+
+# FUTURE: model dump name
+# Model dump name, must end with .pkl
+# Will overwrite model with the same name if dumped again
+DUMP_MODEL_NAME=model.pkl
+
+# FUTURE: specific dumped (serialized) model to use at runtime
+# Model name that should be used at runtime
+RUNTIME_MODEL_NAME=model.pkl
+
+
