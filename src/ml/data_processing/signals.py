@@ -6,7 +6,7 @@ Modules Used
 - pandas
 - numpy
 
-Author: Vikas Kataru
+Author: Vikas Katari
 Date: 05/15/2025
 '''
 import pandas as pd
@@ -30,24 +30,22 @@ def crossover(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
     return crosses
 
 
-def above(df: pd.DataFrame, col1: str, col2: str,
-          col_name: str) -> pd.DataFrame:
+def above(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
     '''
     Finds if col1 is above col2, where true the value will be
     1, else 0
     '''
-    df[col_name] = np.where((df[col1] > df[col2]), 1, 0)
-    return df
+    above = np.where((df[col1] > df[col2]), 1, 0)
+    return above
 
 
-def below(df: pd.DataFrame, col1: str, col2: str,
-          col_name: str) -> pd.DataFrame:
+def below(df: pd.DataFrame, col1: str, col2: str) -> pd.Series:
     '''
     Finds if col1 is below col2, where true the value will be
     1, else 0
     '''
-    df[col_name] = np.where((df[col1] > df[col2]), 0, 1)
-    return df
+    below = np.where((df[col1] > df[col2]), 0, 1)
+    return below
 
 def rsi_signal(df: pd.DataFrame, rsi_col: str, col_name: str,
                bottom=30, top=60) -> pd.DataFrame:
