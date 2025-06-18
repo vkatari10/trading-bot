@@ -29,16 +29,12 @@ func InitUserLogic(file string) (UserData, error) {
 } // InitUserLogic
 
 // ParseLogicJSON parses the JSONs files found in src/logic
-func ParseLogicJSON(f string) ([]map[string]any, error) {
-
-	file := "../../../config/"
-
-	file += f
+func ParseLogicJSON(file string) ([]map[string]any, error) {
 
 	jsonData, err := os.ReadFile(file)
 	if err != nil {
-		fmt.Printf("%v <- check\n", err)
-		return nil, err // figure how else to handle this later another way
+		
+		return nil, fmt.Errorf("%v", err) // figure how else to handle this later another way
 	} // if
 
 	var jsonMap []map[string]any
@@ -61,7 +57,10 @@ func LoadIndicators(json []map[string]any) (UserData, error) {
 		OHLCVRaw: [5]float64{},
 	} // UserData
 
-	decideConstructor(&data, json) // load all objects onto array
+	err := decideConstructor(&data, json) // load all objects onto array
+	if err != nil {
+		return data, fmt.Errorf("%v", err)
+	}
 
 	return data, nil
 } // LoadIndicators
@@ -86,25 +85,25 @@ func decideConstructor(data *UserData, json []map[string]any) (error) {
 		if indicator == "EMA" {
 			ema, err := NewEMA(json[i])
 			if err != nil {
-				return fmt.Errorf("construction failed -> object index %d", i)
+				return fmt.Errorf("EMA construction failed -> object index %d -> %v", i, err)
 			} // if
 			data.Objects = append(data.Objects, ema)
 		} else if indicator == "SMA" {
 			sma, err := NewSMA(json[i])
 			if err != nil {
-				return fmt.Errorf("construction failed -> object index %d", i)
+				return fmt.Errorf("SMA construction failed -> object index %d", i)
 			} // if
 			data.Objects = append(data.Objects, sma)
 		} else if indicator == "delta" {
 			delt, err := NewDelta(json[i])
 			if err != nil {
-				return fmt.Errorf("construction failed -> object index %d", i)
+				return fmt.Errorf("Delta construction failed -> object index %d", i)
 			} // if
 			data.Objects = append(data.Objects, delt)
 		} else if indicator == "diff" {
 			diff, err := NewDiff(json[i])
 			if err != nil {
-				return fmt.Errorf("construction failed -> object index %d", i)
+				return fmt.Errorf("Diff construction failed -> object index %d", i)
 			} // if
 			data.Objects = append(data.Objects, diff)
 		} else {

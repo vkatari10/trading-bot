@@ -24,7 +24,7 @@ import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
 import src.ml.data_processing.signals as sig
 
-load_dotenv('.ml_config')
+load_dotenv('.ml_env')
 
 
 def process_data(df: pd.DataFrame) -> pd.DataFrame:

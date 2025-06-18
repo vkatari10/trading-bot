@@ -15,14 +15,16 @@ func NewEMA(json map[string]any) (*EMA, error) {
 
 	win_int := int(window)
 
-	smoothing, ok := json["smoothing"].(int)
+	smoothing, ok := json["smoothing"].(float64)
 	if !ok {
 		return nil, fmt.Errorf("smoothing field should be an int")
 	} // if
 
+	smoothInt := int(smoothing)
+
 	return &EMA{
 		Window: win_int, 
-		Smoothing: smoothing,
+		Smoothing: smoothInt,
 		Data: nil, 
 		Alpha: 0,
 	}, nil

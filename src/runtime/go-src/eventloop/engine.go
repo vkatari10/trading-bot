@@ -41,7 +41,7 @@ func EventLoop() {
 	go sendEnvironmentData() // send env variables to front end
 
 	// COULD move this up before the burn in data to intialize the OHCLV Deltas better 
-	userIndicators, err := engine.InitUserLogic("features.json") // Load user defined technicals
+	userIndicators, err := engine.InitUserLogic("../../../config/features.json") // Load user defined technicals
 	if err != nil {
 		// log.Fatal("ERROR: could not parse user defined JSON in src/logic properly")
 		go SendPayload(map[string]any{

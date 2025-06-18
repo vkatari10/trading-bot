@@ -7,10 +7,9 @@ package engine
 #cgo CFLAGS: -I../../c-src/include
 #cgo LDFLAGS: -L../../c-src -llive_data -lm
 */
+// import "C"
 
 //import "fmt"
-
-// need to do something to export this info for the bot API to expose to the frontend
 
 // LoadBurnData loads the burn-in data into every technical 
 // indicator and calls the Load() method for each indicator
