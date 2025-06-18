@@ -5,6 +5,7 @@ Also adds technical indicators and buy/sell signals.
 Modules used
 - pandas
 - yfinance
+- os/dotenv
 
 Author: Vikas Katari
 Date: 05/03/2025
@@ -14,12 +15,16 @@ Date: 05/03/2025
 import pandas as pd
 import json
 from typing import Dict, Any, List
+import os 
+from dotenv import load_dotenv
 
 
 # Python technical indicators
 import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
 import src.ml.data_processing.signals as sig
+
+load_dotenv('.ml_config')
 
 
 def process_data(df: pd.DataFrame) -> pd.DataFrame:
@@ -38,13 +43,15 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
     '''
 
     df.dropna(inplace=True)
-    computing_col = "Close"
 
+    feature_file = "config/" + os.getenv("FEATURE_CONFIG")
+    label_config = "config/" + os.getenv("LABEL_CONFIG")
+    
     # User defined features
-    with open("src/logic/features.json") as f:
+    with open(feature_file) as f:
         features = json.load(f)
 
-    with open("src/logic/signals.json") as f:
+    with open(label_config) as f:
         signals = json.load(f)
 
     # print(features)

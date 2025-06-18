@@ -31,12 +31,13 @@ func InitUserLogic(file string) (UserData, error) {
 // ParseLogicJSON parses the JSONs files found in src/logic
 func ParseLogicJSON(f string) ([]map[string]any, error) {
 
-	file := "../../logic/"
+	file := "../../../config/"
 
 	file += f
 
 	jsonData, err := os.ReadFile(file)
 	if err != nil {
+		fmt.Printf("%v <- check\n", err)
 		return nil, err // figure how else to handle this later another way
 	} // if
 
