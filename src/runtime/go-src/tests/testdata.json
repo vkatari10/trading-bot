@@ -1,8 +1,8 @@
 [
     {
         "tech": "SMA",
-        "window": 25,
-        "name": "SMA_25"
+        "window": 20,
+        "name": "SMA_20"
     },
     {
         "tech": "EMA",
@@ -10,4 +10,4 @@
         "name": "EMA_20",
         "smoothing": 2
     }
-]
+]   

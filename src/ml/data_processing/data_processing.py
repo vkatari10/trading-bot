@@ -44,8 +44,8 @@ def process_data(df: pd.DataFrame) -> pd.DataFrame:
 
     df.dropna(inplace=True)
 
-    feature_file = "config/" + os.getenv("FEATURE_CONFIG")
-    label_config = "config/" + os.getenv("LABEL_CONFIG")
+    feature_file = "config/" + os.getenv("FEATURE_CONFIG_FILE")
+    label_config = "config/" + os.getenv("LABEL_CONFIG_FILE")
     
     # User defined features
     with open(feature_file) as f:

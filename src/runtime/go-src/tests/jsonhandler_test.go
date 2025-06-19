@@ -64,7 +64,7 @@ func TestLoadIndicators(t *testing.T) {
 		t.Errorf("TestLoadIndicators failed with error %v", err)
 	} // if 
 
-	want_colNames := map[string]int{"SMA_25": 0, "EMA_20": 1}
+	want_colNames := map[string]int{"SMA_20": 0, "EMA_20": 1}
 	
 	if !reflect.DeepEqual(get.ColNames, want_colNames) {
 		t.Error("TestLoadIndicators colnames are incorrect")

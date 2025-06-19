@@ -15,14 +15,19 @@ from flask import Flask, request, jsonify
 import pickle
 import json
 import numpy as np
+import os 
+from dotenv import load_dotenv
+
+load_dotenv('.ml_env')
+
+features_file = "config/" + os.getenv("FEATURE_CONFIG_FILE")
 
 # Load in deciding ML model
 with open('src/ml/models/decider/model.pkl', 'rb') as f:
     model = pickle.load(f)
 
-with open('src/logic/features.json') as f:
+with open(features_file) as f:
     features = json.load(f)
-
 
 app = Flask(__name__)
 # Add find free socket method here

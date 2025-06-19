@@ -21,7 +21,7 @@ import src.ml.data_processing.data_processing as dp
 import src.ml.training.training as train
 
 training_ticker = os.getenv("TRAIN_TICKER")
-label_file = os.getenv("LABEL_CONFIG")
+label_file = os.getenv("LABEL_CONFIG_FILE")
 
 df = dp.get_df(training_ticker) # DO NOT MODIFY FROM BELOW
 
