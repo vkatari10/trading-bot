@@ -3,7 +3,7 @@ package tests
 import (
 	"fmt"
 	"testing"
-
+	"math"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
 
@@ -23,11 +23,14 @@ func TestLoadBurnData(t *testing.T) {
     60.22, 78.49, 53.38, 90.16, 71.02, 66.44, 55.87, 83.33, 72.58, 99.44,
 	56.56}
 
-	engine.LoadBurnData(&userData, testBurnData)
+	err = engine.LoadBurnData(&userData, testBurnData)
+	if err != nil {
+		t.Errorf("TestLoadBurnData failed with error %v", err)
+	} // if
 
 	expected := []float64{}
 
-	expected = append(expected, 73.09) // SMA
+	expected = append(expected, 73.092) // SMA
 	expected = append(expected, 72.68) // EMA
 
 
@@ -35,12 +38,12 @@ func TestLoadBurnData(t *testing.T) {
 		switch v := ind.(type) {
 		case *engine.SMA:
 			fmt.Println(v.Data)
-			err := checkEquivalent(expected[i], v.Data[0])
+			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestLoadBurnData failed for object index %d for type %s (%v)", i, "SMA", err)
 			}
 		case *engine.EMA:
-			err := checkEquivalent(expected[i], v.Data[0])
+			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestLoadBurnData fialed for object index %d for type %s (%v)", i, "EMA", err)
 			}
@@ -53,10 +56,13 @@ func TestLoadBurnData(t *testing.T) {
 // checkEquivalent is a helper method that helps
 // determine if 
 func checkEquivalent(want float64, got float64) error {
-
 	if want != got {
 		return fmt.Errorf("Unequal values (want %.2f != got %.2f)", want, got)
 	} // if
-
 	return nil 
 } // checkEquivalent
+
+// floatsEqual checks if two floats are nearly equal 
+func floatsEqual(a, b, epsilon float64) bool {
+    return math.Abs(a-b) <= epsilon
+} // floatsEqual

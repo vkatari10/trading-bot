@@ -24,10 +24,10 @@ func Run() {
 	if open {
 		EventLoop()
 	} else {
-		time.Sleep(time.Hour * 17) // market closed sleep until nearing open
+		fmt.Println("market closed, checking in one (1) hour")
+		time.Sleep(time.Hour * 1) // market closed sleep until nearing open
 	} // if-else
 } // Run
-
 
 func EventLoop() {
 	

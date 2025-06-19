@@ -1,5 +1,7 @@
 package engine
 
+import "fmt"
+
 // this file contains methods to compute technicals in real time
 
 // To Connect To C library in future (use import C)
@@ -11,9 +13,9 @@ package engine
 
 //import "fmt"
 
-// LoadBurnData loads the burn-in data into every technical 
+// LoadBurnData loads the burn-in data into every technical
 // indicator and calls the Load() method for each indicator
-func LoadBurnData(obj *UserData, burn []float64) {
+func LoadBurnData(obj *UserData, burn []float64) error {
 
 	// TODO: ADD go routines since burn is always read only (no mutex needed)
 
@@ -21,10 +23,16 @@ func LoadBurnData(obj *UserData, burn []float64) {
 		switch v := ind.(type) {
 		case *SMA:
 			v.Data = burn // put burn data as the SMA's data
-			v.Load() // initialize SMA values based on burn data
+			err := v.Load() // initialize SMA values based on burn data
+			if err != nil {
+				return fmt.Errorf("%v", err)
+			} // if
 		case *EMA:
 			v.Data = burn	
-			v.Load()
+			err := v.Load()
+			if err != nil {
+				return fmt.Errorf("%v", err)
+			} // if
 		case *Diff:
 			v.Load(obj)
 		case *Delta:
@@ -33,6 +41,8 @@ func LoadBurnData(obj *UserData, burn []float64) {
 			v = nil
 		} // swtich
 	} // for
+
+	return nil 
 } // AssertType
 
 // UpdateTechnicals updates the current technical indicators

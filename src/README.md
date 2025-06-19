@@ -1,6 +1,6 @@
 # Trading Bot Source Files
 
-The `src/` folder contains the backend logic of the trading bot and its runtime environment.  
+The `src/` folder contains the backend logic of the trading bot and its runtime environment.<br>  
 
 A brief overview:
 ## Overview of `src/` Structure
@@ -14,14 +14,9 @@ This platform is a modular, ML-powered trading system built for strategy experim
 - `backtesting/`
   - Strategy sandbox using `Backtrader` for testing indicator-based strategies on historical data
   - Future: will integrate ML models for simulated validation
-- `logic/`
-  - Central config layer (JSON) that defines:
-    - Technical indicators and feature sets
-    - Labeling logic
-    - Shared across training (`ml/`) and live execution (`runtime/`)
 - `ml/`
   - Full training pipeline that:
-    - Loads config from `/logic`
+    - Loads config files from `./config`
     - Uses `/api` to source historical price data
     - Engineers features, trains models, and serializes them for deployment
   - Model-agnostic and designed for plug-and-play extensibility

@@ -58,3 +58,18 @@ func (delta *Delta) GetNew(data *UserData) {
 	} // if-else
 
 } // GetNew (Delta)
+
+// Load method for Delta objects, matches their column
+// indexes to the UserData.Objects slice
+func (delta *Delta) Load(data *UserData) (error) {
+	// Match the col index to the object array index
+	delta.Col1Index = data.ColNames[delta.Col1]
+
+	if delta.Col2 != "" { // if col2 isn't null in JSON
+		delta.Col2Index = data.ColNames[delta.Col2]
+	} else {  // if col2 was null in JSON
+		delta.Col2Index = -1
+	} // if-else
+
+	return nil
+} // Load (Delta)

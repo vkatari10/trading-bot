@@ -40,45 +40,24 @@ func (ema *EMA) Load() (error) {
 		return fmt.Errorf("window larger than array size")
 	} // if
 
-	sum := 0.0
-
-	for i := range window {
-		sum += ema.Data[i]
-	} // for
-
-	final_len := originalLength - window + 1
-
+	first_ema := findSMA(ema.Data, window)
 	alpha := float64((ema.Smoothing) / (1 + window))
+	ema.Alpha = alpha
 
-	var emas []float64 = make([]float64, final_len)
+	emas := make([]float64, 0)
+	emas = append(emas, first_ema)
 
-	old_ema := sum / float64(window)
-
-	emas = append(emas, old_ema)
-
-	for i := 0; i <= originalLength; i++ {
-		new_ema := (ema.Data[i] * alpha) + ((1 - alpha) * old_ema)
-		emas[i-window+1] = new_ema
-		old_ema = new_ema
+	for i := window; i <= originalLength - window; i++ {
+		new_ema := (ema.Data[i] * alpha) + ((1 - alpha) * first_ema)
+		emas = append(emas, new_ema)
+		first_ema = new_ema
 	} // for
+
+	ema.Data = emas
+	fmt.Println(emas)
 
 	return nil
 } // Load (EMA)	
-
-// Load method for Delta objects, matches their column
-// indexes to the UserData.Objects slice
-func (delta *Delta) Load(data *UserData) (error) {
-	// Match the col index to the object array index
-	delta.Col1Index = data.ColNames[delta.Col1]
-
-	if delta.Col2 != "" { // if col2 isn't null in JSON
-		delta.Col2Index = data.ColNames[delta.Col2]
-	} else {  // if col2 was null in JSON
-		delta.Col2Index = -1
-	} // if-else
-
-	return nil
-} // Load (Delta)
 
 // GetNew gets the new EMA given a new price and 
 // appends it to the EMA data Field
@@ -110,3 +89,14 @@ func (ema *EMA) GetData(index int) (float64, error) {
 		return ema.Data[index], nil
 } // GetData (EMA)
 
+// findSMA intializes the EMA calculation by finding the first SMA value
+func findSMA(prices []float64, window int) float64 {
+
+	var sum float64
+
+	for i := range prices {
+		sum += prices[i]
+	} // for
+
+	return float64(sum) / float64(window)
+} // findSMA
