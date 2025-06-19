@@ -30,34 +30,34 @@ func NewEMA(json map[string]any) (*EMA, error) {
 	}, nil
 } // NewEMA
 
-// Load Loads initial EMA values onto the Data field of the EMA struct
-func (ema *EMA) Load() (error) {
-
+func (ema *EMA) Load() error {
 	originalLength := len(ema.Data)
 	window := ema.Window
 
 	if window > originalLength {
 		return fmt.Errorf("window larger than array size")
-	} // if
+	} // for
 
-	first_ema := findSMA(ema.Data, window)
-	alpha := float64((ema.Smoothing) / (1 + window))
+	firstEMA := findSMA(ema.Data, window)
+
+	alpha := float64(ema.Smoothing) / float64(1+window)
 	ema.Alpha = alpha
 
-	emas := make([]float64, 0)
-	emas = append(emas, first_ema)
+	emas := make([]float64, 0, originalLength-window+1)
+	emas = append(emas, firstEMA)
 
-	for i := window; i <= originalLength - window; i++ {
-		new_ema := (ema.Data[i] * alpha) + ((1 - alpha) * first_ema)
-		emas = append(emas, new_ema)
-		first_ema = new_ema
+	previousEMA := firstEMA
+	for i := window; i < originalLength; i++ {
+		price := ema.Data[i]
+		newEMA := (price * alpha) + (previousEMA * (1 - alpha))
+		emas = append(emas, newEMA)
+		previousEMA = newEMA
 	} // for
 
 	ema.Data = emas
-	fmt.Println(emas)
-
 	return nil
-} // Load (EMA)	
+} // Load (EMA)
+
 
 // GetNew gets the new EMA given a new price and 
 // appends it to the EMA data Field
@@ -94,7 +94,7 @@ func findSMA(prices []float64, window int) float64 {
 
 	var sum float64
 
-	for i := range prices {
+	for i := range window {
 		sum += prices[i]
 	} // for
 

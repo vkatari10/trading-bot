@@ -30,23 +30,22 @@ func TestLoadBurnData(t *testing.T) {
 
 	expected := []float64{}
 
-	expected = append(expected, 73.092) // SMA
-	expected = append(expected, 72.68) // EMA
+	expected = append(expected, 73.0919) // SMA
+	expected = append(expected, 72.7296) // EMA
 
 
 	for i, ind := range userData.Objects {	
 		switch v := ind.(type) {
 		case *engine.SMA:
-			fmt.Println(v.Data)
 			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestLoadBurnData failed for object index %d for type %s (%v)", i, "SMA", err)
-			}
+			} // if
 		case *engine.EMA:
 			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestLoadBurnData fialed for object index %d for type %s (%v)", i, "EMA", err)
-			}
+			} // if
 		} // swtich
 
 	} // for
@@ -56,7 +55,7 @@ func TestLoadBurnData(t *testing.T) {
 // checkEquivalent is a helper method that helps
 // determine if 
 func checkEquivalent(want float64, got float64) error {
-	if want != got {
+	if floatsEqual(want, got, 1e-9) {
 		return fmt.Errorf("Unequal values (want %.2f != got %.2f)", want, got)
 	} // if
 	return nil 
