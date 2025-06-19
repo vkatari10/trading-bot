@@ -1,10 +1,10 @@
 # CONFIG FILE for determining MLtraining settings
 
 # contains features for ML to train on, check config/features.json for an example
-FEATURE_CONFIG=features.json
+FEATURE_CONFIG_FILE=features.json
 
 # contains label logic for ML to recognize buy/sell signals, check config/signals.json
-LABEL_CONFIG=signals.json
+LABEL_CONFIG_FILE=signals.json
 
 # stock to train on (Only supports one stock right now)
 TRAIN_TICKER=AAPL
