@@ -8,23 +8,20 @@ This project is a modular, end-to-end trading platform that combines machine lea
 - User Defined Trading Logic
 - Monitoring Dashboard
 - Modular structure
-- Hot-swapping ML models at runtime
 - Ability to Support Low to Mid Frequency Trading
 
 ## Tech Stack
 This project uses `Go` and `Python` to split the runtime engine and ML training repsonsibilities
-- Python was used to train ML models due to its extensive library ecosystem
-- Go was used as the runtime engine due to its low latency
+- `Python` is used for all things ML
+- `Go` is used for the runtime 
+= `Next` is used for the front end dashboard
 
-### Why Go?
-We could use `Python` or even `C++` as the runtime engine, but:
-- `Python` is intreperted and has GIL overhead
+### Why Use Go?
+`Python` or `C++` could have been used for runtime but:
+- `Python` is intreperted, and also has GIL overhead2
 - `C++` has higher complexity than `Go`, especially for multithreading and API calls
 
-`Go` is a well balanced choice between enjoying low-level performance while allowing fast iteration.<br>
-
-Likewise because this is a Mid-Freq Trading System there is an concern of overehead, but not to the extend of High-Freq Trading Systems which is why even with a Garbage Collector Overhead, `Go` is still an acceptable choice.
-
+`Go` serves as a fair trade off between performance and complexity, allowing for fast iteration of low latency code.<br>
 
 <!-- ## Architecture
 
@@ -61,7 +58,7 @@ The following diagram highlights the modular back end architecture.
 
 ## Limitations
 
-There are several limitaions with this trading bot, however the most signficant are listed below.<br>
+There are several limitaions with this trading bot, however the most significant are listed below.<br>
 - Ingestion of delayed data, up to 1-15 minutes
 - Data refresh rates of 1 minute, limiting predictions to every minute
 - Burn-in period during live execution (~30 minutes)
@@ -72,6 +69,24 @@ In order to make and view trades you will need an Alpaca API account. The API ke
 
 Required packages are listed in the requirements.txt, those can be stored in a venv directory by calling `python -m venv venv` from the top level directory and then installed by calling `pip install -r requirememts.txt`. There is a provided script to activate the virtual environment by calling `source env.sh`.
 
-## Notes
+<!-- 
+To use this program you will need to follow these steps
+- Set up market data and broker API
+  - [Register](https://app.alpaca.markets/account/login) for an Alpaca Account (Free)
+  - Once signed in there will be both API keys and an API secret 
+  - Copy those into `src/runtime/go-src/.env.example`
+  - Rename `.env.example` to `.env` 
+- Create the virtual environment for `Python` (Python3)
+  - If on bash shell run these commands
+    - `python3 -m venv venv` (Creates the virtual environment folder)
+    - `pip install -r requirements.txt` (Install Python dependenciesz)
+    - `source ./scripts/env.sh` (Shorthand to start the virtual environment)
+- Config
+- Build the docker image  
 
-To see a current list of the WIP efforts check the `TODO.md`, and to see the version histories of this repo chceck the `CHANGELOG.md`.
+
+-->
+
+## Notes
+- [CHANGELOG](docs/CHANGELOG.md)
+- [TODO](docs/TODO.md)
