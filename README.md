@@ -46,7 +46,7 @@ You simply define your own JSON based features and labels (technical indicators)
 
 The following diagram highlights what is happening in the background.<br>
 
-![Architecture](docs/images/TradingPlatformDiagram2.svg)
+![Architecture](docs/images/TradingPlatformDiagram3.svg)
 
 ### Why this design?
 - ML and runtime are completely seperated but unified under a single `JSON`
