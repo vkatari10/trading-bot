@@ -32,31 +32,31 @@ The majority of this project was written using `Go` for live execution and `Pyth
 ### Why Use Go?
 You might be wondering why `Go` was used for this project and not `Python` or `C++` as the runtime engine.<br>
 
-Well, since this project is intended to used for both low and mid frequency trading:
+Well, since this project is intended to be used for both low and mid frequency trading:
 - `Python` is interpreted and has GIL overhead
 - `C++` is too complex (for this project), and complicates API calls and multithreading
 
 `Go` served as a fair trade off between performance and complexity, allowing for fast iteration while still providing low latency code.<br>
 
-<!-- ## Architecture
+## Architecture
 
-The following diagram highlights the modular back end architecture.
+The simplest way to describe this architecture is config first<br>
 
-![Architecture](docs/images/Architecture_diagram2.svg)
+You simply define your own JSON based features and labels (technical indicators) and the environment variables in .env, the platform takes into account at training and runtime what you wanted making it far easier to test.<br>
 
-### Legend
+The following diagram highlights what is happening in the background.<br>
 
-#### Box Colors
-- Golang (Cyan)
-- Python (Blue)
-- C (Gray)
+![Architecture](docs/images/TradingPlatformDiagram.svg)
 
-#### Box Borders 
-- ML Pipeline (Pink)
-- APIs (Red)
-- Runtime logic (Orange)
-
--->
+### Why this design?
+- ML and runtime are completely seperated but unified under a single `JSON`
+  - think of the `JSON` config as a contract between the ML pipeline and the runtime engine where they agree upon using the same features so there is no confusion about what needs to be computed
+- Decoupled by language
+  - Anything ML is done in python, and anything runtime is done in `Go`
+  - This makes developing each indiviual component easier and less prone to conflict
+- ML API server
+  - this provides the bridge between `Go` and the ML model
+  - This allows for real time inference as `Go` gives the data, and `Go` gets back a prediction
     
 ## Future Additions
 - General 
@@ -105,6 +105,7 @@ The most significant limitations of this platform are
 - Burn-in period during live execution 
   - This is caused by a current lack of market data available after hours, so using the same technical indicator values from market close at market open could lead to large jumps
   - Pair this with an ML model, it could lead to unwanted predictions or trades, so as of now burn-in is required at live execution to initialize technical indicator values for the sake of ML inference
+- Lack of support for higher frequency trading (`<60` seconds refresh rates)
   - This again is another issue with `Alpaca` free tier since data only updates once every minute, unless you have access to higher frequency data
   - But also caused by the `YFinance` API, used for ML training, only goes down to bars of 1 minute for historical stock data
   - Therefore it is a good idea not to go below `60` seconds for the refresh rate for the runtime engine unless 
@@ -119,6 +120,8 @@ The most significant limitations of this platform are
       - So be careful!
 
 ## Notes
-- [CHANGELOG](docs/CHANGELOG.md)
-- [TODO](docs/TODO.md)
-- [LICENSE](LICENSE)
+- [CHANGELOG](docs/CHANGELOG.md) - Version history 
+- [TODO](docs/TODO.md) - List of current efforts and future updates
+- [LICENSE](LICENSE) - License info 
+
+*This platform is for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses*

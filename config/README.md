@@ -1,4 +1,4 @@
-# Logic
+# Configuration
 
 This folder contains JSONs that the ML training pipeline relies on along with the runtime engine.
 
