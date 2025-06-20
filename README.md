@@ -46,13 +46,13 @@ You simply define your own JSON based features and labels (technical indicators)
 
 The following diagram highlights what is happening in the background.<br>
 
-![Architecture](docs/images/TradingPlatformDiagram.svg)
+![Architecture](docs/images/TradingPlatformDiagram2.svg)
 
 ### Why this design?
 - ML and runtime are completely seperated but unified under a single `JSON`
   - think of the `JSON` config as a contract between the ML pipeline and the runtime engine where they agree upon using the same features so there is no confusion about what needs to be computed
 - Decoupled by language
-  - Anything ML is done in python, and anything runtime is done in `Go`
+  - Anything ML is done in `Python`, and anything runtime is done in `Go`
   - This makes developing each indiviual component easier and less prone to conflict
 - ML API server
   - this provides the bridge between `Go` and the ML model
@@ -118,6 +118,12 @@ The most significant limitations of this platform are
       - Or your ML model was not trained on such high frequencies
       - Causing poor performance
       - So be careful!
+
+## Testing
+
+All `Python` based tests are contained in `./tests/` and all `Go` based tests are located in `./src/runtime/go-src/tests`.<br>
+
+You can call `./scripts/tests/` from the root to run both `Python` and `Go` tests.
 
 ## Notes
 - [CHANGELOG](docs/CHANGELOG.md) - Version history 
