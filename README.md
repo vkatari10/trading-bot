@@ -1,30 +1,30 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# Modular ML Sandbox for Low/Mid-Frequency Trading
+# ML Based Low/Mid-Frequency Trading Testing and Live Execution Sandbox
 
 **Don't be fooled by the repo name, this started as a trading bot, but it turned into something more** 
 
-Now this project aims to be a fully modular, configurable ML sandbox designed for low- to mid-frequency traders.
+Now this project aims to be a fully modular, configurable ML sandbox designed for low/mid frequency traders.
 
-It enables users to train, backtest, and run custom trading strategies from a single, extensible platform. A configuration-first approach powered by JSON files and plug-and-play architecture makes it easy to experiment with a wide variety of strategies without ever having to change any underlying core logic. Whether you’re testing signals, tuning models, or switching indicators, the platform is built to help you find what works.
+This allows users to train, backtest, and run custom trading strategies from a single, extensible platform. A configuration-first approach powered by `JSON` and `.env` files provides a plug-and-play architecture to easily experiment with a wide variety of strategies without every having to touch any of the underlying code. Whether you are testing signals, training ML models, or trying to maximize returns, this platform is built to help you search for what works. 
 
 ## Why its different
 - Vast Configuration 
 	- `JSONs` as the single source of truth for ML training AND runtime
-	- Settings to get your own strategy down (see `.env.example`!)
+	- Extensive environmental settings ([.env](.env.example))
 - Easy Adaptability
-	- Need a new technical indicator? Adding a new one doesn't require an entirely new codebase!
+	- Need a new technical indicator? Adding a new one only requires a couple new methods. 
 	- Need to test a ML model that updates every second instead of every hour? This platform allows you do seamlessly switch from low to mid frequency testing
 - Live execution 
-	- Run your own models at runtime. Just sign up for an `Alpaca` account, its free!
-	- You could even use real money (don't recommend)
-- Other cool features
+	- Run your own models at runtime. Just sign up for an `Alpaca` account
+	- You could even use real money with your `Alpaca` account if desired. 
+- Other features
 	- Monitoring Dashboard -- bootstrapped using `Next` the runtime engine exposes its own API to expose real-time data and a log of its actions
 - Future Additions
-	- Custom ML backtesting engine -- perfect for testing your strategy on historical data
-	- Model selection -- chose your own model provided by `scikit-learn` to fit your needs
-	- Multiple stock tracking and training -- ability to train and trade on multiple stocks 
-	- More technical indicators - adding them is simple, doing the math for them is hard
+	- Custom ML backtesting engine: perfect for testing your strategy on historical data
+	- Model selection: chose your own model provided by `scikit-learn` to fit your needs
+	- Multiple stock tracking and training: ability to train and trade on multiple stocks 
+	- More technical indicators: adding them is quite simple thanks to a modular structure
 
 ## Tech Stack
 The majority of this project was written using `Go` for live execution and `Python` for anything ML. There is also a `Next` based dashboard that monitors and logs the runtime engine in real time. 
@@ -46,16 +46,16 @@ You simply define your own JSON based features and labels (technical indicators)
 
 The following diagram highlights what is happening in the background.<br>
 
-![Architecture](docs/images/TradingPlatformDiagram3.svg)
+![Architecture](docs/images/TradingPlatformDiagram4.svg)
 
 ### Why this design?
 - ML and runtime are completely seperated but unified under a single `JSON`
-  - think of the `JSON` config as a contract between the ML pipeline and the runtime engine where they agree upon using the same features so there is no confusion about what needs to be computed
+  - Think of the `JSON` config as a contract between the ML pipeline and the runtime engine where they agree upon using the same features so there is no confusion about what needs to be computed
 - Decoupled by language
   - Anything ML is done in `Python`, and anything runtime is done in `Go`
   - This makes developing each indiviual component easier and less prone to conflict
 - ML API server
-  - this provides the bridge between `Go` and the ML model
+  - This provides the bridge between `Go` and the ML model
   - This allows for real time inference as `Go` gives the data, and `Go` gets back a prediction
     
 ## Future Additions
@@ -72,7 +72,7 @@ The following diagram highlights what is happening in the background.<br>
 - Runtime
   - Be able to train and track multiple stocks at once
 
-## How to Run
+## Setup
 
 To use this program you will need to follow these steps
 - Clone this repository

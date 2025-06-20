@@ -28,7 +28,11 @@ The goal of this version was to improve the features given to the ML models incl
 - Refactored `src/runtime/go-src` to improve modularity of `Go` packages  
 
 ## [WIP]
+Complete<br>
+- Added dockerfiles, .dockerignore
+- Unified all environment settings to be contained in a single `.env` file 
+- Improved the frontend styling
+- Increased the amount of settings, options with the `.env` file
 In Progress<br>
 - Continue refactoring `src/runtime/go-src`, especially using generic methods to avoid repetitive code
 - Add Custom backtesting engine in `Python`
-- Continue Improving the frontend styling
