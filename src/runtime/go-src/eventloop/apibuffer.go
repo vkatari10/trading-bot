@@ -16,13 +16,13 @@ var (
 	initialSize = 30
 )
 
-// DataStream contains a queue implmentation to send API JSONs
+// APIBuffer contains a queue implmentation to send API JSONs
 // to the frontend
 type APIBuffer struct {
 	Data	[]map[string]any
 	Links	[]string
 	mu 		sync.Mutex
-} // DataStream	
+} // APIBuffer
 
 func newAPIBuffer() *APIBuffer {
 	return &APIBuffer{
@@ -38,7 +38,7 @@ func (queue *APIBuffer) enqueue(json map[string]any, link string) {
 	if cap(queue.Data) > 2 * initialSize {
 		queue.Data = copySlice(queue.Data)
 		queue.Links = copyLinks(queue.Links)
-	}
+	} // if
 	queue.Data = append(queue.Data, json)
 	queue.Links = append(queue.Links, link)	
 } // enqueue 

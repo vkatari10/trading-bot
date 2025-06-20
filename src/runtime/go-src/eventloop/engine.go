@@ -67,6 +67,12 @@ func EventLoop() {
 	for i < thisRunTime {
 
 		open, err := api.MarketStatus()
+		if err != nil {
+			go SendPayload(map[string]any{
+				"msg": "STAGE: STOP (market closed)",
+			}, logLink)
+			return
+		}
 		
 		if !open {
 			go SendPayload(map[string]any {

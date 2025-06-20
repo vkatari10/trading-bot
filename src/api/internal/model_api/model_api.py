@@ -18,7 +18,7 @@ import numpy as np
 import os 
 from dotenv import load_dotenv
 
-load_dotenv('.ml_env')
+load_dotenv('.env')
 
 features_file = "config/" + os.getenv("FEATURE_CONFIG_FILE")
 

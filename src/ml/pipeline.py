@@ -12,7 +12,7 @@ import json
 import os   
 from dotenv import load_dotenv
 
-load_dotenv('.ml_env')
+load_dotenv('.env')
 
 # to process dataframes
 import src.ml.data_processing.data_processing as dp

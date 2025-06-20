@@ -20,10 +20,13 @@ var (
 	dataLink string
 	envLink string
 	brokerLink string
+
+	featuresFile string
 )
 
 func init() {
-	godotenv.Load(".env")
+	godotenv.Load("../../../.env")
+	godotenv.Load("../../../.ml_env")
 	ticker = os.Getenv("TICKER")
 	refreshRate = os.Getenv("REFRESH_RATE")
 	burnWindow = os.Getenv("BURN_WINDOW")
@@ -32,6 +35,8 @@ func init() {
 	dataLink = os.Getenv("DATA_LINK")
 	envLink = os.Getenv("ENV_LINK")
 	brokerLink = os.Getenv("BROKER_LINK")
+
+	featuresFile = os.Getenv("FEATURE_CONFIG_FILE")
 } // init()
 
 func getRefreshRate() (time.Duration, error) {
@@ -53,3 +58,7 @@ func getBurnWindow() (int, error) {
 	}
 	return period, nil
 } // getBurnWindow
+
+func GetFeatureConfigFile() string {
+	return featuresFile
+} // getMLFeatureFile
