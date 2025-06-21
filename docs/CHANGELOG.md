@@ -33,6 +33,8 @@ Complete<br>
 - Unified all environment settings to be contained in a single `.env` file 
 - Improved the frontend styling
 - Increased the amount of settings, options with the `.env` file
-In Progress<br>
+
+In Progress
 - Continue refactoring `src/runtime/go-src`, especially using generic methods to avoid repetitive code
 - Add Custom backtesting engine in `Python`
+    

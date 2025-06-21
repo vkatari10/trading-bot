@@ -29,7 +29,7 @@ func init() {
 	godotenv.Load("../../../.ml_env")
 	ticker = os.Getenv("TICKER")
 	refreshRate = os.Getenv("REFRESH_RATE")
-	burnWindow = os.Getenv("BURN_WINDOW")
+	burnWindow = os.Getenv("BURN_IN_WINDOW_TIME")
 
 	logLink = os.Getenv("LOG_LINK")
 	dataLink = os.Getenv("DATA_LINK")

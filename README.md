@@ -1,45 +1,46 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# ML Based Low/Mid-Frequency Trading Testing and Live Execution Sandbox
+# BotBuilder – A ML Based Trading Bot Sandbox 
 
-**Don't be fooled by the repo name, this started as a trading bot, but it turned into something more** 
+A configurable ML Sandbox to train, backtest, and run in real time custom Low/Mid Frequency Trading Bots via simple `JSON` configurations.  
 
-Now this project aims to be a fully modular, configurable ML sandbox designed for low/mid frequency traders.
+Thanks to a modular approach, configurable `JSON` files allow easily change features and labelling logic for training ML models, and allows the user to quickly expereiment with a wide variety of technical indicators without ever having to touch any of the underlying code. Whether you are looking to run a trained model live, find the best strategy, or trying to maximize returns, this sandbox allows you to search for what works. 
 
-This allows users to train, backtest, and run custom trading strategies from a single, extensible platform. A configuration-first approach powered by `JSON` and `.env` files provides a plug-and-play architecture to easily experiment with a wide variety of strategies without every having to touch any of the underlying code. Whether you are testing signals, training ML models, or trying to maximize returns, this platform is built to help you search for what works. 
-
-## Why its different
-- Vast Configuration 
-	- `JSONs` as the single source of truth for ML training AND runtime
-	- Extensive environmental settings ([.env](.env.example))
-- Easy Adaptability
-	- Need a new technical indicator? Adding a new one only requires a couple new methods. 
-	- Need to test a ML model that updates every second instead of every hour? This platform allows you do seamlessly switch from low to mid frequency testing
-- Live execution 
-	- Run your own models at runtime. Just sign up for an `Alpaca` account
-	- You could even use real money with your `Alpaca` account if desired. 
-- Other features
-	- Monitoring Dashboard -- bootstrapped using `Next` the runtime engine exposes its own API to expose real-time data and a log of its actions
-- Future Additions
-	- Custom ML backtesting engine: perfect for testing your strategy on historical data
-	- Model selection: chose your own model provided by `scikit-learn` to fit your needs
-	- Multiple stock tracking and training: ability to train and trade on multiple stocks 
-	- More technical indicators: adding them is quite simple thanks to a modular structure
+## Core Features
+- Config-First Architecture
+  - All behavior is driven by `JSON` and `.env` configs from strategy, refresh rates, features, models, and more, it's all user-defined. No hardcoded assumptions. 
+- Modular ML Pipeline
+  - Train <!-- and retrain --> models effortlessly by just modifying config files. Built for experimentation and iteration.
+- Custom Backtesting Engine (Coming Soon)
+  - Test strategies across historical data with your own logic, quickly know if your strategy and model holds up.
+- Live Execution Engine
+  - Just plug in your Alpaca API keys and go live. Real-time trading support with the ability to run your trained model in production (paper or real).
+  - Plug in your Alpaca API keys and go live with trading using your trained model
+- Risk Management System (Planned)
+  - Automatic risk management and portfolio rebalancing to add guardrails to your trained model during live execution
 
 ## Tech Stack
-The majority of this project was written using `Go` for live execution and `Python` for anything ML. There is also a `Next` based dashboard that monitors and logs the runtime engine in real time. 
+- `Go`
+  - Used for the runtime engine during live execution 
+- `Python`
+  - Used for ML Pipeline
+    - `Pandas`
+    - `NumPy`
+    - `Scikit-learn`
+- `Typescript`
+  - Used for demo frontend
+    - `Next`
 
 ### Why Use Go?
 You might be wondering why `Go` was used for this project and not `Python` or `C++` as the runtime engine.<br>
 
 Well, since this project is intended to be used for both low and mid frequency trading:
 - `Python` is interpreted and has GIL overhead
-- `C++` is too complex (for this project), and complicates API calls and multithreading
+- `C++` is too complex (for this project), and complicates API calls and multithreading among other things
 
 `Go` served as a fair trade off between performance and complexity, allowing for fast iteration while still providing low latency code.<br>
 
 ## Architecture
-
 The simplest way to describe this architecture is config first<br>
 
 You simply define your own JSON based features and labels (technical indicators) and the environment variables in .env, the platform takes into account at training and runtime what you wanted making it far easier to test.<br>
