@@ -10,8 +10,6 @@ Modules used
 Author: Vikas Katari
 Date: 05/03/2025
 '''
-
-
 import pandas as pd
 import json
 from typing import Dict, Any, List
@@ -23,6 +21,7 @@ from dotenv import load_dotenv
 import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
 import src.ml.data_processing.signals as sig
+
 
 load_dotenv('.env')
 

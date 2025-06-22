@@ -14,7 +14,7 @@ Alpaca API key associated with your own account
 
 Alpaca secret key associated with your account
 
-### ALPACA_XXXX_LINK
+### ALPACA_XYZ_LINK
 
 All other Alpaca API links DO NOT need to be modified if you only plan to use paper money.   
 

@@ -1,10 +1,10 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# BotBuilder – A ML Based Trading Bot Sandbox 
+# BotBuilder – A ML Based Trading Bot Suite
 
-A configurable ML Sandbox to train, backtest, and run in real time custom Low/Mid Frequency Trading Bots via simple `JSON` configurations.  
+A configurable ML Suite to train, backtest, and run in real time custom Low/Mid Frequency Trading Bots via simple `JSON` configurations.  
 
-Thanks to a modular approach, configurable `JSON` files allow easily change features and labelling logic for training ML models, and allows the user to quickly expereiment with a wide variety of technical indicators without ever having to touch any of the underlying code. Whether you are looking to run a trained model live, find the best strategy, or trying to maximize returns, this sandbox allows you to search for what works. 
+Thanks to a modular approach, configurable `JSON` files allow easily change features and labelling logic for training ML models, and allows the user to quickly expereiment with a wide variety of technical indicators without ever having to touch any of the underlying code. Whether you are looking to run a trained model live, find the best strategy, or trying to maximize returns, this suite allows you to search for what works. 
 
 ## Core Features
 - Config-First Architecture
@@ -126,9 +126,14 @@ All `Python` based tests are contained in `./tests/` and all `Go` based tests ar
 
 You can call `./scripts/tests/` from the root to run both `Python` and `Go` tests.
 
+## Documentation 
+- [ENV] - Understand how the `.env` file is used
+- [CONFIG] - Learn how to construct your own strategies using our custom JSON schema
+
 ## Notes
 - [CHANGELOG](docs/CHANGELOG.md) - Version history 
-- [TODO](docs/TODO.md) - List of current efforts and future updates
+- [TODO](docs/TODO.md) - List of current efforts and future 
+updates
 - [LICENSE](LICENSE) - License info 
 
-*This platform is for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses*
+*This platform is intended for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses.*

@@ -29,10 +29,9 @@ The goal of this version was to improve the features given to the ML models incl
 
 ## [WIP]
 Complete<br>
-- Added dockerfiles, .dockerignore
-- Unified all environment settings to be contained in a single `.env` file 
-- Improved the frontend styling
-- Increased the amount of settings, options with the `.env` file
+- Added `Docker` containerization for critical runtime parts
+- Unified all environment settings to be contained in a single `.env` file, and increased the number of settings
+- Improved frontend styling
 
 In Progress
 - Continue refactoring `src/runtime/go-src`, especially using generic methods to avoid repetitive code
