@@ -15,7 +15,6 @@ import (
 
 // Use local server right now
 var (
-    ServerLink string = "http://127.0.0.1:5000/api/prediction"
     FixedCols = 5 // The OHLCV bars are fixed (from yfinance DF)
 )
 
@@ -34,7 +33,7 @@ func PutPrices(data *engine.UserData, json map[string]any, ticker string) (map[s
     json["3"] = bars[3]
     json["4"] = bars[4]
 
-    for i := range data.OHLCVDelta {
+    for i := range data.OHLCVDelta { // Putting OHCLV deltas 
         name := fmt.Sprintf("%d", i + FixedCols)
         json[name] = data.OHLCVDelta[i]
     } // for
@@ -48,7 +47,7 @@ func PutNewTechnicals(data *engine.UserData, json map[string]any) (map[string]an
 
     for i, ind := range data.Objects {
 
-         name := fmt.Sprintf("%d", i + FixedCols * 2)
+         name := fmt.Sprintf("%d", i + FixedCols * 2) // *2 since deltas were put on method above
 
         switch v := ind.(type) {
 
@@ -94,7 +93,7 @@ func SendData(obj *engine.UserData, ticker string) error {
         log.Fatal(err)
     } // if
 
-    resp, err := http.Post(ServerLink, "application/json", bytes.NewBuffer(json))
+    resp, err := http.Post(mlServerLink, "application/json", bytes.NewBuffer(json))
     if err != nil {
         log.Fatal(err)
     } // if
@@ -114,7 +113,7 @@ func GetPrediction() (float64) {
 
     var result map[string]any = make(map[string]any)
 
-    resp, err := http.Get(ServerLink)
+    resp, err := http.Get(mlServerLink)
     if err != nil {
         log.Println("ERROR: Could not get ML prediction")
     } // if

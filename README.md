@@ -127,8 +127,8 @@ All `Python` based tests are contained in `./tests/` and all `Go` based tests ar
 You can call `./scripts/tests/` from the root to run both `Python` and `Go` tests.
 
 ## Documentation 
-- [ENV] - Understand how the `.env` file is used
-- [CONFIG] - Learn how to construct your own strategies using our custom JSON schema
+- [ENV](docs/ENV.md) - Understand how the `.env` file is used
+- [CONFIG](docs/CONFIG.md) - Learn how to construct your own strategies using our custom JSON schema
 
 ## Notes
 - [CHANGELOG](docs/CHANGELOG.md) - Version history 

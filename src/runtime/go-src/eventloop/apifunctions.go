@@ -4,12 +4,32 @@ package eventloop
 // information to the front end
 
 import (
-	//api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
-	// "fmt"
-
-	"github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	"encoding/json"
+	"net/http"
+	"bytes"
+	"log"
+	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
+
+// SendPayload should send the JSON as an Object to the frontend
+func SendPayload(data map[string]any, postLink string) {
+	if postLink == logLink && getPrintToStdio() { // dev debug mode
+		log.Println(data["msg"])
+	} // if 
+
+	payload, err := json.Marshal(data)
+    if err != nil {
+		return
+    } // if
+		// handle these errors in the future somehow
+    resp, err := http.Post(postLink, "application/json", bytes.NewBuffer(payload))
+    if err != nil {
+		return
+    } // if
+
+    defer resp.Body.Close()
+} // SendPayload
 
 // sendEnvironmentData will send the environment variable
 // to the front end once before any other calls happen
@@ -23,6 +43,8 @@ func sendEnvironmentData() {
 	}()
 } // sendEnvironmentData
 
+// sendBrokerData will send broker account data everytime
+// the eventloop gets back a prediction
 func sendBrokerData() {
 	go func() {
 
@@ -49,7 +71,8 @@ func sendBrokerData() {
 	}()
 } // sendBrokerData
 
-func sendTechnicalData(data engine.UserData) {
+// sendTechnicalData sendsTechnical data as a JSON to the frontend
+func sendTechnicalData(data engine.UserData) { // copy by value to prevent races
 	go func(engine.UserData) {
 		colNameArray := make([]string, len(data.ColNames))
 		for key, val := range data.ColNames {

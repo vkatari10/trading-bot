@@ -12,14 +12,14 @@ import (
 // GetQuote returns the OHLCV bars of a given ticker (15m Delay)
 func GetQuote(ticker string) ([5]float64, error) {
 
-	url := "https://data.alpaca.markets/v2/stocks/bars/latest?symbols="
+	url := alpacaMarketDataLink
     url += ticker
 
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", getAlpacaKey())
-	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSecret())
+	req.Header.Add("APCA-API-KEY-ID", getAlpacaAPI())
+	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSec())
 
 	res, err := http.DefaultClient.Do(req)
     if err != nil {

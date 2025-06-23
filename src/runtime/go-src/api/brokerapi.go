@@ -14,7 +14,7 @@ import (
 // GetCashValue gets the brokerage account value of cash and 
 // account total value
 func GetCashValue() (cashAvail float64, totalValue float64, err error) {
-	url := "https://paper-api.alpaca.markets/v2/account"
+	url := alpacaAccountLink
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -49,7 +49,7 @@ func GetCashValue() (cashAvail float64, totalValue float64, err error) {
 // can track one stock at the time
 func GetPositions() (quantity float64, averageCost float64, marketValue float64, err error) {
 
-	url := "https://paper-api.alpaca.markets/v2/positions"
+	url := alpacaPositionsLink
 
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -95,7 +95,7 @@ func GetPositions() (quantity float64, averageCost float64, marketValue float64,
 // PlaceMarketOrder places an "buy" or "sell" signal based on the 
 // input string
 func PlaceMarketOrder(ticker string, shares int, side string) {
-	url := "https://paper-api.alpaca.markets/v2/orders"
+	url := alpacaOrdersLink
 
 	jsonString := fmt.Sprintf("{\"type\":\"market\",\"time_in_force\":\"day\",\"symbol\":\"%s\",\"qty\":\"%d\",\"side\":\"%s\"}", ticker, shares, side)
 
@@ -135,15 +135,18 @@ func getDoubleValue(json map[string]any, key string) (result float64, err error)
 // is currently open or not
 func MarketStatus() (bool, error) {
 
-	url := "https://paper-api.alpaca.markets/v2/clock"
+	url := alpacaClockLink
 
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", getAlpacaKey())
-	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSecret())
+	req.Header.Add("APCA-API-KEY-ID", getAlpacaAPI())
+	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSec())
 
-	res, _ := http.DefaultClient.Do(req)
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)

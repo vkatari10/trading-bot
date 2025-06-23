@@ -10,7 +10,5 @@ import (
 )
 
 func main() {
-	for {
-		eventLoop.Run()
-	} // for
+		eventLoop.EventLoop() // reaplce with time checking method after fixes
 } // main

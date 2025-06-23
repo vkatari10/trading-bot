@@ -12,21 +12,21 @@ import (
 // Run is the constant running that runs the eventloop if the market is open
 // else puts the program to sleep
 func Run() {
-	// poll if market open if so go into the event loop else just sleep for like an hour (for now)
-	open, err := api.MarketStatus()
-	if err != nil {
-		go SendPayload(map[string]any{
-			"msg": "ERROR: Could not determine market status",
-		}, logLink)
-		return
-	} // if
+	// // poll if market open if so go into the event loop else just sleep for like an hour (for now)
+	// open, err := api.MarketStatus()
+	// if err != nil {
+	// 	go SendPayload(map[string]any{
+	// 		"msg": "ERROR: Could not determine market status",
+	// 	}, logLink)
+	// 	return
+	// } // if
 
-	if open {
-		EventLoop()
-	} else {
-		fmt.Println("market closed, checking in one (1) hour")
-		time.Sleep(time.Hour * 1) // market closed sleep until nearing open
-	} // if-else
+	// if open || getAlwaysRun() {
+	// 	EventLoop()
+	// } else {
+	// 	fmt.Println("market closed, checking in one (1) hour")
+	// 	time.Sleep(time.Hour * 1) // market closed sleep until nearing open
+	// } // if-else
 } // Run
 
 func EventLoop() {
