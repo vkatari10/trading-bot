@@ -14,7 +14,7 @@ import (
 
 // SendPayload should send the JSON as an Object to the frontend
 func SendPayload(data map[string]any, postLink string) {
-	if postLink == logLink && getPrintToStdio() { // dev debug mode
+	if postLink == logLink && thisPrintToStdio { // dev debug mode
 		log.Println(data["msg"])
 	} // if 
 
@@ -37,8 +37,11 @@ func sendEnvironmentData() {
 	go func() {
 	SendPayload(map[string]any {
 		"refresh_rate": refreshRate,
-		"ticker": ticker,
+		"ticker": thisTicker,
 		"burn_time": burnWindow,
+		"bufer_flush_time": thisBufferFlushTime,
+		"always_run": thisAlwaysRun,
+		"override_burn_in": thisBurnInOverride,
 	},envLink)
 	}()
 } // sendEnvironmentData

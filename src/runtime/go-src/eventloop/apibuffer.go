@@ -60,7 +60,7 @@ func (queue *APIBuffer) dequeue() (json map[string]any, link string) {
 
 // offload will send the number of items to their destination given a 
 // valid wait time
-func (queue *APIBuffer) offload(times int, wait time.Duration) {
+func (queue *APIBuffer) flush(times int, wait time.Duration) {
 	for i := 0; i < times; i++ {
 		data, dest := queue.dequeue() // NOTE: this uses mutex
 		go SendPayload(data, dest)

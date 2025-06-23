@@ -1,7 +1,6 @@
 package eventloop
 
 import (
-	"log"
 	"time"
 	"runtime"
 	"fmt"
@@ -9,43 +8,15 @@ import (
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
 
-// Run is the constant running that runs the eventloop if the market is open
-// else puts the program to sleep
-func Run() {
-	// // poll if market open if so go into the event loop else just sleep for like an hour (for now)
-	// open, err := api.MarketStatus()
-	// if err != nil {
-	// 	go SendPayload(map[string]any{
-	// 		"msg": "ERROR: Could not determine market status",
-	// 	}, logLink)
-	// 	return
-	// } // if
-
-	// if open || getAlwaysRun() {
-	// 	EventLoop()
-	// } else {
-	// 	fmt.Println("market closed, checking in one (1) hour")
-	// 	time.Sleep(time.Hour * 1) // market closed sleep until nearing open
-	// } // if-else
-} // Run
-
 func EventLoop() {
-	
-	thisBurnTime, thisRefreshRate, err := intializeVariables()
-	if err != nil {
-		log.Fatal(err)
-	}
 	thisRunTime := int(390 - thisBurnTime)
-	thisTicker := getTicker()
-
 	go sendEnvironmentData() // send env variables to front end
-
-	// COULD move this up before the burn in data to intialize the OHCLV Deltas better 
-	userIndicators, err := engine.InitUserLogic("../../../config/features.json") // Load user defined technicals
+	
+	userConfigFile := "../../../config/" + featuresFile
+	userIndicators, err := engine.InitUserLogic(userConfigFile) // Load user defined technicals
 	if err != nil {
-		// log.Fatal("ERROR: could not parse user defined JSON in src/logic properly")
 		go SendPayload(map[string]any{
-			"msg": "ERROR: could not parse user defined JSON in src/logic properly",
+			"msg": fmt.Sprintf("Could not properly intiaialize the JSON from %s", featuresFile),
 		}, logLink)
 	} // if
 
@@ -66,21 +37,6 @@ func EventLoop() {
 	i := 0
 	for i < thisRunTime {
 
-		open, err := api.MarketStatus()
-		if err != nil {
-			go SendPayload(map[string]any{
-				"msg": "STAGE: STOP (market closed)",
-			}, logLink)
-			return
-		}
-		
-		if !open {
-			go SendPayload(map[string]any {
-				"msg" : "UPDATE: Market is closed STOPPING",
-			}, logLink)
-			return
-		}
-		
 		newQuote, err := api.GetQuote(thisTicker)
 		if err != nil {
 			go SendPayload(map[string]any {
@@ -89,7 +45,6 @@ func EventLoop() {
 		} // 
 
 		engine.UpdateOHLCVDeltas(&userIndicators, newQuote)
-		//log.Printf("QUOTE: $%.2f\n", newQuote[0])
 
 		go apiBuf.enqueue(
 			map[string]any{
@@ -101,7 +56,6 @@ func EventLoop() {
 			map[string]any{
 				"msg": "UPDATE: Updated Technicals",
 			}, logLink)
-		//log.Println("UPDATE: Updated Technicals")
 		
 		// DEBUG for seeing live updates of technicals
 		// for j := range userIndicators.Techs {
@@ -110,7 +64,6 @@ func EventLoop() {
 
 		// Send JSON of features to ML API
 		api.SendData(&userIndicators, thisTicker)
-		//log.Println("UPDATE: Sent Features to ML model")
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Sent New Features to ML API",
@@ -120,7 +73,6 @@ func EventLoop() {
 		// Get prediction back as JSON
 	
 		pred := api.GetPrediction()
-		log.Println("UPDATE: Got prediction from ML model")
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Prediction recieved from ML API",
@@ -135,7 +87,7 @@ func EventLoop() {
 
 		// dump whatever we enqueued to the frontend 
 		// issues may arise from using go here bc something could be enqueuing (use wait groups maybe?)
-		go apiBuf.offload(6, 2000) // items, milliseconds buffer 
+		go apiBuf.flush(6, time.Duration(thisBufferFlushTime)) // items, milliseconds buffer 
 		go sendTechnicalData(userIndicators) // send new technical data
 
 		
@@ -143,7 +95,6 @@ func EventLoop() {
 		i++
 	} // for
 
-	//log.Println("STAGE: STOP")
 	go SendPayload(map[string]any{
 		"msg": "STAGE: STOP",
 	}, logLink)
@@ -151,52 +102,38 @@ func EventLoop() {
 } // eventLoop
 
 //BurnIn Loads the Burn in Data to intialize technical indicators
-func BurnIn(burnTime int, ticker string, refresh time.Duration) (arr []float64, finalQuote [5]float64) {
+func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote [5]float64) {
 	go SendPayload(map[string]any{
 		"msg": "STAGE: BURN IN",
 		}, logLink)
-	//log.Println("STAGE: BURN IN")
+
+	stopTime := time.Duration(refresh)
 
 	// stores burn data
-	var burn []float64 = make([]float64, burnTime);
+	burn := []float64{}
 
 	// stores latest quotes
 	var newQuote [5]float64
 
-	for i := range burn {
+	for i := range burnTime {
 		newQuote, err := api.GetQuote(ticker)
 		if err != nil {
-			// log.Printf("ERROR: market data could not be pulled")
 			go SendPayload(map[string]any {
 			"msg" : "ERROR: Could not get market data",
 			}, logLink)
 		} // if
-		burn[i] = newQuote[0]
-		// log.Printf("QUOTE: %f", newQuote)
+		burn = append(burn, newQuote[0])
+	
 		go SendPayload(map[string]any {
-			"msg": fmt.Sprintf("QUOTE: $%.2f", newQuote[0]),
+			"msg": fmt.Sprintf("QUOTE: $%.2f (%d / %d) burned in", newQuote[0], i + 1, burnTime),
 		}, logLink)
-		time.Sleep(refresh * time.Second) // burn in rate at same tick time for main loop
+		
+		time.Sleep(stopTime * time.Second)
 	} // for
+	//fmt.Println(burn) check on faster time 
 
 	return burn, newQuote
 } // BurnIn
-
-// initializeVariables returns the burn window time and refresh rate
-// by calling the values from the .env file
-func intializeVariables() (int, time.Duration, error) {
-	burn, err := getBurnWindow()
-	if err != nil {
-		return 0, 0, fmt.Errorf("%v", err)
-	} // if
-
-	tick, err := getRefreshRate()
-	if err != nil {
-		return 0, 0, fmt.Errorf("%v", err)
-	} // if
-
-	return burn, tick, nil
-} // intializeVariables
 
 // handlePrediction handles the prediction made by the ML model by 
 // working with the broker API
@@ -206,17 +143,14 @@ func handlePrediction(apiBuffer *APIBuffer, prediction float64, ticker string) {
 		var decision string;
 
 		if prediction > 0 { // buy
-			// log.Printf("DECIDE: Buy 1 share of %s\n", thisTicker)
 			decision = "buy"
 			go api.PlaceMarketOrder(ticker, 1, decision)
 			decisionMsg += "BUY"
 		} else if prediction < 0 { // sell
-			// log.Printf("DECIDE: Sell 1 share of %s\n", thisTicker)
 			decision = "sell"
 			go api.PlaceMarketOrder(ticker, 1, decision)
 			decisionMsg += "SELL"
 		} else {
-			// log.Printf("DECIDE: Do nothing\n")
 			decisionMsg += "HOLD"
 		} // if-else
 		
