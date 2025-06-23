@@ -1,0 +1,22 @@
+{
+    "features": [
+        "tech1", 
+        "tech2"
+    ], 
+    "label_logic": [
+        "signal1", 
+        "signal2"
+    ],
+    "train_stocks": [
+        "XYZ",
+        "ABC"
+    ],
+    "live_stock": [
+        "123",
+        "456"
+    ],
+    "model_type": "RandomForrestClassifier",
+    "model_name": "model.pkl"
+}
+
+
