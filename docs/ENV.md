@@ -4,85 +4,44 @@ The [`.env`](../.env.example) file contains many settings that can be changed ac
 
 This documentation serves to help get new users accustomed to the settings that are available and what they do
 
-## Alpaca API Settings
 
-### ALPACA_API_KEY
 
-Alpaca API key associated with your own account
+## Alpaca API
 
-### ALPACA_SECRET_KEY
-
-Alpaca secret key associated with your account
-
-### ALPACA_XYZ_LINK
-
-All other Alpaca API links DO NOT need to be modified if you only plan to use paper money.   
-
-IF you choose to use real money then just update the base URL to your needs
-
+|      Setting      | Description                                                                                                                                                                                   | Example |
+| :---------------: | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------- |
+|  ALPACA_API_KEY   | Alpaca API key associated with your own account                                                                                                                                               | -       |
+| ALPACA_SECRET_KEY | Alpaca Secret key associated with your own account                                                                                                                                            | -       |
+|  ALPACA_XYZ_LINK  | All other Alpaca API links **DO NOT** need to be modified if you plan to use paper money. Adjust base URLs if you want to use real money and understand the risk of using non-simulated funds | -       |
 ## Runtime Engine Settings
 
-### REFRESH_RATE
-
-Time in seconds to pull a new quote. In other words how quickly do you want your bot to move at.   
-
-**NOTE:** if you do not have premium data it is NOT suggested to go below 60 as `Alpaca` free tier updates only every 60 seconds. Going below 60 with a free tier acconunt will lead to degraded ML inference performance. 
-
-### TICKER
-
-Ticker to trade on during live execution. Example: AAPL
-
-### BURN_IN_WINDOW_TIME
-
-Time in minutes of how long to burn in data, should be the value of the longest window of a technical indicator.  
-
-**If you use a `delta` or `diff` object**: Add 1 to this value.
-
-### ENGINE__LOG_API_FLUSH_TIME
-
-Time in milliseconds of how fast to flush the API buffer for each item in the buffer to the destination of the `DATA_API_DEST_LINK`.
-
-### LOG_LINK
-
-Logging information of the bot as a JSON, should be set to an API routing link of your choice, will update at a rate specified by the `ENGINE_API_FLUSH_TIME` to get each new log
-
-### DATA_LINK
-
-Live Data information of technical indicators of the bot as an JSON, should be set to an API routing link of your choice
-
-### ENV_LINK
-
-One time JSON payload send to send environment variables contained inside the `.env` file, should be set to an API routing link of your choice
-
-### BROKER_LINK
-
-Live brokerage account information of the account associated with your `Alpaca` API keys in real time as a JSON, shoud be set to an API routing link of your choice
+|          Setting          | Description                                                                                                                                                                                                                                                                                                                                                                      | Example                                                                       |
+| :-----------------------: | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+|     REFRESH_RATE_TIME     | Time in **seconds** to pull a new quote. In other words the frequency of the bot's actions. **NOTE:** If you do not have premium data it is **NOT** suggested to go below 60 as `Alpaca` free tier updates quotes every 60 seconds. Going below 60 with a free tier account will lead to degraded ML inference (The same is true for ML models not train on <60 historical data) | 60                                                                            |
+|     LIVE_TRADE_TICKER     | Ticker to trade on during live execution                                                                                                                                                                                                                                                                                                                                         | AAPL                                                                          |
+|    BURN_IN_WINDOW_TIME    | Time in **minutes** of how long to burn in data before starting to executing trades. Should be the highest value of the longest window of a technical indicator (**IF USING** delta or diff objects add 1 to this value)                                                                                                                                                         | 31 (If SMA 30 and a Diff object were use, else without diff could just be 30) |
+| ENGINE_LOG_API_FLUSH_TIME | Time in **milliseconds** to flush each item in the buffer to the destination of the `LOG_API_LINK`                                                                                                                                                                                                                                                                               | 2000                                                                          |
+|       LOG_API_LINK        | Destination of log updates as a JSON, should be an API routing link of your choice. The update rate is specified by the `ENGINE_LOG_API_FLUSH_TIME`                                                                                                                                                                                                                              | `http://localhost:3000/api/log`                                               |
+|       DATA_API_LINK       | Destination of live technical data as a JSON should be an API routing link of your choice. The update rate is specified by the `REFRESH_RATE`                                                                                                                                                                                                                                    | `http://localhost:3000/api/data`                                               |
+|       ENV_API_LINK        | Destination of the environment variables inside `.env` as a JSON, only sent once.                                                                                                                                                                                                                                                                                                | `http://localhost:3000/api/env`                                               |
+|      BROKER_API_LINK      | Destination of the brokerage account information as a JSON. The update rate is specified by the `REFRES_RATE`                                                                                                                                                                                                                                                                    | `http://localhost:3000/api/broker`                                            |
+|       LOG_TO_STDIO        | Dev tool to print log statements to standard output for easier debugging                                                                                                                                                                                                                                                                                                         | TRUE or FALSE (False if in production)                                        |
+|        ALWAYS_RUN         | Dev tool to execute the runtime engine even when the market is closed                                                                                                                                                                                                                                                                                                            | TRUE or FALSE (False if in production)                                        |
 
 ## ML API Settings
 
-### ML_API_LINK
+|   Setting   | Description                                     | Example                 |
+| :---------: | ----------------------------------------------- | ----------------------- |
+| ML_API_LINK | **UNUSED** Destination to host the ML API Sever | "http://127.0.0.1:5000" |
 
-UNUSED
 
 ## ML Pipeline Settings
 
-### FEATURE_CONFIG_FILE
-
-Contains the `JSON` config file to use for features in the ML pipeline
-
-### LABEL_CONFIG_FILE
-
-Contains the `JSON` config file to use for labelling logic in the ML pipeline
-
-### TRAIN_TICKER
-
-The ticker as a stock to train on. Example: AAPL
-
-### TRAIN_MODEL_TYPE
-UNUSED
-
-### DUMP_MODEL_NAME
-UNUSED
-
-### RUNTIME_MODEL_NAME
-UNUSED
+|       Setting       | Description                                                                                           | Example                        |
+| :-----------------: | ----------------------------------------------------------------------------------------------------- | ------------------------------ |
+| FEATURE_CONFIG_FILE | Contains the `JSON` config file to use for features, live execution technicals, etc.                  | Check config [docs](CONFIG.md) |
+|  LABEL_CONFIG_FILE  | Contains the `JSON` config file to use for labelling logic, only used during train time               | Check config [docs](CONFIG.md) |
+|    TRAIN_TICKER     | The ticker as a stock to train on                                                                     | AAPL                           |
+|  TRAIN_MODEL_TYPE   | **UNUSED**  Type of model to use at train time                                                        |                                |
+|   DUMP_MODEL_NAME   | **UNUSED** Model name that should be written, overwrites an existing model if it shares the same name |                                |
+| RUNTIME_MODEL_NAME  | **UNUSED** Model to use at runtime if using live execution                                            |                                |
