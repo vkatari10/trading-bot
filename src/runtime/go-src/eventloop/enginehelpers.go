@@ -15,7 +15,7 @@ func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote
 		"msg": "STAGE: BURN IN",
 		}, logLink)
 
-	stopTime := time.Duration(refresh)
+	stopTime := time.Duration(refresh) 
 
 	// stores burn data
 	burn := []float64{}
