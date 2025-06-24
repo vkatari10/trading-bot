@@ -9,6 +9,10 @@
 - Support trading multiple stocks concurrently  
 - YFinance Dataframes only go down to the minute, so if someone wants to train an ML model on 1-sec data for example we need to make a logger in go that just takes the bars at some interval and then write as a csv to another file (with buffering) so then we can just make it a dataframe back in python
 
+## Configs
+
+Ability to put everything into a singular JSON file rather than having seperate features and labels.
+
 ### ML
 - [ ] When multiple stock tracking at execution time is complete, create a JSON config to declare which stocks to use
 - [ ] same thing as above but for train time as well 
