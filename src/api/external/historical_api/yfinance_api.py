@@ -11,8 +11,14 @@ Date: 05/12/2025
 
 import yfinance as yf
 from pandas import DataFrame
+import os
+from dotenv import load_dotenv
 
-def get_data(ticker: str) -> DataFrame:
+
+load_dotenv('.env')
+
+
+def get_data(ticker: str, this_period: str, timeframe: str) -> DataFrame:
     '''
     Returns all historical data given an ticker as a Pandas DataFrame
 
@@ -28,5 +34,5 @@ def get_data(ticker: str) -> DataFrame:
 
     A Pandas DataFrame with OHLCV as columns from the stocks inception date
     '''
-    df = yf.download(tickers=ticker, progress=False, auto_adjust=True, period='5d', interval='1m')
+    df = yf.download(tickers=ticker, progress=False, auto_adjust=True, period=this_period, interval=timeframe)
     return df

@@ -23,7 +23,9 @@ load_dotenv('.env')
 features_file = "config/" + os.getenv("FEATURE_CONFIG_FILE")
 
 # Load in deciding ML model
-with open('src/ml/models/decider/model.pkl', 'rb') as f:
+file_path = "src/ml/models/decider/" + os.getenv("MODEL_RUNTIME_NAME")
+
+with open(file_path, 'rb') as f:
     model = pickle.load(f)
 
 with open(features_file) as f:
@@ -83,7 +85,6 @@ def send_prediction_test():
         for i in range(len(data)):
             features.append(data[str(i)])
         
-
         return jsonify({"status": "recieved", "prediction": int(1)})
 
     elif request.method == 'GET':

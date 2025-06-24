@@ -20,22 +20,20 @@ import src.ml.data_processing.data_processing as dp
 # to train models
 import src.ml.training.training as train
 
-training_ticker = os.getenv("TRAIN_TICKER")
-label_file = os.getenv("LABEL_CONFIG_FILE")
+# get DF w/ user features and labels
+df = dp.get_df(os.getenv("TRAIN_TICKER"))
 
-df = dp.get_df(training_ticker) # DO NOT MODIFY FROM BELOW
-
-label_file = "config/" + label_file
-with open(label_file) as f:
+# Load features
+with open("config/" + os.getenv("LABEL_CONFIG_FILE")) as f:
     signals = json.load(f)
 
 # stop index to exclude relationship columns
 # signals[0]['name'] is just the first relationship col_name
 stop = df.columns.get_loc((signals[0]['name'], ''))
 
+# train model
 model = train.model_training(df, stop) 
 
 # export model to runtime destination
-with open('src/ml/models/decider/model.pkl', 'wb') as f:
-    # replace the df with the actual model when its compelte
+with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
     pickle.dump(model, f)

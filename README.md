@@ -1,6 +1,6 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# BotBuilder – Infra-Heavy ML Based Trading Bot Suite
+# BotBuilder – Infra-Heavy Suite for Creating ML Trading Bots
 
 An infra-heavy configurable ML Suite to train, backtest, and run in real time custom Low/Mid Frequency Trading Bots via simple `JSON` configurations.  
 
@@ -10,7 +10,17 @@ Thanks to a modular approach, configurable `JSON` files allow easily change feat
 - Config-First Architecture
   - All behavior is driven by `JSON` and `.env` configs from strategy, refresh rates, features, models, and more, it's all user-defined. No hardcoded assumptions. 
 - Modular ML Pipeline
-  - Train <!-- and retrain --> models effortlessly by just modifying config files. Built for experimentation and iteration.
+  - Train <!-- and retrain --> models effortlessly by just modifying config files. The models are trained against data specified by your own feature engineering and labelling logic and dumped.
+  - How modular is the system? The entire ML training pipeline script is only **7 lines of code**, here's the proof: 
+```python
+df = dp.get_df(os.getenv("TRAIN_TICKER"))
+with open("config/" + os.getenv("LABEL_CONFIG_FILE")) as f:
+  signals = json.load(f)
+stop = df.columns.get_loc((signals[0]['name'], ''))
+model = train.model_training(df, stop) 
+with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
+  pickle.dump(model, f)
+``` 
 - Custom Backtesting Engine (Coming Soon)
   - Test strategies across historical data with your own logic, quickly know if your strategy and model holds up.
 - Live Execution Engine

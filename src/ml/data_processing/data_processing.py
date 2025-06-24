@@ -163,6 +163,8 @@ def get_df(ticker: str) -> pd.DataFrame:
     Returns the modified dataframe of a stock with
     technicals and signals of the specificed ticker
     '''
-    df = yf.get_data(ticker)
+    timeframe = os.getenv("TRAIN_DF_TIMEFRAME") 
+    period = os.getenv("TRAIN_DF_INTERVAL")
+    df = yf.get_data(ticker, period, timeframe)
     df = process_data(df)
     return df

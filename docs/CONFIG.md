@@ -55,7 +55,7 @@ Let's look at an example
         "smoothing": 2
     },
     {
-        "tech": "Delta",
+        "tech": "delta",
         "col1": "SMA_20",
         "col2": null,
         "name": "SMA_20_Delta"
@@ -163,9 +163,9 @@ Remember: each object must contain a `tech` field, which **must** match the exam
 At the top of the `.env` file are two options called `FEATURE_CONFIG_FILE` and `LABEL_CONFIG_FILE`.  
 
 If
-- You modify an object 
-    - just call `./scripts/env.sh` to update the `.env`
-- You create a new JSON file
+- You modify a file, but want to keep using the same one 
+    - just call `./scripts/env.sh` to update the `.env` (or you can call `source .env`)
+- You want to use a new JSON config
     - redirect the name starting from `/config`, i.e do not include the `config` path in the value  
 
 To see other options available in `.env` read [here](ENV.md)
