@@ -25,6 +25,8 @@ In general you will need two files
 1. Declares the features (technical indicators) that should be used
 2. Declares the labels (relationships between technical indicators) that represent buy/sell signals
 
+## Features Config File
+
 - File naming
     - Should end in `.json`
     - Beyond that it does not matter since they can be configured in the `.env` flie 
@@ -71,6 +73,32 @@ What does this show?
 
 We can see that making config files is straightfoward which makes this platform so powerful for testing new srategies. The hardest part is learning how to properly declare each technical indicator, which is explained below 
 
+## Label Config File
+
+- File naming
+    - Should end in `.json`
+    - Beyond that it does not matter since they can be configured in the `.env` flie 
+- How to write
+    - In this file you will describe relationships between technical indicators that you have declared in the feature file
+    - This is to inform during ML training what should constitute a buy/sell signal, **NOTE** the ML model is not aware of these relationships though
+    - You will reuse the same object using the same names  
+
+Lets keep adding on from the previous example
+```JSON
+[
+    {
+        "sig": "crossover",
+        "name": "SMA_EMA_CROSS",
+        "col1": "SMA_20",
+        "col2": "ENA_20"
+    }
+]
+```
+
+What does this show?
+- We can reuse the same objects from the feature JSON config
+- We can describe what should be a buy sell signal so an ML model can understand relationships implicitly through features
+
 ## Available Technical Indicators
 
 Remember: each object must contain a `tech` field, which **must** match the example in the table, and a `name` field which can be one of your choice.  
@@ -103,9 +131,34 @@ Remember: each object must contain a `tech` field, which **must** match the exam
 | col1 | computed as col1 - col2 | string | SMA_10 | 
 | col2 | **Reqiured** cannot be left as `null` | string | SMA_30 |
 
+## Available Signaling Logic
+
+Remember: each object must contain a `tech` field, which **must** match the example in the table, and a `name` field which can be one of your choice.   
+
+### Crossover - Find where two technicals cross above each other
+| Field | Description | Data Type | Example |
+|:-----:|-------------|-----------|---------|
+| tech | identifier | string | crossover |
+| col1 | computed as col1 crosses above col2 1, else if col1 crosses below col2 -1, else 0 | string | SMA_10 |
+| col2 | **Required** - what co1 should be compared to | string | SMA_30 |
+
+### Above - Find where one technical is above another technical
+| Field | Description | Data Type | Example |
+|:-----:|-------------|-----------|---------|
+| tech | identifier | string | above |
+| col1 | computed as col1 > col2, 1 else 0 | string | SMA_10 | 
+| col2 | **Required** - what col1 should be compared to | string | SMA_30 |
 
 
-### Adjusting for new config files in `.env`
+### Below - Find where one technical is below another technical
+| Field | Description | Data Type | Example |
+|:-----:|-------------|-----------|---------|
+| tech | identifier | string | below |
+| col1 | computed as col1 < col2, 1 else 0 | string | SMA_10 | 
+| col2 | **Required** - what col1 should be compared to | string | SMA_30 |
+
+
+## Adjusting for new config files in `.env`
 
 At the top of the `.env` file are two options called `FEATURE_CONFIG_FILE` and `LABEL_CONFIG_FILE`.  
 
