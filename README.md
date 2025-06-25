@@ -5,7 +5,7 @@
 A Suite driven by `JSON` config files to train, backtest, and execute live ML-Based Trading Bots for Low/Mid Frequency Trading. 
 
 
-## Core Features
+<!-- ## Core Features
 - Config-First Architecture
   - All services provided in this suite depend on a `JSON` config
   - `.env` files control 30+ settings for multiple services
@@ -23,7 +23,7 @@ with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
   - Backtest strategies using trained ML models 
   - Analyze performance on historical data
 - Live Execution 
-  - Using `Alpaca` simply modify the `.env` to load in certain models to run live (paper or real)
+  - Using `Alpaca` simply modify the `.env` to load in certain models to run live (paper or real) -->
 
 ## Core Features
 - Config-First Architecture

@@ -17,7 +17,7 @@ import src.ml.training.training as train
 import src.ml.json.json_parser as jp
 
 # user config file
-config = jp.UserConfig() 
+config = jp.UserConfig()    
 
 # get all training DFs w/ user features and labels
 df = dp.get_df(config)

@@ -11,10 +11,7 @@ Author: Vikas Katari
 Date: 05/03/2025
 '''
 import pandas as pd
-import json
 from typing import Dict, Any, List
-import os 
-from dotenv import load_dotenv
 
 
 # Python technical indicators
@@ -24,9 +21,6 @@ import src.ml.data_processing.signals as sig
 
 # JSON parser
 import src.ml.json.json_parser as jp
-
-
-load_dotenv('.env')
 
 
 def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
@@ -148,7 +142,10 @@ def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
 
 def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     '''
-    Returns a dataframe concated 
+    Returns a dataframe with all user defined features and labels,
+    for multiple dataframes that are concatenated and the then returned,
+    else if concat is False then they are returned in array in the same order
+    as the JSON config delcares on 'train_tickers'
     '''
 
     training_df = []
@@ -172,3 +169,11 @@ def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
         return final_df
     else:
         return training_df
+    
+def get_single_df(uc: jp.UserConfig, ticker: str, period, timeframe) -> pd.DataFrame:
+    '''
+    Returns a single Dataframe given a ticker with all user defined features and labels
+    '''
+    df = yf.get_data(ticker, period, timeframe)
+    df = process_data(df, uc)
+    return df
