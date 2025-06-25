@@ -34,5 +34,5 @@ def get_data(ticker: str, this_period: str, timeframe: str) -> DataFrame:
 
     A Pandas DataFrame with OHLCV as columns from the stocks inception date
     '''
-    df = yf.download(tickers=ticker, progress=False, auto_adjust=True, period=this_period, interval=timeframe)
+    df = yf.download(tickers=ticker, progress=False, auto_adjust=True, period=this_period, interval=timeframe, multi_level_index=False)
     return df

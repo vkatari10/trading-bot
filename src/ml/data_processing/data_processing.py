@@ -45,9 +45,6 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
     '''
     df.dropna(inplace=True)
 
-    # print(features)
-    # print(signals)
-
     # put featurs on the training dataframe
     df = OHCLV_diffs(df)
     df = load_features(df, config.get_features())
@@ -131,7 +128,7 @@ def relationships(df: pd.DataFrame,
             df[new_name] = sig.below(df, col1, col2)
 
     # ==== replace index tuple with first relationship defined ====
-    index = df.columns.get_loc((stop_col,''))
+    index = df.columns.get_loc((stop_col))
 
     # ==== do not modify ====
     df['final_signal'] = sig.sum_to_sigs(df, index)
@@ -149,17 +146,29 @@ def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
     return df
 
 
-def get_df(ticker: str) -> pd.DataFrame:
+def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     '''
-    Returns the modified dataframe of a stock with
-    technicals and signals of the specificed ticker
+    Returns a dataframe concated 
     '''
-    uc = jp.UserConfig()
 
-    # download DF
-    df = yf.get_data("AAPL", uc.get_model_training_interval(), 
-                     uc.get_model_training_timeframe())
-    
-    # fit user config
-    df = process_data(df, uc) # add user config files on top
-    return df
+    training_df = []
+    training_stocks = uc.get_training_stocks() # stocks to train on
+
+    if len(training_stocks) == 0:
+        print(f"Must have >= 1 training stock declared in JSON config")
+
+    for stock in training_stocks:   
+        # download DF
+        df = yf.get_data(stock, uc.get_model_training_interval(), 
+                        uc.get_model_training_timeframe())
+
+        # put user config data ontop
+        df = process_data(df, uc) 
+
+        training_df.append(df)
+        
+    if concat:
+        final_df = pd.concat(training_df, ignore_index=False)
+        return final_df
+    else:
+        return training_df

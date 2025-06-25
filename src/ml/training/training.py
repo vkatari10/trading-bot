@@ -11,56 +11,34 @@ Author: Vikas Katari
 Date: 05/13/2025
 '''
 import pandas as pd
-import pickle
-import os
-import json
-from dotenv import load_dotenv
+import src.ml.json.json_parser as jp
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from imblearn.under_sampling import RandomUnderSampler
 
-load_dotenv('.env')
-
 # Note we can use different training models
 
-def find_stop(df: pd.DataFrame, file: str) -> int:
-
-    file_path = "config/" + os.getenv("LABEL_CONFIG_FILE")
-
-    with open(file_path) as f:
-        signals = json.load(f)
-    
-    return df.columns.get_loc((signals[0]['name'], ''))
-
+def find_stop(df: pd.DataFrame, uc: jp.UserConfig) -> int:
+    '''
+    Finds Stop index for features
+    '''
+    return df.columns.get_loc((uc.get_labels()[0]['name']))
 
 
 def model_training(df: pd.DataFrame, to_col: int,
                    *args) -> RandomForestClassifier:
     '''
-    Method to train models given the features (as historical OHLC)
-    data that finta expects plus technical indicators.
-
-    This method expects that the label signaling to "buy" (>0),
-    "sell" (<0), or hold (=0) are all contained in the last
-    column of the data frame, i.e df.iloc[:, -1]
-
-    Args:
-
-    df (pandas.DataFrame): df containing the OHLC and other
-    technical indicators added by the user
-    to_col (int): the column containing the last technical
-    indicator (we do not incldue the relationships we
-    defined for since we need to ml model to figure those
-    relationships as well -- this should be the actual number
-    of the column -- not the index.
-    *args (int): columns to exclude before the relationships
-    are defined, usually volume (4)
+    Method that will train an ML models on all DF contained
+    in the JSON config file
     '''
     cols = [i for i in range(to_col)]
 
     for arg in args:
         del cols[arg]
+
+    # Model
+    rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
 
     X = df.iloc[:, cols] # All columns with technical indicators
     y = df.iloc[:, -1] # Just the signal column (label)
@@ -72,11 +50,5 @@ def model_training(df: pd.DataFrame, to_col: int,
                                                         test_size=0.2,
                                                         random_state=42)
 
-    # Model
-    rf_classifier = RandomForestClassifier(n_estimators=100, random_state=42)
-
     rf_classifier.fit(X_train, y_train)
-
-   
-
     return rf_classifier

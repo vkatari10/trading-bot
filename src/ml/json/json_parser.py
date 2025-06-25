@@ -13,12 +13,12 @@ load_dotenv('.env')
 
 class UserConfig():
     '''
-    Loads the MAIN_CONFIG JSON file declared in the .env file
-    and loads it into Python as a dict
+    Loads the MAIN_CONFIG_FILE, the JSON file declared in the 
+    .env file and loads it into Python as a dict
     '''
 
     def __init__(self):
-        with open("config/" + os.getenv("MAIN_CONFIG")) as f:
+        with open("config/" + os.getenv("MAIN_CONFIG_FILE")) as f:
             file = json.load(f)
         self.file = file
 
