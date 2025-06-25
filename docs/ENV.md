@@ -42,7 +42,7 @@ Learn more about creating your own JSON configurations [here](CONFIG.md)
 |:-------:|-------------|---------|
 | ML_API_LINK | Destination to host the ML API Server | `http://127.0.0.1:5000` | |
 
-## ML Pipeline Settings
+<!-- ## ML Pipeline Settings
 | Setting | Description | Default |
 |:-------:|-------------|---------|
 | TRAIN_TICKER* | The ticker stock to train on | AAPL | 
@@ -50,6 +50,6 @@ Learn more about creating your own JSON configurations [here](CONFIG.md)
 | TRAIN_DF_TIMEFRAME | How far back to download historical data from `YFinance` | Click [here](https://ranaroussi.github.io/yfinance/reference/api/yfinance.download.html#yfinance.download) to view options| 
 | TRAIN_DF_INTERVAL | Interval from historical data to get prices from `Yfinance`  | Click [here](https://ranaroussi.github.io/yfinance/reference/api/yfinance.download.html#yfinance.download) to view options | 
 | DUMP_MODEL_NAME | Model name that should be written, overwrites an existing model if it shares the same name |-| 
-| RUNTIME_MODEL_NAME | **UNUSED** Model to use at runtime if using live execution | -| 
+| RUNTIME_MODEL_NAME | **UNUSED** Model to use at runtime if using live execution | -|  -->
 
 *Stars next to a setting indicate settings that will later be incorporated into JSON config files.*

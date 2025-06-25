@@ -50,8 +50,18 @@ Changes
 - Added unit tests for `Python` and `Go`
 - Cleaned repo root with new folders: `scripts/`, `configs/`
 
+## [WIP]
+Goal 
+- Improve JSON config files, JSON handling, improve backend file structuring
+
+Changes
+- Condense `JSON` configs into a single file
+- Updated ML Pipeline to handle `JSON` configs more elegantly
+- Multiple Stock Training
+
 In Progress
 - Continue refactoring `src/runtime/go-src`, especially using generic methods to avoid repetitive code
 - Add Custom backtesting engine in `Python`
 - Finish `Docker` contanierization 
+- Have `Go` adapt to new JSON formatting
     
