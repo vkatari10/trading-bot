@@ -22,48 +22,39 @@ import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
 import src.ml.data_processing.signals as sig
 
+# JSON parser
+import src.ml.json.json_parser as jp
+
 
 load_dotenv('.env')
 
 
-def process_data(df: pd.DataFrame) -> pd.DataFrame:
+def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
     '''
-    Takes the YFinance DataFrame and fits it with our own technical
-    indicators of choice, and relationships to watch for. We can then
-    also add the buy or sell column
+    Modifies a YFinance DataFrame to specifications used by the jp.UserConfig
+    features and label configuration
 
     Args:
 
-    df (DataFrame) : DataFrame with OHLCV values
+    df (pd.DataFrame): DataFrame from YFinance (with Multiindex Cols)
+    config (jp.UserConfig): UserConfig object containing user features and labels
 
-    Returns:
+    Returns: 
 
-    A modified DataFrame with various technical indicators added
+    A pd.DataFrame with all user defined features and labels
     '''
-
     df.dropna(inplace=True)
-
-    feature_file = "config/" + os.getenv("FEATURE_CONFIG_FILE")
-    label_config = "config/" + os.getenv("LABEL_CONFIG_FILE")
-    
-    # User defined features
-    with open(feature_file) as f:
-        features = json.load(f)
-
-    with open(label_config) as f:
-        signals = json.load(f)
 
     # print(features)
     # print(signals)
 
     # put featurs on the training dataframe
     df = OHCLV_diffs(df)
-    df = load_features(df, features)
-    df = relationships(df, signals)
+    df = load_features(df, config.get_features())
+    df = relationships(df, config.get_labels())
 
-    # print("Number of things that are not hold")
+    # print("Number of things that are not label == 0")
     # print(len(df[df['final_signal'] != 0]))
-
     df.dropna(inplace=True)
     return df
 
@@ -163,8 +154,12 @@ def get_df(ticker: str) -> pd.DataFrame:
     Returns the modified dataframe of a stock with
     technicals and signals of the specificed ticker
     '''
-    timeframe = os.getenv("TRAIN_DF_TIMEFRAME") 
-    period = os.getenv("TRAIN_DF_INTERVAL")
-    df = yf.get_data(ticker, period, timeframe)
-    df = process_data(df)
+    uc = jp.UserConfig()
+
+    # download DF
+    df = yf.get_data("AAPL", uc.get_model_training_interval(), 
+                     uc.get_model_training_timeframe())
+    
+    # fit user config
+    df = process_data(df, uc) # add user config files on top
     return df
