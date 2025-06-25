@@ -17,14 +17,14 @@ class Account():
 
         cost = price * self.batch_size + self.comission
 
-        if self.cash < cost:
+        if self.cash < cost: # cannot afford
             return
 
         self.positions.append(Position(start_price=price, shares=self.batch_size))
         self.cash -= cost
         
     def sell(self, end_price):
-        if len(self.positions) == 0:
+        if len(self.positions) == 0: # nothing to sell 
             return  
         
         pl = 0

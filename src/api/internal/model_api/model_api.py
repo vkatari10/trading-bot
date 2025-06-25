@@ -91,7 +91,7 @@ def send_prediction_test():
         if final_pred is None:
             return jsonify({'status': 'none'}), 404
         return jsonify({'prediction': final_pred})
-
+        
 # Run API server
 if __name__ == '__main__':
     app.run(debug=False)

@@ -1,26 +1,60 @@
 {
     "features": [
-        "tech1", 
-        "tech2"
+        {
+            "tech": "SMA",
+            "window": 10,
+            "name": "SMA_10"
+        },
+        {
+            "tech": "SMA",
+            "window": 30,
+            "name": "SMA_30"
+        },
+        {
+            "tech": "delta",
+            "col1": "SMA_10",
+            "col2": null,
+            "name": "SMA_10_delta"
+        },
+        {
+            "tech": "delta",
+            "col1": "SMA_30",
+            "col2": null,
+            "name": "SMA_30_delta"
+        },
+        {
+            "tech": "diff",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "name": "SMA_10_30_diff"
+        },
+        {
+            "tech": "delta",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "name": "SMA_10_30_delta_diff"
+        }
     ], 
     "label_logic": [
-        "signal1", 
-        "signal2"
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30"
+        }
     ],
     "train_stocks": [
-        "XYZ",
-        "ABC"
+        "BA",
+        "MSFT"
     ],
-    "live_stock": [
-        "123",
-        "456"
+    "live_trade_stocks": [
+        "AAPL",
+        "AMZN"
     ],
-    "backtest_stocks": [
-        "stockA",
-        "stockB"
-    ],
-    "model_type": "RandomForrestClassifier",
-    "model_name": "model.pkl"
-}
+    "model_type": "RandomForestClassifier",
+    "model_name": "model_v2.pkl",
+    "model_training_timeframe": "1m",
+    "model_training_interval": "5d" 
+} 
 
 
