@@ -1,31 +1,47 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![Next JS](https://img.shields.io/badge/Next-black?style=for-the-badge&logo=next.js&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# BotBuilder – Infra-Heavy Suite for Creating ML Trading Bots
+# BotBuilder – Config-Driven Suite for Creating ML Trading Bots
 
-An infra-heavy configurable ML Suite to train, backtest, and run in real time custom Low/Mid Frequency Trading Bots via simple `JSON` configurations.  
+A Suite driven by `JSON` config files to train, backtest, and execute live ML-Based Trading Bots for Low/Mid Frequency Trading. 
 
-Thanks to a modular approach, configurable `JSON` files allow easily change features and labelling logic for training ML models, and allows the user to quickly expereiment with a wide variety of technical indicators without ever having to touch any of the underlying code. Whether you are looking to run a trained model live, find the best strategy, or trying to maximize returns, this suite allows you to search for what works. 
+
+## Core Features
+- Config-First Architecture
+  - All services provided in this suite depend on a `JSON` config
+  - `.env` files control 30+ settings for multiple services
+- Modular ML Pipeline
+  - Simplfy modify the `JSON` and `.env` files to train a ML model with a new strategy
+  - How modular is the pipeline? This is the **entire** script:
+```python
+df = dp.get_df(os.getenv("TRAIN_TICKER"))
+stop = train.find_stop(df, os.getenv("LABEL_CONFIG_FILE"))
+model = train.model_training(df, stop) 
+with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
+    pickle.dump(model, f)
+``` 
+- Backtesting (Coming Soon)
+  - Backtest strategies using trained ML models 
+  - Analyze performance on historical data
+- Live Execution 
+  - Using `Alpaca` simply modify the `.env` to load in certain models to run live (paper or real)
 
 ## Core Features
 - Config-First Architecture
   - All behavior is driven by `JSON` and `.env` configs from strategy, refresh rates, features, models, and more, it's all user-defined. No hardcoded assumptions. 
 - Modular ML Pipeline
   - Train <!-- and retrain --> models effortlessly by just modifying config files. The models are trained against data specified by your own feature engineering and labelling logic and dumped.
-  - How modular is the system? The entire ML training pipeline script is only **7 lines of code**, here's the proof: 
+  - How modular is the system? This is the **entire** ML training pipline script: 
 ```python
 df = dp.get_df(os.getenv("TRAIN_TICKER"))
-with open("config/" + os.getenv("LABEL_CONFIG_FILE")) as f:
-  signals = json.load(f)
-stop = df.columns.get_loc((signals[0]['name'], ''))
+stop = train.find_stop(df, os.getenv("LABEL_CONFIG_FILE"))
 model = train.model_training(df, stop) 
 with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
-  pickle.dump(model, f)
+    pickle.dump(model, f)
 ``` 
 - Custom Backtesting Engine (Coming Soon)
   - Test strategies across historical data with your own logic, quickly know if your strategy and model holds up.
 - Live Execution Engine
-  - Just plug in your Alpaca API keys and go live. Real-time trading support with the ability to run your trained model in production (paper or real).
-  - Plug in your Alpaca API keys and go live with trading using your trained model
+  - Plug in your Alpaca API keys and go live. Real-time trading support with the ability to run your trained model in production (paper or real).
 - Risk Management System (Planned)
   - Automatic risk management and portfolio rebalancing to add guardrails to your trained model during live execution
 

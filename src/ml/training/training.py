@@ -12,13 +12,27 @@ Date: 05/13/2025
 '''
 import pandas as pd
 import pickle
+import os
+import json
+from dotenv import load_dotenv
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report
 from imblearn.under_sampling import RandomUnderSampler
 
+load_dotenv('.env')
 
 # Note we can use different training models
+
+def find_stop(df: pd.DataFrame, file: str) -> int:
+
+    file_path = "config/" + os.getenv("LABEL_CONFIG_FILE")
+
+    with open(file_path) as f:
+        signals = json.load(f)
+    
+    return df.columns.get_loc((signals[0]['name'], ''))
+
 
 
 def model_training(df: pd.DataFrame, to_col: int,

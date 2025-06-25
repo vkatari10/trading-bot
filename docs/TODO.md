@@ -1,12 +1,23 @@
 # TODO
 
-## High Priority
-- Improve frontend CSS styling to reduce rough UI  
+## Major Problems (In order)
 - Prevent negative share orders on Alpaca (check holdings before trade)  
+- Finish backtesting engine MVP (use CLI wrapper for now)
+- Support multiple stock trading / training
+    - combine JSONs
+        - instead of seperate faeture and label config use something like [this](../config/future.json)
+    - training
+        - Run a loop for training, just adapt the training module to accept a list of stocks and adjust accordingly
+    - runtime
+        - leverage `Go` for concurrency where computations are done in paralell 
+        - Need to use channels
+        - place technical indicator declerations in their own package
+        - modularize other parts of `Go`
+    - ML API
+        - needs to be able to predict multiple perhaps at a time? 
+        - might need to convert to websockets using `FastAPI` (scrap `Flask`)
 
 ## Long Term Improvements
-- Add custom backtesting engine to evaluate models on historical data  
-- Support trading multiple stocks concurrently  
 - YFinance Dataframes only go down to the minute, so if someone wants to train an ML model on 1-sec data for example we need to make a logger in go that just takes the bars at some interval and then write as a csv to another file (with buffering) so then we can just make it a dataframe back in python
 
 ## Configs

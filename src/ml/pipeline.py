@@ -23,13 +23,8 @@ import src.ml.training.training as train
 # get DF w/ user features and labels
 df = dp.get_df(os.getenv("TRAIN_TICKER"))
 
-# Load features
-with open("config/" + os.getenv("LABEL_CONFIG_FILE")) as f:
-    signals = json.load(f)
-
-# stop index to exclude relationship columns
-# signals[0]['name'] is just the first relationship col_name
-stop = df.columns.get_loc((signals[0]['name'], ''))
+# find the stop column to prevent training on cols that are not features
+stop = train.find_stop(df, os.getenv("LABEL_CONFIG_FILE"))
 
 # train model
 model = train.model_training(df, stop) 

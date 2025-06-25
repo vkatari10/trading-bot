@@ -15,6 +15,10 @@
         "123",
         "456"
     ],
+    "backtest_stocks": [
+        "stockA",
+        "stockB"
+    ],
     "model_type": "RandomForrestClassifier",
     "model_name": "model.pkl"
 }
