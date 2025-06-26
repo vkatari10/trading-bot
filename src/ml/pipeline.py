@@ -28,6 +28,6 @@ stop = train.find_stop(df, config)
 # train model
 model = train.model_training(df, stop) 
 
-# export model to runtime destination
+# export model 
 with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
     pickle.dump(model, f)

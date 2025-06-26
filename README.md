@@ -32,10 +32,11 @@ with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
   - Train <!-- and retrain --> models effortlessly by just modifying config files. The models are trained against data specified by your own feature engineering and labelling logic and dumped.
   - How modular is the system? This is the **entire** ML training pipline script: 
 ```python
-df = dp.get_df(os.getenv("TRAIN_TICKER"))
-stop = train.find_stop(df, os.getenv("LABEL_CONFIG_FILE"))
+config = jp.UserConfig()    
+df = dp.get_df(config)
+stop = train.find_stop(df, config)
 model = train.model_training(df, stop) 
-with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
+with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
     pickle.dump(model, f)
 ``` 
 - Custom Backtesting Engine (Coming Soon)
