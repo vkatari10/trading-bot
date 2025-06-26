@@ -9,7 +9,7 @@ import (
 	"bytes"
 	"log"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
-	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 )
 
 // SendPayload should send the JSON as an Object to the frontend
@@ -75,8 +75,8 @@ func sendBrokerData() {
 } // sendBrokerData
 
 // sendTechnicalData sendsTechnical data as a JSON to the frontend
-func sendTechnicalData(data engine.UserData) { // copy by value to prevent races
-	go func(engine.UserData) {
+func sendTechnicalData(data technicals.UserData) { // copy by value to prevent races
+	go func(technicals.UserData) {
 		colNameArray := make([]string, len(data.ColNames))
 		for key, val := range data.ColNames {
 			colNameArray[val] = key
@@ -87,18 +87,18 @@ func sendTechnicalData(data engine.UserData) { // copy by value to prevent races
 
 		technicals :=  make([]float64, 0, 10)	
 
-		for _, ind := range data.Objects {
-			switch v := ind.(type) {
-			case *engine.SMA:
-				technicals = append(technicals, v.Data[len(v.Data) - 1])
-			case *engine.EMA:
-				technicals = append(technicals, v.Data[len(v.Data) - 1])
-			case *engine.Delta:
-				technicals = append(technicals, v.Value)
-			case *engine.Diff:
-				technicals = append(technicals, v.Value)
-			} // swtich
-		} // for
+		// for _, ind := range data.Objects {
+		// 	switch v := ind.(type) {
+		// 	case *technicals.SMA:
+		// 		technicals = append(technicals, v.Data[len(v.Data) - 1])
+		// 	case *technicals.EMA:
+		// 		technicals = append(technicals, v.Data[len(v.Data) - 1])
+		// 	case *technicals.Delta:
+		// 		technicals = append(technicals, v.Value)
+		// 	case *technicals.Diff:
+		// 		technicals = append(technicals, v.Value)
+		// 	} // swtich
+		// } // for
 
 		SendPayload(map[string]any{
 			"technicals": technicals,

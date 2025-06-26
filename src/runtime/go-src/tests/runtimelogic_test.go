@@ -5,6 +5,7 @@ import (
 	"testing"
 	"math"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 )
 
 // TestLoadBurnData verifies that burn in data is intialized
@@ -32,12 +33,12 @@ func TestLoadBurnData(t *testing.T) {
 
 	for i, ind := range userData.Objects {	
 		switch v := ind.(type) {
-		case *engine.SMA:
+		case *technicals.SMA:
 			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestLoadBurnData failed for object index %d for type %s (%v)", i, "SMA", err)
 			} // if
-		case *engine.EMA:
+		case *technicals.EMA:
 			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestLoadBurnData fialed for object index %d for type %s (%v)", i, "EMA", err)
@@ -72,12 +73,12 @@ func TestUpdateTechnicals(t *testing.T) {
 
 	for i, ind := range userData.Objects {
 		switch v := ind.(type) {
-		case *engine.EMA:
+		case *technicals.EMA:
 			err := checkEquivalent(wants[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestUpdateTechnicals failed with %v", err)
 			} // if
-		case *engine.SMA:
+		case *technicals.SMA:
 			err := checkEquivalent(wants[i], v.Data[len(v.Data) - 1])
 			if err != nil {
 				t.Errorf("TestUpdateTechnicals failed with %v", err)

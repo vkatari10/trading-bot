@@ -7,111 +7,122 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 )
 
-// InitUserLogic intitiadatazes the JSON files founds in src/logic as
-// an array of technical indicators
-func InitUserLogic(file string) (UserData, error) {
-	var userArray UserData;
-
-	userJSON, err := ParseLogicJSON(file)
-	if err != nil {
-		return userArray, fmt.Errorf("could not read src/logic/features.json")
-	} // if
-
-	userArray, err = LoadIndicators(userJSON)
-	if err != nil {
-		return userArray, 
-		fmt.Errorf("could not parse, check src/logic/features.json")
-	}
-
-	return userArray, nil
-} // InitUserLogic
-
 // ParseLogicJSON parses the JSONs files found in src/logic
-func ParseLogicJSON(file string) ([]map[string]any, error) {
+func ParseLogicJSON(file string) (technicals.UserData, error) {
+
+	var dummy technicals.UserData
 
 	jsonData, err := os.ReadFile(file)
 	if err != nil {
-		
-		return nil, fmt.Errorf("%v", err) // figure how else to handle this later another way
+		return dummy, fmt.Errorf("%v", err) // figure how else to handle this later another way
 	} // if
 
-	var jsonMap []map[string]any
+	var jsonMap map[string]any
 
 	err = json.Unmarshal(jsonData, &jsonMap)
 
 	if err != nil {
-		return nil, err
+		return dummy, fmt.Errorf("%v", err)
 	} // if
-	return jsonMap, nil
+
+	fmt.Printf("json map -> %v\n", jsonMap)
+
+	features, err := extractFeatures(jsonMap)
+	if err != nil {
+		return dummy, fmt.Errorf("%v", err)
+	} // if
+
+	return features, nil
+	
 } // ParseLogicJSON
 
-// Loads technical indicators from the JSON onto an Indicator array
-func LoadIndicators(json []map[string]any) (UserData, error) {
+func extractFeatures(config map[string]any) (technicals.UserData, error) {
 
-	data := UserData {
+	var dummy technicals.UserData
+
+	features, ok := config["features"].([]any)
+	if !ok {
+		return dummy, fmt.Errorf("%v", ok)
+	} // if
+
+	// User Data Object
+	data := technicals.UserData {
 		ColNames: map[string]int{},
-		Objects: []Indicator{},
+		Objects: []technicals.Indicator{},
 		OHLCVDelta: [5]float64{},
 		OHLCVRaw: [5]float64{},
 	} // UserData
 
-	err := decideConstructor(&data, json) // load all objects onto array
-	if err != nil {
-		return data, fmt.Errorf("%v", err)
-	}
+	for i := range features {
+		
+		feature, ok := features[i].(map[string]any)
+		if !ok {
+			return dummy, fmt.Errorf("%v", ok)
+		} // if 
+
+		decideConstructor(&data, feature, i)
+
+		
+	} // for 
+
 
 	return data, nil
-} // LoadIndicators
+} // extractFeatures
 
 // decideConstructor calls constructors based on each JSON objected 
 // defined in the features.json file
-func decideConstructor(data *UserData, json []map[string]any) (error) {
+func decideConstructor(data *technicals.UserData, json map[string]any, i int) (error) {
 
-	for i := range json {
+	indicator, ok := json["tech"].(string)
+	if !ok {
+		return fmt.Errorf("tech field should be a string")
+	} // if
 
-		indicator, ok := json[i]["tech"].(string)
+	colName, ok := json["name"].(string)
+	if !ok {
+		return fmt.Errorf("name field should be a string")
+	} // if
 
-		if !ok {
-			return fmt.Errorf("tech field should be a string")
+	if indicator == "EMA" {
+		ema, err := technicals.NewEMA(json)
+		if err != nil {
+			return fmt.Errorf("ema construction failed -> object index %d -> %v", i, err)
 		} // if
-
-		colName, ok := json[i]["name"].(string)
-		if !ok {
-			return fmt.Errorf("name field should be a string")
+		data.Objects = append(data.Objects, ema)
+	} else if indicator == "SMA" {
+		sma, err := technicals.NewSMA(json)
+		if err != nil {
+			return fmt.Errorf("sma construction failed -> object index %d", i)
 		} // if
+		data.Objects = append(data.Objects, sma)
+	} else if indicator == "delta" {
+		delt, err := technicals.NewDelta(json)
+		if err != nil {
+			return fmt.Errorf("delta construction failed -> object index %d", i)
+		} // if
+		data.Objects = append(data.Objects, delt)
+	} else if indicator == "diff" {
+		diff, err := technicals.NewDiff(json)
+		if err != nil {
+			return fmt.Errorf("diff construction failed -> object index %d", i)
+		} // if
+		data.Objects = append(data.Objects, diff)
+	} else {
+		return fmt.Errorf("\"tech\" field for object at index %d is not recognized", i)
+	} // if-else
 
-		if indicator == "EMA" {
-			ema, err := NewEMA(json[i])
-			if err != nil {
-				return fmt.Errorf("EMA construction failed -> object index %d -> %v", i, err)
-			} // if
-			data.Objects = append(data.Objects, ema)
-		} else if indicator == "SMA" {
-			sma, err := NewSMA(json[i])
-			if err != nil {
-				return fmt.Errorf("SMA construction failed -> object index %d", i)
-			} // if
-			data.Objects = append(data.Objects, sma)
-		} else if indicator == "delta" {
-			delt, err := NewDelta(json[i])
-			if err != nil {
-				return fmt.Errorf("Delta construction failed -> object index %d", i)
-			} // if
-			data.Objects = append(data.Objects, delt)
-		} else if indicator == "diff" {
-			diff, err := NewDiff(json[i])
-			if err != nil {
-				return fmt.Errorf("Diff construction failed -> object index %d", i)
-			} // if
-			data.Objects = append(data.Objects, diff)
-		} else {
-			return fmt.Errorf("\"tech\" field for object at index %d is not recognized", i)
-		} // if-else
+		/*
 
-		data.ColNames[colName] = i // store index for the colName
-		} // for 
-		
+		This is for the diff and delta objects 
+
+		Why is it str:int i have no idea 
+
+		TODO: FIGURE OUT WHY IT LIKE THIS
+		*/	
+		data.ColNames[colName] = i // store index for the colName 
+	
 	return nil
 } // decideConstructor

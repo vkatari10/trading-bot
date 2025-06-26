@@ -13,3 +13,14 @@ This folder contains the `Go` source code representing the main runtime evironme
 
 ## Documentation 
 - Documentation can be found [here](https://pkg.go.dev/github.com/vkatari10/trading-bot/src/runtime/go-src)
+
+## History 
+High level overview of the evolution of the runtime engine
+- v1
+    - Basic Implementaion 
+- v2
+    - Cleaned v1, modularized codebase
+    - Added tests
+- v3
+    - Modularized further, true seperation of concerns
+    - Full tests available

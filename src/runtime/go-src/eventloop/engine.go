@@ -4,6 +4,7 @@ import (
 	"time"
 	"runtime"
 	"fmt"
+	"os"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
@@ -14,11 +15,12 @@ func EventLoop() {
 	
 	// Load User JSON -> Convert to Go Struct
 	userConfigFile := "../../../config/" + featuresFile
-	userIndicators, err := engine.InitUserLogic(userConfigFile)
+	userIndicators, err := engine.ParseLogicJSON(userConfigFile)
 	if err != nil {
-		go SendPayload(map[string]any{
-			"msg": fmt.Sprintf("Could not properly initialize the JSON from %s", featuresFile),
+		SendPayload(map[string]any{
+			"msg": fmt.Sprintf("Could not properly initialize the JSON from %s -> Killing engine execution", featuresFile),
 		}, logLink)
+		os.Exit(1)
 	} // if
 
 	// Burn In Process

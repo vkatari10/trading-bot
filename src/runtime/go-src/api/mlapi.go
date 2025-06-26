@@ -5,7 +5,7 @@ package api
 
 import (
     "fmt"
-    engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine" 
+    technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
     "encoding/json"
     "bytes"
     "net/http" 
@@ -20,7 +20,7 @@ var (
 
 // PutPrices loads the intial close, high, low, and open prices that 
 // the ML models was trained on (Yfinance includes these by deafult)
-func PutPrices(data *engine.UserData, json map[string]any, ticker string) (map[string]any) {
+func PutPrices(data *technicals.UserData, json map[string]any, ticker string) (map[string]any) {
     bars, err := GetQuote(ticker)
     if err != nil {
         log.Println("ERROR: Failed to get market data")
@@ -43,7 +43,7 @@ func PutPrices(data *engine.UserData, json map[string]any, ticker string) (map[s
 
 // PutNewTechnicals inserts the new Technical Values after updating 
 // Values of the Indicators that are not Diff, or Delta
-func PutNewTechnicals(data *engine.UserData, json map[string]any) (map[string]any) {
+func PutNewTechnicals(data *technicals.UserData, json map[string]any) (map[string]any) {
 
     for i, ind := range data.Objects {
 
@@ -51,13 +51,13 @@ func PutNewTechnicals(data *engine.UserData, json map[string]any) (map[string]an
 
         switch v := ind.(type) {
 
-        case *engine.SMA:
+        case *technicals.SMA:
             json[name] = v.Data[len(v.Data) - 1]
-        case *engine.EMA:
+        case *technicals.EMA:
             json[name] = v.Data[len(v.Data) - 1]
-        case *engine.Delta:
+        case *technicals.Delta:
             json[name] = v.Value
-        case *engine.Diff:
+        case *technicals.Diff:
             json[name] = v.Value
         } // switch
 
@@ -70,7 +70,7 @@ func PutNewTechnicals(data *engine.UserData, json map[string]any) (map[string]an
 
 // GetLatestData returns back a JSON representation of the lastest values in 
 // order as the defined JSON in src/logic/features.json
-func MakeMLPayload(obj *engine.UserData, ticker string) (res map[string]any, err error) {
+func MakeMLPayload(obj *technicals.UserData, ticker string) (res map[string]any, err error) {
     var json map[string]any = make(map[string]any)
     json = PutPrices(obj, json, ticker)  // Put OHCLV Values
     json = PutNewTechnicals(obj, json) 
@@ -79,7 +79,7 @@ func MakeMLPayload(obj *engine.UserData, ticker string) (res map[string]any, err
 
 // SendData sends data to the shared ML API to give updated
 // Data
-func SendData(obj *engine.UserData, ticker string) error {
+func SendData(obj *technicals.UserData, ticker string) error {
 
     data, err := MakeMLPayload(obj, ticker)
     if err != nil {

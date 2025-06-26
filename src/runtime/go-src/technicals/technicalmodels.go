@@ -11,6 +11,11 @@ Each technical Indicator requires these methods
 3. GetData() -- (Optiona) If struct contains an array to access data values
 
 These should be reciever methods
+
+Why are these methods not declared in the interface? 
+
+Because we don't know what params each method should take, so it is up to the user
+to determine how to implement and call these methods...
 */
 
 // Indicator interface for all technical indicators

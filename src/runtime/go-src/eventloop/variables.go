@@ -53,7 +53,7 @@ func init() {
 	brokerLink = os.Getenv("BROKER_LINK")
 
 	// User Config File
-	featuresFile = os.Getenv("FEATURE_CONFIG_FILE")
+	featuresFile = os.Getenv("MAIN_CONFIG_FILE")
 
 	// Call methods to intiailize non string values
 	burnWindow, err := getBurnWindow() // burn in window
