@@ -1,7 +1,6 @@
 package engine
 
-// file containing JSON related methods during runtime to interact
-// with APIs and files in src/logic
+// Parses User Config Features To Construct the technicals.UserData Object
 
 import (
 	"encoding/json"
@@ -13,11 +12,9 @@ import (
 // ParseLogicJSON parses the JSONs files found in src/logic
 func ParseLogicJSON(file string) (technicals.UserData, error) {
 
-	var dummy technicals.UserData
-
 	jsonData, err := os.ReadFile(file)
 	if err != nil {
-		return dummy, fmt.Errorf("%v", err) // figure how else to handle this later another way
+		return technicals.UserData{}, fmt.Errorf("%v", err) // figure how else to handle this later another way
 	} // if
 
 	var jsonMap map[string]any
@@ -25,27 +22,24 @@ func ParseLogicJSON(file string) (technicals.UserData, error) {
 	err = json.Unmarshal(jsonData, &jsonMap)
 
 	if err != nil {
-		return dummy, fmt.Errorf("%v", err)
+		return technicals.UserData{}, fmt.Errorf("%v", err)
 	} // if
 
-	fmt.Printf("json map -> %v\n", jsonMap)
+	//fmt.Printf("json map -> %v\n", jsonMap)
 
 	features, err := extractFeatures(jsonMap)
 	if err != nil {
-		return dummy, fmt.Errorf("%v", err)
+		return technicals.UserData{}, fmt.Errorf("%v", err)
 	} // if
 
 	return features, nil
-	
 } // ParseLogicJSON
 
 func extractFeatures(config map[string]any) (technicals.UserData, error) {
 
-	var dummy technicals.UserData
-
 	features, ok := config["features"].([]any)
 	if !ok {
-		return dummy, fmt.Errorf("%v", ok)
+		return technicals.UserData{}, fmt.Errorf("%v", ok)
 	} // if
 
 	// User Data Object
@@ -60,14 +54,11 @@ func extractFeatures(config map[string]any) (technicals.UserData, error) {
 		
 		feature, ok := features[i].(map[string]any)
 		if !ok {
-			return dummy, fmt.Errorf("%v", ok)
+			return technicals.UserData{}, fmt.Errorf("%v", ok)
 		} // if 
 
-		decideConstructor(&data, feature, i)
-
-		
+		decideConstructor(&data, feature, i)	
 	} // for 
-
 
 	return data, nil
 } // extractFeatures
@@ -86,43 +77,44 @@ func decideConstructor(data *technicals.UserData, json map[string]any, i int) (e
 		return fmt.Errorf("name field should be a string")
 	} // if
 
-	if indicator == "EMA" {
+	switch indicator {
+	case "EMA":
 		ema, err := technicals.NewEMA(json)
 		if err != nil {
 			return fmt.Errorf("ema construction failed -> object index %d -> %v", i, err)
 		} // if
 		data.Objects = append(data.Objects, ema)
-	} else if indicator == "SMA" {
+	case "SMA":
 		sma, err := technicals.NewSMA(json)
 		if err != nil {
 			return fmt.Errorf("sma construction failed -> object index %d", i)
 		} // if
 		data.Objects = append(data.Objects, sma)
-	} else if indicator == "delta" {
+	case "delta":
 		delt, err := technicals.NewDelta(json)
 		if err != nil {
 			return fmt.Errorf("delta construction failed -> object index %d", i)
 		} // if
 		data.Objects = append(data.Objects, delt)
-	} else if indicator == "diff" {
+	case "diff":
 		diff, err := technicals.NewDiff(json)
 		if err != nil {
 			return fmt.Errorf("diff construction failed -> object index %d", i)
 		} // if
 		data.Objects = append(data.Objects, diff)
-	} else {
+	default:
 		return fmt.Errorf("\"tech\" field for object at index %d is not recognized", i)
-	} // if-else
+	}
 
-		/*
+	/*
 
-		This is for the diff and delta objects 
+	This is for the diff and delta objects 
 
-		Why is it str:int i have no idea 
+	Why is it str:int i have no idea 
 
-		TODO: FIGURE OUT WHY IT LIKE THIS
-		*/	
-		data.ColNames[colName] = i // store index for the colName 
+	TODO: FIGURE OUT WHY IT LIKE THIS
+	*/	
+	data.ColNames[colName] = i // store index for the colName 
 	
 	return nil
 } // decideConstructor

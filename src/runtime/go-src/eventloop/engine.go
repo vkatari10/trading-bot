@@ -23,6 +23,8 @@ func EventLoop() {
 		os.Exit(1)
 	} // if
 
+	fmt.Println(userIndicators)
+
 	// Burn In Process
 	var burnQuote [5]float64
 	var burn []float64

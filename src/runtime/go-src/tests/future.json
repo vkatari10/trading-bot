@@ -2,45 +2,40 @@
     "features": [
         {
             "tech": "SMA",
-            "window": 10,
-            "name": "SMA_10"
+            "window": 20,
+            "name": "SMA_20"
         },
         {
-            "tech": "SMA",
-            "window": 30,
-            "name": "SMA_30"
-        },
-        {
-            "tech": "delta",
-            "col1": "SMA_10",
-            "col2": null,
-            "name": "SMA_10_delta"
+            "tech": "EMA",
+            "window": 20,
+            "name": "EMA_20",
+            "smoothing": 2
         },
         {
             "tech": "delta",
-            "col1": "SMA_30",
+            "col1": "SMA_20",
             "col2": null,
-            "name": "SMA_30_delta"
+            "name": "SMA_20_delta"
         },
         {
             "tech": "diff",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
-            "name": "SMA_10_30_diff"
+            "col1": "SMA_20",
+            "col2": "EMA_20",
+            "name": "SMA_EMA_diff"
         },
         {
             "tech": "delta",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
-            "name": "SMA_10_30_delta_diff"
+            "col1": "SMA_20",
+            "col2": "EMA_20",
+            "name": "SMA_EMA_delta_of_diff"
         }
     ], 
     "label_logic": [
         {
             "sig": "crossover",
-            "name": "SMA_CROSS",
-            "col1": "SMA_10",
-            "col2": "SMA_30"
+            "name": "CROSS_EMA_SMA",
+            "col1": "SMA_20",
+            "col2": "EMA_20"
         }
     ],
     "train_stocks": [

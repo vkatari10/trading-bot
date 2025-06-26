@@ -12,9 +12,9 @@ import (
 // properly based on given burn data
 func TestLoadBurnData(t *testing.T) {
 
-	file := "testdata.json"
+	file := "future.json"
 
-	userData, err := engine.InitUserLogic(file)
+	userData, err := engine.ParseLogicJSON(file)
 	if err != nil {
 		t.Errorf("TestLoadBurnData failed with error %v", err)
 	} // if
@@ -52,7 +52,7 @@ func TestLoadBurnData(t *testing.T) {
 // updating technical indicators works as intended
 func TestUpdateTechnicals(t *testing.T) {
 
-	userData, err := engine.InitUserLogic("testdata.json")
+	userData, err := engine.ParseLogicJSON("future.json")
 	if err != nil {
 		t.Errorf("TestUpdateTechnicals failed with error %v", err)
 	} // if
