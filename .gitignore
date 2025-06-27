@@ -21,6 +21,7 @@ __pycache__/
 *.o
 *.so
 *.a
+*.out
 
 # ML models
 *.pkl

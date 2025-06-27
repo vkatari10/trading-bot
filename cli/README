@@ -1,0 +1,23 @@
+# CLI
+
+CLI wrapper for scripts to quickly get actions done without launching the entire TUI. 
+
+## How to Use
+
+| Command | Action | Arguments | 
+|:------:|---------|-----------|
+| build | Uses your config file to train, dump your ML model, compiles all dependencies as well | none |
+| env | Update `.env` if settings were changed, starts `venv` if not already started | none |
+| mlapi | Starts ML API Server using the config model of your choice (assuming its trained already) | none |
+| test | Runs tests for `Python` and `Go` source code | none |
+| train | Trains a ML model based on a file configuration | none |  
+
+## Future implementation
+
+| Command | Action | Arguments | 
+|:------:|---------|-----------|
+| build | Uses your config file to train, dump your ML model, compiles all dependencies as well | <config_file> |
+| env | Update `.env` if settings were changed, starts `venv` if not already started | none |
+| mlapi | Starts ML API Server using the config model of your choice (assuming its trained already) | <config_file> |
+| test | Runs tests for `Python` and `Go` source code | none |
+| train | Trains a ML model based on a file configuration | <config_file> |  
