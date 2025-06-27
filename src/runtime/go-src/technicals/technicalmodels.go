@@ -1,21 +1,28 @@
-package engine
+package technicals
 
-// Contains model outlines and struct definitions
-
+// Contains struct definitions for technical indicators
 
 /*
-Each technical Indicator requires these methods 
+Each struct will need at least 3 methods 
 
-1. Load() -- Initalizes Values based on burn in data
-2. GetNew() -- Updates Value based on a new Price
-3. GetData() -- (Optiona) If struct contains an array to access data values
+1. NewX() -- Constructs a new Object of a given struct
+2. Load() -- Reciever method that initializes the value of a technical 
+indicator given burn in data
+3. GetNew() -- Reciver method that updates the value of a technical 
+indicator given new data
+4. GetData() -- (Optional) Gets the latest value of a technical indicator
 
-These should be reciever methods
+In addition to satisfy the Indicator{} interface declare 
+these two methods at the bottom of this file 
+1. Tag() -- Placeholder method
+2. Type() -- Return Type of Object as a String
 
-Why are these methods not declared in the interface? 
+Q: Why are the first 3 methods not declared in the interface? 
 
-Because we don't know what params each method should take, so it is up to the user
-to determine how to implement and call these methods...
+A: Not every technical indicator takes in the same data
+
+It is up to the user to determine how a method should be defined and won't 
+limit the method to param constraints. 
 */
 
 // Indicator interface for all technical indicators
@@ -29,7 +36,8 @@ type UserData struct {
 	ColNames 	map[string]int // Raw Col Names and index from user JSON
 	Objects  	[]Indicator // feature refs from user JSON "tech"s
 	OHLCVDelta	[5]float64 // Store deltas for all 5 values
-	OHLCVRaw 	[5]float64 // Store raw values
+	OHLCVRaw 	[5]float64 // Store raw values 
+	// Might need to add historical volume and close price arrays as well???
 } // UserData
 
 // SMA Simple Moving Average indicator 
@@ -66,6 +74,38 @@ type Diff struct {
 	Col2Index 	int
 	Value		float64
 } // Diff
+
+// MACD Represents a Moving Average Convergence Diveregence
+// technical indicator
+type MACD struct {
+	EMA1 EMA
+	EMA2 EMA
+	Diff float64 // may not be needed
+} // MACD
+
+// MACDsignal Represents a Moving Average Convergence Divergence
+// Signal Line (To be used with the MACD Struct)
+type MACDSignal struct {
+	Signal EMA
+} // MACDSignal
+
+// BollingerUpper Represents the Upper Bollinger Band Technical
+// indicator
+type BollingerUpper struct {
+
+} // BollingerUpper
+
+// BollingerLower Represents the Lower Bollinger Band Technical
+// indicator
+type BollingerLower struct {
+
+} // BollingerLower
+
+// RSI Represents the relative strength index technical 
+// indicator
+type RSI struct {
+
+} // RSI
 
 // Decleration of Dummy Method
 func (SMA) 		Tag() {}

@@ -1,4 +1,4 @@
-package engine
+package technicals
 
 // This file conatains methods that all Updater (GetNew())
 // methods for all technical indicators may need

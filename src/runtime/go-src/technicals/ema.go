@@ -1,4 +1,4 @@
-package engine
+package technicals
 
 // File Containing Methods for the EMA Indicator
 

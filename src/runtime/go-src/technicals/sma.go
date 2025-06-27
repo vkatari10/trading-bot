@@ -1,4 +1,4 @@
-package engine
+package technicals
 
 // File that contains logic for the SMA Indicator
 

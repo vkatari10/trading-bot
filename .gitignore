@@ -28,3 +28,6 @@ __pycache__/
 
 # VS Code
 .vscode
+
+# Go binary 
+./src/runtime/go-src/go-src
