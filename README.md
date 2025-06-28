@@ -1,50 +1,78 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)  [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# StratForge – Config-Driven Suite for Creating ML Trading Bots
+# StratForge 
 
-A Suite driven by `JSON` config files to train, backtest, and execute live ML-Based Trading Bots for Low/Mid Frequency Trading. 
+StratForge is a platform for building and running custom trading bots, where users define strategies through configuration, no code edits required. It handles the entire ML pipeline, backtesting, and live trading infrastructure, making it easy to prototype and deploy new ideas quickly.
 
+Note: This project is actively under improvement. Here is a list of current and upcoming features. 
 
-<!-- ## Core Features
-- Config-First Architecture
-  - All services provided in this suite depend on a `JSON` config
-  - `.env` files control 30+ settings for multiple services
-- Modular ML Pipeline
-  - Simplfy modify the `JSON` and `.env` files to train a ML model with a new strategy
-  - How modular is the pipeline? This is the **entire** script:
-```python
-df = dp.get_df(os.getenv("TRAIN_TICKER"))
-stop = train.find_stop(df, os.getenv("LABEL_CONFIG_FILE"))
-model = train.model_training(df, stop) 
-with open("src/ml/models/decider/" + os.getenv("MODEL_DUMP_NAME"), 'wb') as f:
-    pickle.dump(model, f)
-``` 
-- Backtesting (Coming Soon)
-  - Backtest strategies using trained ML models 
-  - Analyze performance on historical data
-- Live Execution 
-  - Using `Alpaca` simply modify the `.env` to load in certain models to run live (paper or real) -->
+## Completed Features
 
-## Core Features
-- Config-First Architecture
-  - All behavior is driven by `JSON` and `.env` configs from strategy, refresh rates, features, models, and more, it's all user-defined. No hardcoded assumptions. 
-- Modular ML Pipeline
-  - Train <!-- and retrain --> models effortlessly by just modifying config files. The models are trained against data specified by your own feature engineering and labelling logic and dumped.
-  - How modular is the system? This is the **entire** ML training pipline script: 
-```python
-config = jp.UserConfig()    
-df = dp.get_df(config)
-stop = train.find_stop(df, config)
-model = train.model_training(df, stop) 
-with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
-    pickle.dump(model, f)
-``` 
-- Custom Backtesting Engine (Coming Soon)
-  - Test strategies across historical data with your own logic, quickly know if your strategy and model holds up.
-- Live Execution Engine
-  - Plug in your Alpaca API keys and go live. Real-time trading support with the ability to run your trained model in production (paper or real).
-- Risk Management System (Planned)
-  - Automatic risk management and portfolio rebalancing to add guardrails to your trained model during live execution
+### Config Driven Architecture (JSON)
+- Choose a strategy from supported technical indicators (EMA, Delta, etc.) 
+- Declare labelling logic as the relationships between technical indicators
+- Every service uses the same config, eliminating feature misalignment 
+### Full ML Pipeline (Python)
+- Scikit-learn Random Forest Classifier Model 
+- Multi-asset training (configurable)
+- Dynamically adjusts features, labels, and training tickers based on config files
+### Backtesting Module (Python)
+- Quickly test trained ML models on historical data to analyze P/L
+### Live Execution (Go)
+- Runtime engine
+  - Polls Market Data
+  - Manages delcared config value features
+  - Communicates via HTTP REST with a ML API Server for real time inference
+  - Places trades (paper or real) using individual Alpaca accountz
+  - Exposes own API for live monitoring
+  - Error handling from bad configs, failed API calls, etc
+  - Supports trading intervals from minutes to seconds
+
+## In Progress
+### ML Pipeline
+  - Conversion to `XGBoost` models exclusivley 
+  - Hyperparameter tuning via config files
+  - Configurable label rebalancing for training
+### Backtesting Module
+  - Graphical representation of buy/sell history using `matplotlib`
+### Live Execution 
+- Reduce ML inference latency by using gRPC
+- Reduce market data polling latency by using websockets
+-  Multi asset trading configurable by JSON
+### UI
+- CLI
+  - Python based CLI for quick jobs (training, backtesting)
+- TUI Client
+  - Using `textual`
+  - Planned live dashboard monitoring logging, account, and data information 
+  - Easier interface to modify `.env` or `JSON` configs
+### Other 
+- Support for more technical indicators / features
+  - Current
+    - EMA
+    - SMA
+    - Deltas (and Difference of Deltas)
+  - Future
+    - RSI
+    - MACD
+    - Bollinger Bands
+
+Project size is around 2000 LOC divided between ~60 files. 
+
+## Architecture
+Philosophy
+- Config Driven 
+  - Prevent feature misalignment by ensuring every service uses the same config setup
+  - Think of the config like a contract that every other service must agree to
+- Decoupled Systems
+  - All services are seperated and independent
+  - At Runtime
+    - The ML Model runs on its own server
+    - The Go runtime computes features and recieves inferences via HTTP REST calls
+
+This design allows for independent parts to be scaled and improved without affecting other systems
+
+![Architecture](docs/images/TradingPlatformDiagram4.svg)
 
 ## Tech Stack
 - `Go`
@@ -63,40 +91,7 @@ Well, since this project is intended to be used for both low and mid frequency t
 - `C++` is too complex (for this project), and complicates API calls and multithreading among other things
 
 `Go` served as a fair trade off between performance and complexity, allowing for fast iteration while still providing low latency code.<br>
-
-## Architecture
-The simplest way to describe this architecture is config first<br>
-
-You simply define your own JSON based features and labels (technical indicators) and the environment variables in .env, the platform takes into account at training and runtime what you wanted making it far easier to test.<br>
-
-The following diagram highlights what is happening in the background.<br>
-
-![Architecture](docs/images/TradingPlatformDiagram4.svg)
-
-### Why this design?
-- ML and runtime are completely seperated but unified under a single `JSON`
-  - Think of the `JSON` config as a contract between the ML pipeline and the runtime engine where they agree upon using the same features so there is no confusion about what needs to be computed
-- Decoupled by language
-  - Anything ML is done in `Python`, and anything runtime is done in `Go`
-  - This makes developing each indiviual component easier and less prone to conflict
-- ML API server
-  - This provides the bridge between `Go` and the ML model
-  - This allows for real time inference as `Go` gives the data, and `Go` gets back a prediction
     
-## Future Additions
-- General 
-  - More built-in technical indicators at training and run time
-- Machine Learning Pipeline
-  - Additions to train on multiple stocks
-  - Allow users to tune hyperparameters
-  - Allow uesrs to choose ML model (KNN, Linear Regression, etc.)
-  - Find a higher frequency historical data provider
-- APIs
-  - Find a higher frequency market data streamer
-  - Convert ML API to use `FastAPI` instead of `Flask`
-- Runtime
-  - Be able to train and track multiple stocks at once
-
 ## Setup
 
 To use this program you will need to follow these steps
@@ -136,7 +131,7 @@ The most significant limitations of this platform are
   - Therefore it is a good idea not to go below `60` seconds for the refresh rate for the runtime engine unless 
     - You have another pickled ML model that was trained on higher frequency data
     - You have access to a higher tier `Alpaca` account 
-  - It's important to note that the runtime engine can handle refresh rates to every second
+  - It's important to note that the runtime engine can handle refresh rates for small intervals
     - But if you lack the requirements above
       - Technical data becomes diluted from the same stock price being used
       - Which in turn degrades ML inference
