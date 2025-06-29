@@ -17,17 +17,23 @@ import src.ml.training.training as train
 import src.ml.json.json_parser as jp
 
 # user config file
+print("Loading user config")
 config = jp.UserConfig()    
 
 # get all training DFs w/ user features and labels
+print("Building training data")
 df = dp.get_df(config)
 
 # find the stop column to prevent training on cols that are not features
 stop = train.find_stop(df, config)
 
 # train model
+print("Training model")
 model = train.model_training(df, stop) 
 
 # export model 
+print("Dumping model")
 with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
     pickle.dump(model, f)
+
+print("Done")

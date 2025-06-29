@@ -4,7 +4,7 @@ from textual.widgets import Button, Header, Footer, Static
 from textual.reactive import reactive
 
 
-class TopBar(Horizontal):
+class SideMenu(Vertical):
     def compose(self) -> ComposeResult:
         yield Button("Config", id="config", classes="menu-btn")
         yield Button("Env", id="env", classes="menu-btn")
@@ -23,39 +23,40 @@ class MainPanel(Static):
 class StratForgeTUI(App):
     CSS = """
     Screen {
-        layout: vertical;
+        layout: horizontal;
+    }
+    SideMenu {
+        width: 20;
+        background: black;
+        border: heavy white;
     }
     .menu-btn {
         border: none;
         content-align: center middle;
-        height: 10;
-        color: yellow;
+        height: 3;
+        background: black;
+        color: white;
     }
     .menu-btn:hover {
         background: #333333;
     }
-    TopBar {
-        height: 3;
-        background: black;
-        border: black;
-        padding: 0 1;
-    }
     MainPanel {
         padding: 2;
-        border: black;
+        border: heavy white;
         height: 1fr;
+        width: 1fr;
     }
     """
 
     def compose(self) -> ComposeResult:
+        yield SideMenu()
+        yield MainPanel()
         yield Header()
-        yield TopBar()
-        self.panel = MainPanel()
-        yield self.panel
         yield Footer()
 
     def on_button_pressed(self, event: Button.Pressed) -> None:
-        self.panel.section = event.button.label
+        main_panel = self.query_one(MainPanel)
+        main_panel.section = event.button.label
 
 
 if __name__ == "__main__":

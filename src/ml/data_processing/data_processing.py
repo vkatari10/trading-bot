@@ -18,8 +18,9 @@ from typing import Dict, Any, List
 import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf # yfinance
 import src.ml.data_processing.signals as sig
+import src.ml.data_processing.dispatcher as dp
 
-# JSON parser
+# User Config JSON parser
 import src.ml.json.json_parser as jp
 
 
@@ -44,12 +45,13 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
     df = load_features(df, config.get_features())
     df = relationships(df, config.get_labels())
 
-    # print("Number of things that are not label == 0")
+    # print("Number of things that are not hold")
     # print(len(df[df['final_signal'] != 0]))
     df.dropna(inplace=True)
     return df
 
 
+# TODO make these dispatch tables somehow
 def load_features(df: pd.DataFrame,
                   features: List[Dict[str, Any]]) -> pd.DataFrame:
     '''
@@ -100,31 +102,23 @@ def relationships(df: pd.DataFrame,
     '''
     Loads user defined relationships to determine buy/sell signals
     based on the definitions in src/logic/signals.json
-    '''
 
+    Loads user defined 
+    '''
     # DO NOT INCLUDE RELATIONSHIPS FOR TRAINING PURPOSES
     # REMOVE THIS LATER WHEN WE TEST THE OTHER TRANING
     # PROCESS (stop in training.py excludes these)
     stop_col = signals[0]['name']
 
-    for i in range(len(signals)):
-
-        relationship = signals[i]['sig']
-        new_name = signals[i]['name']
-        col1 = signals[i]['col1']
-        col2 = signals[i]['col2']
-
-        if relationship == "crossover":
-            df[new_name] = sig.crossover(df, col1, col2)
-        elif relationship == "above":
-            df[new_name] = sig.above(df, col1, col2)
-        elif relationship == "below":
-            df[new_name] = sig.below(df, col1, col2)
+    for i in range(len(signals)): # Call Dispatcher for label logic methods 
+        df[signals[i]['name']] = dp.dispatch_label(signals[i]['sig'], df, 
+                                                   signals[i]['col1'], 
+                                                   signals[i]['col2'])
 
     # ==== replace index tuple with first relationship defined ====
     index = df.columns.get_loc((stop_col))
 
-    # ==== do not modify ====
+    # put the final sum of signals to indicate buy/sell
     df['final_signal'] = sig.sum_to_sigs(df, index)
     return df
 

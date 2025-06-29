@@ -18,7 +18,7 @@ Note: This project is actively under improvement. Here is a list of current and 
 - Dynamically adjusts features, labels, and training tickers based on config files
 ### Backtesting Module (Python)
 - Quickly test trained ML models on historical data to analyze P/L
-### Live Execution (Go)
+### Live Execution w/ Broker Integration (Go)
 - Runtime engine
   - Polls Market Data
   - Manages delcared config value features
