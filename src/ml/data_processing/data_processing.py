@@ -5,7 +5,6 @@ Also adds technical indicators and buy/sell signals.
 Modules used
 - pandas
 - yfinance
-- os/dotenv
 
 Author: Vikas Katari
 Date: 05/03/2025
@@ -16,7 +15,7 @@ from typing import Dict, Any, List
 
 # Python technical indicators
 import src.ml.data_processing.technicals as te
-import src.api.external.historical_api.yfinance_api as yf # yfinance
+import src.api.external.historical_api.yfinance_api as yf
 import src.ml.data_processing.signals as sig
 import src.ml.data_processing.dispatcher as dp
 
@@ -60,42 +59,10 @@ def load_features(df: pd.DataFrame,
     '''
     for i in range(len(features)):
 
-        # Guranteed for each object
-        name = features[i]['name']
-        tech = features[i]['tech']
-
-        if tech == "SMA":
-            window = features[i]['window']
-            df[name] = te.sma(df, window)
-        elif tech == "EMA":
-            window = features[i]['window']
-            df[name] = te.ema(df, window)
-        elif tech in ("delta", "diff"):
-            col1 = features[i]["col1"]
-            col2 = features[i]["col2"]
-            df[name] = handle_relations(df, tech, col1, col2)
+        df[features[i]['name']] = dp.dispatch_feature(features[i]['tech'], 
+                                                      df, features[i])
 
     return df
-
-
-def handle_relations(df: pd.DataFrame, tech: str, col1: str, 
-                     col2: str) -> pd.Series:
-    '''
-    Handles the user features.json file when the user delcares 
-    an object with an "tech" value of "delta" or "diff"
-    '''
-
-    result = None
-
-    if not col2 and tech == "delta":
-        result = te.delta(df, col1)
-    elif col1 and col2 and tech == "delta":
-        result = te.delta_diff(df, col1, col2)
-    elif col1 and col2 and tech == "diff":
-        result = te.diff(df, col1, col2)
-
-    return result
-
 
 def relationships(df: pd.DataFrame,
                   signals: List[Dict[str, Any]]) -> pd.DataFrame:
@@ -129,10 +96,9 @@ def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
 
     for col in yf_cols:
         col_name = col + "_delta"
-        df[col_name] = te.delta(df, col)
+        df[col_name] = df[col].diff()
 
     return df
-
 
 def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     '''
