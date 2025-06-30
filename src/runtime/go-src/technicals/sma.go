@@ -7,20 +7,20 @@ import (
 )
 
 // NewSMA makes a new SMA reference 
-func NewSMA(json map[string]any) (*SMA, error) {
-	window, ok := json["window"].(float64)
-	if !ok {
-		return nil, fmt.Errorf("window field should be an int")
-	} // if
+	func NewSMA(json map[string]any) (Indicator, error) {
+		window, ok := json["window"].(float64)
+		if !ok {
+			return nil, fmt.Errorf("window field should be an int")
+		} // if
 
-	win_int := int(window)
+		win_int := int(window)
 
-	return &SMA{
-		Window : win_int,
-		Data: nil, 
-		Sum: 0.0,
-	}, nil
-} // NewSMA
+		return &SMA{
+			Window : win_int,
+			Data: nil, 
+			Sum: 0.0,
+		}, nil
+	} // NewSMA
 
 // Load Loads initial SMA values onto the Data field of the SMA struct
 func (sma *SMA) Load() (error) {

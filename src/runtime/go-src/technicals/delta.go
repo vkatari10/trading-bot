@@ -7,7 +7,7 @@ import (
 )
 
 // NewDelta makes a new Delta reference
-func NewDelta(json map[string]any) (*Delta, error) {
+func NewDelta(json map[string]any) (Indicator, error) {
 	col1, ok := json["col1"].(string)
 	if !ok {
 		return nil, fmt.Errorf("col1 should be a string")

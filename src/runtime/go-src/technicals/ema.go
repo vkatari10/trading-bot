@@ -7,7 +7,7 @@ import (
 )
 
 // NewEMA makes a new EMA reference	
-func NewEMA(json map[string]any) (*EMA, error) {
+func NewEMA(json map[string]any) (Indicator, error) {
 	window, ok := json["window"].(float64)
 	if !ok {
 		return nil, fmt.Errorf("window field should be an int")

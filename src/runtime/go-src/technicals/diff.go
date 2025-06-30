@@ -8,7 +8,7 @@ import (
 )
 
 // NewDiff makes a new Diff reference
-func NewDiff(json map[string]any) (*Diff, error) {
+func NewDiff(json map[string]any) (Indicator, error) {
 	col1, ok := json["col1"].(string)
 	if !ok {
 		return nil, fmt.Errorf("col1 should be a string")

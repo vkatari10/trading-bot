@@ -9,6 +9,25 @@ import (
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 )
 
+type constructor func(json map[string]any) (technicals.Indicator, error)
+
+var (
+	constructorDispatchcer map[string]constructor 
+)
+
+// init declares the dispatch table for decideConstructor can call
+func init() {
+	
+
+	constructorDispatchcer = map[string]constructor{
+		"EMA": technicals.NewEMA,
+		"SMA": technicals.NewSMA,
+		"delta": technicals.NewDelta,
+		"diff": technicals.NewDiff,
+	}
+
+}
+
 // ParseLogicJSON parses the JSONs files found in src/logic
 func ParseLogicJSON(file string) (technicals.UserData, error) {
 
@@ -77,34 +96,12 @@ func decideConstructor(data *technicals.UserData, json map[string]any, i int) (e
 		return fmt.Errorf("name field should be a string")
 	} // if
 
-	switch indicator {
-	case "EMA":
-		ema, err := technicals.NewEMA(json)
-		if err != nil {
-			return fmt.Errorf("ema construction failed -> object index %d -> %v", i, err)
-		} // if
-		data.Objects = append(data.Objects, ema)
-	case "SMA":
-		sma, err := technicals.NewSMA(json)
-		if err != nil {
-			return fmt.Errorf("sma construction failed -> object index %d", i)
-		} // if
-		data.Objects = append(data.Objects, sma)
-	case "delta":
-		delt, err := technicals.NewDelta(json)
-		if err != nil {
-			return fmt.Errorf("delta construction failed -> object index %d", i)
-		} // if
-		data.Objects = append(data.Objects, delt)
-	case "diff":
-		diff, err := technicals.NewDiff(json)
-		if err != nil {
-			return fmt.Errorf("diff construction failed -> object index %d", i)
-		} // if
-		data.Objects = append(data.Objects, diff)
-	default:
-		return fmt.Errorf("\"tech\" field for object at index %d is not recognized", i)
-	}
+	obj, err := constructorDispatchcer[indicator](json)
+	if err != nil {
+		return fmt.Errorf("Failed to construct object index %d (JSON feature not recognized) (%v)", i, err)
+	} // if
+
+	data.Objects = append(data.Objects, obj)
 
 	/*
 

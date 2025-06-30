@@ -6,9 +6,9 @@ package technicals
 Each struct will need at least 3 methods 
 
 1. NewX() -- Constructs a new Object of a given struct
-2. Load() -- Reciever method that initializes the value of a technical 
+2. Load() -- Receiver method that initializes the value of a technical 
 indicator given burn in data
-3. GetNew() -- Reciver method that updates the value of a technical 
+3. GetNew() -- Receiver method that updates the value of a technical 
 indicator given new data
 4. GetData() -- (Optional) Gets the latest value of a technical indicator
 
@@ -29,7 +29,7 @@ limit the method to param constraints.
 type Indicator interface{
 	Tag() 			// Placeholder method
 	Type() string 	// For Type Assertions
-} // Inidicator
+} // Indicator
 
 // UserData contains user data needed at runtime
 type UserData struct {
@@ -53,7 +53,7 @@ type EMA struct {
 	Window    	int
 	Smoothing 	int
 	Data      	[]float64
-	Alpha  		float64 // intialized when Load() is called
+	Alpha  		float64 // initialized when Load() is called
 	Delta 		bool
 } // EMA
 
@@ -75,7 +75,7 @@ type Diff struct {
 	Value		float64
 } // Diff
 
-// MACD Represents a Moving Average Convergence Diveregence
+// MACD Represents a Moving Average Convergence Divergence
 // technical indicator
 type MACD struct {
 	EMA1 EMA
@@ -107,7 +107,7 @@ type RSI struct {
 
 } // RSI
 
-// Decleration of Dummy Method
+// Declaration of Dummy Method
 func (SMA) 		Tag() {}
 func (EMA) 		Tag() {}
 func (Delta) 	Tag() {}
@@ -116,5 +116,5 @@ func (Diff) 	Tag() {}
 // Type() Implementations
 func (SMA)		Type() (string) {return "SMA"}
 func (EMA) 		Type() (string) {return "EMA"}
-func (Delta)	Type() (string) {return "DELTA"}
-func (Diff) 	Type() (string) {return "DIFF"}
+func (Delta)	Type() (string) {return "delta"}
+func (Diff) 	Type() (string) {return "diff"}
