@@ -2,7 +2,7 @@
 Script that will train a ML model against user config specifications, 
 for all training stocks listed, and dumped using pickle
 
-Author: Vikas katari
+Author: Vikas Katari
 Date: 05/28/2025
 '''
 import pickle
@@ -12,7 +12,7 @@ logging.basicConfig(level=logging.INFO)
 
 # to process dataframes
 import src.ml.data_processing.data_processing as dp
-    
+
 # to train models
 import src.ml.training.training as train
 
