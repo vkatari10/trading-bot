@@ -6,10 +6,13 @@ Author: Vikas katari
 Date: 05/28/2025
 '''
 import pickle
+import logging
+
+logging.basicConfig(level=logging.INFO)
 
 # to process dataframes
 import src.ml.data_processing.data_processing as dp
-
+    
 # to train models
 import src.ml.training.training as train
 
@@ -17,23 +20,23 @@ import src.ml.training.training as train
 import src.ml.json.json_parser as jp
 
 # user config file
-print("Loading user config")
+logging.info("Loading user config file")
 config = jp.UserConfig()    
 
 # get all training DFs w/ user features and labels
-print("Building training data")
+logging.info("Building training dataframe")
 df = dp.get_df(config)
 
 # find the stop column to prevent training on cols that are not features
 stop = train.find_stop(df, config)
 
 # train model
-print("Training model")
+logging.info("Training model")
 model = train.model_training(df, stop) 
 
 # export model 
-print("Dumping model")
+logging.info("Dumping model")
 with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
     pickle.dump(model, f)
 
-print("Done")
+logging.info("Training done")

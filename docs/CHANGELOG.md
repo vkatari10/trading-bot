@@ -52,12 +52,13 @@ Changes
 
 ## [WIP]
 Goal 
-- Improve JSON config files, JSON handling, improve backend file structuring
+- Improve JSON configurability, ML Pipeline Modularity/Power
 
 Changes
 - Condense `JSON` configs into a single file
 - Updated ML Pipeline to handle `JSON` configs more elegantly
-- Multiple Stock Training
+- Removed long `if-else` changes with new dispatch tables
+- Multiple stock training (declared in JSON config)
 
 In Progress
 - Continue refactoring `src/runtime/go-src`, especially using generic methods to avoid repetitive code

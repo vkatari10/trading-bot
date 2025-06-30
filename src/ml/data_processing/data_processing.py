@@ -14,7 +14,6 @@ from typing import Dict, Any, List
 
 
 # Python technical indicators
-import src.ml.data_processing.technicals as te
 import src.api.external.historical_api.yfinance_api as yf
 import src.ml.data_processing.signals as sig
 import src.ml.data_processing.dispatcher as dp
@@ -30,7 +29,7 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
 
     Args:
 
-    df (pd.DataFrame): DataFrame from YFinance (with Multiindex Cols)
+    df (pd.DataFrame): DataFrame from YFinance (no multiindex cols)
     config (jp.UserConfig): UserConfig object containing user features and labels
 
     Returns: 
@@ -54,8 +53,18 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
 def load_features(df: pd.DataFrame,
                   features: List[Dict[str, Any]]) -> pd.DataFrame:
     '''
-    Loads user defined technical indicators to determine buy/sell
-    signals based on the definitions in src/logic/features.json
+    Loads user defined technical indicators (features) on to the 
+    training dataframe
+
+    Args:
+
+    df (pd.DataFrame): DataFrame from YFinance (no multiindex cols)
+    features (List[Dict[str, Any]]): List of JSON objects from the user config 
+    file 
+
+    Returns: 
+
+    The modified dataframe with the user defined features
     '''
     for i in range(len(features)):
 
@@ -67,15 +76,20 @@ def load_features(df: pd.DataFrame,
 def relationships(df: pd.DataFrame,
                   signals: List[Dict[str, Any]]) -> pd.DataFrame:
     '''
-    Loads user defined relationships to determine buy/sell signals
-    based on the definitions in src/logic/signals.json
+    Loads user defined labelling logic from the user config 
 
-    Loads user defined 
+    Args:
+
+    df (pd.DataFrame): DataFrame from YFinance 
+    signals (List[Dict[str, Any]]): A list of JSON objects from the config
+    file containing labelling logic between technical indicators
+
+    Returns:
+
+    The modified dataframe with the user defined labelling logic and final
+    labelling column at the last index with the final signal to buy/sell
     '''
-    # DO NOT INCLUDE RELATIONSHIPS FOR TRAINING PURPOSES
-    # REMOVE THIS LATER WHEN WE TEST THE OTHER TRANING
-    # PROCESS (stop in training.py excludes these)
-    stop_col = signals[0]['name']
+    stop_col = signals[0]['name'] # stop column from features -> labels
 
     for i in range(len(signals)): # Call Dispatcher for label logic methods 
         df[signals[i]['name']] = dp.dispatch_label(signals[i]['sig'], df, 
@@ -102,10 +116,20 @@ def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
 
 def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     '''
-    Returns a dataframe with all user defined features and labels,
-    for multiple dataframes that are concatenated and the then returned,
-    else if concat is False then they are returned in array in the same order
-    as the JSON config delcares on 'train_tickers'
+    Returns dataframe(s) with all user defined features and labels,
+
+    Args:
+
+    uc (jp.UserConfig): Object representing JSON config file and wanted 
+    features
+    cocnat (bool): True if all dataframes for all tickers should be returned
+    as one, else False to recieve a list of the DataFrames in the same order
+    as configured in the JSON config file
+
+    Returns:
+
+    A concated DataFrame of all tickers if concat is true from the config file, 
+    else a list of DataFrames of each ticker if concat is false
     '''
 
     training_df = []
@@ -132,7 +156,18 @@ def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     
 def get_single_df(uc: jp.UserConfig, ticker: str, period, timeframe) -> pd.DataFrame:
     '''
-    Returns a single Dataframe given a ticker with all user defined features and labels
+    Returns a single dataframe with all user defined features and labels,
+
+    Args:
+
+    uc (jp.UserConfig): Object representing JSON config file and wanted 
+    features
+    ticker (str): Valid stock ticker 
+    
+    Returns:
+
+    A single dataframe with the user defined features and labels from the JSON 
+    config file 
     '''
     df = yf.get_data(ticker, period, timeframe)
     df = process_data(df, uc)
