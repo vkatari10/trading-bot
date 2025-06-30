@@ -1,7 +1,3 @@
-# Node.js dependencies
-node_modules/
-.next/
-
 # Environment variables
 venv/
 .env
