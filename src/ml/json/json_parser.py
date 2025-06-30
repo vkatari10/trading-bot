@@ -45,28 +45,28 @@ class UserConfig():
 
     def get_model_type(self) -> str:
         try:
-            model_type = self.file['model_type']
+            model_type = self.file['ml_settings']['model_type']
             return model_type
         except KeyError:
             raise ValueError(make_error_str('model_type'))
 
     def get_model_name(self) -> str:
         try:
-            model_name = self.file['model_name']
+            model_name = self.file['ml_settings']['model_name']
             return model_name
         except KeyError:
             raise ValueError(make_error_str('model_name'))
 
     def get_model_training_timeframe(self) -> str:
         try:
-            model_name = self.file['model_training_timeframe']
+            model_name = self.file['ml_settings']['model_training_timeframe']
             return model_name
         except KeyError:
             raise ValueError(make_error_str('model_training_timeframe'))
 
     def get_model_training_interval(self) -> str:
         try:
-            model_name = self.file['model_training_interval']
+            model_name = self.file['ml_settings']['model_training_interval']
             return model_name
         except KeyError:
             raise ValueError(make_error_str('model_training_interval'))
