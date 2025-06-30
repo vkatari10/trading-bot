@@ -5,5 +5,5 @@ var (
 )
 
 func init() {
-	fileName = "future.json"
+	fileName = "test.json"
 } // init

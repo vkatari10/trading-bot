@@ -12,20 +12,17 @@ import (
 type constructor func(json map[string]any) (technicals.Indicator, error)
 
 var (
-	constructorDispatchcer map[string]constructor 
+	constructorDispatcher map[string]constructor 
 )
 
 // init declares the dispatch table for decideConstructor can call
 func init() {
-	
-
-	constructorDispatchcer = map[string]constructor{
+	constructorDispatcher = map[string]constructor{
 		"EMA": technicals.NewEMA,
 		"SMA": technicals.NewSMA,
 		"delta": technicals.NewDelta,
 		"diff": technicals.NewDiff,
 	}
-
 }
 
 // ParseLogicJSON parses the JSONs files found in src/logic
@@ -53,6 +50,42 @@ func ParseLogicJSON(file string) (technicals.UserData, error) {
 
 	return features, nil
 } // ParseLogicJSON
+
+// GetTradeTickers Gets the Tickers to trade on during live execution 
+// from the user JSON config file
+func GetTradeTickers(file string) ([]string, error){
+	jsonData, err := os.ReadFile(file)
+	if err != nil {
+		return []string{}, fmt.Errorf("%v", err) // figure how else to handle this later another way
+	} // if
+
+	var jsonMap map[string]any
+
+	err = json.Unmarshal(jsonData, &jsonMap)
+
+	if err != nil {
+		return []string{}, fmt.Errorf("%v", err)
+	} // if
+
+	tickers, ok := jsonMap["live_trade_stocks"].([]any)
+	if !ok {
+		return []string{}, fmt.Errorf("%v", ok)
+	} // if
+
+	tickerStrings := make([]string, 0) 
+
+	for i := range tickers {
+
+		tickerStr, ok := tickers[i].(string) 
+		if !ok {
+			return []string{}, fmt.Errorf("%v", ok) 
+		} // if
+
+		tickerStrings = append(tickerStrings, tickerStr)
+	} // for
+
+	return tickerStrings, nil
+} // GetTradeTickers
 
 func extractFeatures(config map[string]any) (technicals.UserData, error) {
 
@@ -96,9 +129,9 @@ func decideConstructor(data *technicals.UserData, json map[string]any, i int) (e
 		return fmt.Errorf("name field should be a string")
 	} // if
 
-	obj, err := constructorDispatchcer[indicator](json)
+	obj, err := constructorDispatcher[indicator](json)
 	if err != nil {
-		return fmt.Errorf("Failed to construct object index %d (JSON feature not recognized) (%v)", i, err)
+		return fmt.Errorf("failed to construct object index %d (JSON feature not recognized) (%v)", i, err)
 	} // if
 
 	data.Objects = append(data.Objects, obj)

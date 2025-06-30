@@ -55,6 +55,22 @@ func TestParseLogicJSON(t *testing.T) {
 	} // if 
 } // TestParseLogicJSON
 
+func TestGetTradeTickers(t *testing.T) {
+
+	get, err := engine.GetTradeTickers(fileName)
+	if err != nil {
+		t.Errorf("TestGetTradeTickers failed with error %v", err)
+	} // if 
+
+	want := []string{"AAPL", "AMZN"}
+
+	for i := range get {
+		if get[i] != want[i] {
+			t.Errorf("TestGetTradeTickers failed (ticker %s != %s)", get[i], want[i])
+		} // if
+	} // for
+} // TestGetTradeTickers
+
 func makeErrorString(technical string) string {
 	return fmt.Sprintf("TestParseLogicJSON failed to read %s properly", technical)
 } // makeErrorString

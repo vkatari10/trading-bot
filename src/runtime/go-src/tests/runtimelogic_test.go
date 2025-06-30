@@ -12,7 +12,7 @@ import (
 // properly based on given burn data
 func TestLoadBurnData(t *testing.T) {
 
-	file := "future.json"
+	file := "test.json"
 
 	userData, err := engine.ParseLogicJSON(file)
 	if err != nil {
@@ -41,7 +41,7 @@ func TestLoadBurnData(t *testing.T) {
 		case *technicals.EMA:
 			err := checkEquivalent(expected[i], v.Data[len(v.Data) - 1])
 			if err != nil {
-				t.Errorf("TestLoadBurnData fialed for object index %d for type %s (%v)", i, "EMA", err)
+				t.Errorf("TestLoadBurnData failed for object index %d for type %s (%v)", i, "EMA", err)
 			} // if
 		} // swtich
 	} // for
@@ -52,7 +52,7 @@ func TestLoadBurnData(t *testing.T) {
 // updating technical indicators works as intended
 func TestUpdateTechnicals(t *testing.T) {
 
-	userData, err := engine.ParseLogicJSON("future.json")
+	userData, err := engine.ParseLogicJSON("test.json")
 	if err != nil {
 		t.Errorf("TestUpdateTechnicals failed with error %v", err)
 	} // if
