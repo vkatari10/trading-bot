@@ -21,16 +21,16 @@ Note: This project is actively under improvement. Here is a list of current and 
 ### Live Execution w/ Broker Integration (Go)
 - Runtime engine
   - Polls Market Data
-  - Manages delcared config value features
+  - Manages declared config value features
   - Communicates via HTTP REST with a ML API Server for real time inference
-  - Places trades (paper or real) using individual Alpaca accountz
+  - Places trades (paper or real) using individual Alpaca account
   - Exposes own API for live monitoring
   - Error handling from bad configs, failed API calls, etc
   - Supports trading intervals from minutes to seconds
 
 ## In Progress
 ### ML Pipeline
-  - Conversion to `XGBoost` models exclusivley 
+  - Conversion to `XGBoost` models exclusively 
   - Hyperparameter tuning via config files
   - Configurable label rebalancing for training
 ### Backtesting Module
@@ -65,10 +65,10 @@ Philosophy
   - Prevent feature misalignment by ensuring every service uses the same config setup
   - Think of the config like a contract that every other service must agree to
 - Decoupled Systems
-  - All services are seperated and independent
+  - All services are separated and independent
   - At Runtime
     - The ML Model runs on its own server
-    - The Go runtime computes features and recieves inferences via HTTP REST calls
+    - The Go runtime computes features and receives inferences via HTTP REST calls
 
 This design allows for independent parts to be scaled and improved without affecting other systems
 
