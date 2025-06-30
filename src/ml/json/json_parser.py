@@ -5,11 +5,8 @@ components
 Author: Vikas Katari
 Date: 06/25/2025
 '''
-import os
-from dotenv import load_dotenv
 from typing import Dict, List, Any
 import json
-load_dotenv('.env')
 
 class UserConfig():
     '''
@@ -17,28 +14,64 @@ class UserConfig():
     .env file and loads it into Python as a dict
     '''
 
-    def __init__(self):
-        with open("config/" + os.getenv("MAIN_CONFIG_FILE")) as f:
-            file = json.load(f)
-        self.file = file
+    def __init__(self, file_name: str):
+        try :
+            with open(file_name) as f:
+                file = json.load(f)
+            self.file = file
+        except Exception:
+            raise ValueError("File does not exist or could not be read")
 
     def get_features(self) -> List[Dict[str, Any]]:
-        return self.file['features']
+        try:
+            features = self.file['features']
+            return features
+        except KeyError:
+            raise ValueError(make_error_str("features"))
 
     def get_labels(self) -> List[Dict[str, Any]]:
-        return self.file['label_logic']
-
+        try:
+            labels = self.file['label_logic']
+            return labels
+        except KeyError:
+            raise ValueError(make_error_str('label_logic'))
+    
     def get_training_stocks(self) -> List[str]:
-        return self.file['train_stocks']
+        try :
+            training_stocks = self.file['train_stocks']
+            return training_stocks
+        except KeyError:
+            raise ValueError(make_error_str('train_stocks'))
 
     def get_model_type(self) -> str:
-        return self.file['model_type']
+        try:
+            model_type = self.file['model_type']
+            return model_type
+        except KeyError:
+            raise ValueError(make_error_str('model_type'))
 
     def get_model_name(self) -> str:
-        return self.file['model_name']
+        try:
+            model_name = self.file['model_name']
+            return model_name
+        except KeyError:
+            raise ValueError(make_error_str('model_name'))
 
     def get_model_training_timeframe(self) -> str:
-        return self.file['model_training_timeframe']
+        try:
+            model_name = self.file['model_training_timeframe']
+            return model_name
+        except KeyError:
+            raise ValueError(make_error_str('model_training_timeframe'))
 
     def get_model_training_interval(self) -> str:
-        return self.file['model_training_interval']
+        try:
+            model_name = self.file['model_training_interval']
+            return model_name
+        except KeyError:
+            raise ValueError(make_error_str('model_training_interval'))
+    
+
+def make_error_str(key: str) -> str:
+    return f"Could not parse '{key}' properly from the " \
+    "JSON config"

@@ -19,24 +19,26 @@ import src.ml.training.training as train
 # user config file 
 import src.ml.json.json_parser as jp
 
-# user config file
-logging.info("Loading user config file")
-config = jp.UserConfig()    
+def pipeline(file: str) -> None:
 
-# get all training DFs w/ user features and labels
-logging.info("Building training dataframe")
-df = dp.get_df(config)
+    # user config file
+    logging.info("Loading user config file")
+    config = jp.UserConfig(file)    
 
-# find the stop column to prevent training on cols that are not features
-stop = train.find_stop(df, config)
+    # get all training DFs w/ user features and labels
+    logging.info("Building training dataframe")
+    df = dp.get_df(config)
 
-# train model
-logging.info("Training model")
-model = train.model_training(df, stop) 
+    # find the stop column to prevent training on cols that are not features
+    stop = train.find_stop(df, config)
 
-# export model 
-logging.info("Dumping model")
-with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
-    pickle.dump(model, f)
+    # train model
+    logging.info("Training model")
+    model = train.model_training(df, stop) 
 
-logging.info("Training done")
+    # export model 
+    logging.info("Dumping model")
+    with open("src/ml/models/decider/" + config.get_model_name(), 'wb') as f:
+        pickle.dump(model, f)
+
+    logging.info("Training done")

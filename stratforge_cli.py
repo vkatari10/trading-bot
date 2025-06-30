@@ -1,27 +1,16 @@
+'''
+CLI Tool to interact with various services
 
-import cli.jsonwriter
-import subprocess
+Author: Vikas Katari 
+Date: 06/30/2025
+'''
 import sys
+import src.ml.pipeline as pipe # to train models
 
 args = sys.argv
 
-def handle_command(args) -> None:
+# TODO implement error handling
 
-    command = ""
-
-    if len(args) == 1:
-        # env, test
-        command = f"scripts/{command}.sh"
-        subprocess.run(["bash", args])
-    elif len(args) == 2:
-        # build, mlapi, train, run (soon) need to 
-        pass
-
-
-
-   
-if args[1] == "config":
-    cli.jsonwriter.script()
-
-handle_command(args) # run other command
+if args[1] == "train":
+    pipe.pipeline(args[2]) 
 

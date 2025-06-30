@@ -1,7 +1,5 @@
 package main
 
-// Execution file for the runtime environemnt
-
 import (
 	eventLoop "github.com/vkatari10/trading-bot/src/runtime/go-src/eventloop"
 	// "fmt"
@@ -10,5 +8,5 @@ import (
 )
 
 func main() {
-		eventLoop.EventLoop() // reaplce with time checking method after fixes
+	eventLoop.EventLoop() // reaplce with time checking method after fixes
 } // main
