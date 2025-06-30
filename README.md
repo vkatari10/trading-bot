@@ -72,7 +72,7 @@ Philosophy
 
 This design allows for independent parts to be scaled and improved without affecting other systems
 
-![Architecture](docs/images/TradingPlatformDiagram4.svg)
+![Architecture](docs/images/TradingPlatformDiagram5.svg)
 
 ## Tech Stack
 - `Go`
