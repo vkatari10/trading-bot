@@ -84,13 +84,12 @@ This design allows for independent parts to be scaled and improved without affec
     - `Scikit-learn`
 
 ### Why Use Go?
-You might be wondering why `Go` was used for this project and not `Python` or `C++` as the runtime engine.<br>
+To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity
+- `Python` GIL overhead and interpreted, not ideal for concurrency
+- `C++` is too complex (for this project), complicating currency, API calls, and other things for slightly better performance
 
-Well, since this project is intended to be used for both low and mid frequency trading:
-- `Python` is interpreted and has GIL overhead
-- `C++` is too complex (for this project), and complicates API calls and multithreading among other things
+Go is fast enough to support both types of strategies while allowing for faster iteration of code with simple concurrency and low latency
 
-`Go` served as a fair trade off between performance and complexity, allowing for fast iteration while still providing low latency code.<br>
     
 ## Setup
 
@@ -119,40 +118,33 @@ To use this program you will need to follow these steps
 -->
 
 ## Limitations
-The most significant limitations of this platform are
-- Ingestion of delayed data
-  - More of an `Alpaca` issue since the free tier for market data is delayed by default
-- Burn-in period during live execution 
-  - This is caused by a current lack of market data available after hours, so using the same technical indicator values from market close at market open could lead to large jumps
-  - Pair this with an ML model, it could lead to unwanted predictions or trades, so as of now burn-in is required at live execution to initialize technical indicator values for the sake of ML inference
-- Lack of support for higher frequency trading (`<60` seconds refresh rates)
-  - This again is another issue with `Alpaca` free tier since data only updates once every minute, unless you have access to higher frequency data
-  - But also caused by the `YFinance` API, used for ML training, only goes down to bars of 1 minute for historical stock data
-  - Therefore it is a good idea not to go below `60` seconds for the refresh rate for the runtime engine unless 
-    - You have another pickled ML model that was trained on higher frequency data
-    - You have access to a higher tier `Alpaca` account 
-  - It's important to note that the runtime engine can handle refresh rates for small intervals
-    - But if you lack the requirements above
-      - Technical data becomes diluted from the same stock price being used
-      - Which in turn degrades ML inference
-      - Or your ML model was not trained on such high frequencies
-      - Causing poor performance
-      - So be careful!
+- Ingestion of delayed data 
+  - `Alpaca` free tier market API uses delayed data by default
+  - Can be overcome with a higher tier `Alpaca` account
+- Forced burn-in Period
+  - During live execution we need to burn-in data 
+  - `Alpaca` does not provide after hours market data 
+  - To prevent major jumps from market close to market open, burn in is forced (or override for debug purposes)
+- 60 second floor for live execution cycle rate
+  - `Alpaca` market API + `YFinance` API induced limitation
+  - `Alpaca` data only updates every minute, so polling market data within the same minute dilutes feature values
+  - `YFinance` only has historical data down to a minute, so ML models cannot be trained on faster intervals
+  - Therefore unless you can provide a higher tier `Alpaca` account AND higher frequency trained model, keep the `cycle_rate` in the JSON config `>=60`
+
 
 ## Testing
 
-All `Python` based tests are contained in `./tests/` and all `Go` based tests are located in `./src/runtime/go-src/tests`.<br>
+All `Python` based tests are contained in `./tests/` and all `Go` based tests are located in `./src/runtime/go-src/tests`.
 
-You can call `./scripts/tests/` from the root to run both `Python` and `Go` tests.
+To run tests: `python3 stratforge_cli.py test`
 
 ## Documentation 
-- [ENV](docs/ENV.md) - Understand how the `.env` file is used
-- [CONFIG](docs/CONFIG.md) - Learn how to construct your own strategies using our custom JSON schema
+- [CONFIG](docs/CONFIG.md) - Learn the StratForge custom JSON schema
+- [ENV](docs/ENV.md) - Environment settings details
 
 ## Notes
-- [CHANGELOG](docs/CHANGELOG.md) - Version history 
-- [TODO](docs/TODO.md) - List of current efforts and future 
-updates
+- [CHANGELOG](docs/CHANGELOG.md) - Version history details
+- [TODO](docs/TODO.md) - Other long-term improvements
 - [LICENSE](LICENSE) - License info 
 
 *This platform is intended for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses.*
