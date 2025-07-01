@@ -4,7 +4,6 @@ import (
 	"time"
 	"runtime"
 	"fmt"
-	"os"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
@@ -14,16 +13,16 @@ func EventLoop() {
 	go sendEnvironmentData() // send env variables to front end
 	
 	// Load User JSON -> Convert to Go Struct
-	userConfigFile := "../../../config/" + featuresFile
+	userConfigFile := "../../../" + getFileName()
 	userIndicators, err := engine.ParseLogicJSON(userConfigFile)
 	if err != nil {
 		SendPayload(map[string]any{
-			"msg": fmt.Sprintf("Could not properly initialize the JSON from %s -> Killing engine execution", featuresFile),
+			"msg": "ERROR CODE: 1 [See ERRORS.md]",
 		}, logLink)
-		os.Exit(1)
+		return
 	} // if
 
-	fmt.Println(userIndicators)
+	// fmt.Println(userIndicators)
 
 	// Burn In Process
 	var burnQuote [5]float64

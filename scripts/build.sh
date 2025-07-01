@@ -9,12 +9,6 @@ source venv/bin/activate
 
 echo -e "==================================================="
 
-echo -e "Training ML Model"
-python3 -m src.ml.pipeline
-echo -e "Dumped retrained model into src/ml/models/decider"
-
-echo -e "==================================================="
-
 echo -e "Compiling C dependencies"
 cd src/runtime/c-src/
 ./compile.sh

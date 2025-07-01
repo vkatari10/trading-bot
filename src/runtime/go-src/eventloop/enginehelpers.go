@@ -7,6 +7,7 @@ import (
 	"fmt"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	"math/rand"
+	"os"
 )
 
 //BurnIn Loads the Burn in Data to intialize technical indicators
@@ -78,3 +79,9 @@ func overrideBurnIn(windowSize int) []float64 {
 	} // for
 	return result
 } // bypassBurnIn
+
+// getFileName gets the config file name used from the CLI
+func getFileName() string {
+	argv := os.Args
+	return argv[1]
+} // getFileName

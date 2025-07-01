@@ -6,5 +6,5 @@ If you have logging statements enabled you will recieve more detailed informatio
 | Exit Code | Meaning | Quick Troubleshoot | 
 |:---------:|---------|-------|
 | 0 | Normal Execution | Congrats | 
-| 1 | User JSON Config Parse failed | Is the config JSON setup properly? | 
+| 1 | JSON initialization failed | Is the config JSON setup properly? | 
 | 2 | ML API Server unreachable | Is the ML API Server Running? |

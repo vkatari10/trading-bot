@@ -75,13 +75,13 @@ This design allows for independent parts to be scaled and improved without affec
 ![Architecture](docs/images/TradingPlatformDiagram5.svg)
 
 ## Tech Stack
-- `Go`
-  - Used for the runtime engine during live execution 
-- `Python`
-  - Used for ML Pipeline
-    - `Pandas`
-    - `NumPy`
-    - `Scikit-learn`
+| Feature | Language | Technologies | APIs |
+|:-------:|----------|--------------|------|
+| ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn | YFinance |
+| Backtesting Module | Python | Pandas, NumPy, Scikit-learn | YFinance |
+| Runtime Engine | Go, Python | Flask | Alpaca |
+| CLI Tool | Python | N/A | N/A |
+| TUI | Python | Textual | Runtime Engine API |
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity

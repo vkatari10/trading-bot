@@ -4,19 +4,31 @@ CLI Tool to interact with various services
 Author: Vikas Katari 
 Date: 06/30/2025
 '''
-import sys
-import src.ml.pipeline as pipe # to train models
-import subprocess
+try:
 
-args = sys.argv
+    import sys # argv
+    import subprocess # run shell scripts
+    import src.ml.pipeline as pipe # to train models
 
-# TODO implement error handling
+    args = sys.argv
 
-if args[1] == "train":
-    pipe.pipeline(args[2]) 
-elif args[1] == "env":
-    pass
-elif args[1] == "build":
-    pass
-elif args[1] == "test":
-    subprocess.run(["bash", "./scripts/test.sh"])
+    # TODO implement error handling
+
+    if args[1] == "train":
+        pipe.pipeline(args[2]) 
+    elif args[1] == "build":
+        subprocess.run(["bash", "./scripts/build.sh"])
+    elif args[1] == "test":
+        subprocess.run(["bash", "./scripts/test.sh"])
+    elif args[1] == "run":
+        file = args[2]
+        subprocess.run(["bash", "./scripts/gocompile.sh"])
+        
+        process = subprocess.Popen( # forked
+            ["go", "run", ".", file],
+            cwd="./src/runtime/go-src"
+        )
+
+        process.communicate()
+except ModuleNotFoundError:
+    print("venv has been not started, run 'source venv/bin/activate'")
