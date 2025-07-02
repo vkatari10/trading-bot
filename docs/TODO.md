@@ -2,12 +2,10 @@
 
 ## Major Problems (In order)
 - Prevent negative share orders on Alpaca (check holdings before trade)  
+    - This flows into the greater risk management module being planned
 - Finish backtesting engine MVP (use CLI wrapper for now)
+    - Add more 
 - Support multiple stock trading / training
-    - combine JSONs
-        - instead of seperate faeture and label config use something like [this](../config/future.json)
-    - training
-        - Run a loop for training, just adapt the training module to accept a list of stocks and adjust accordingly
     - runtime
         - leverage `Go` for concurrency where computations are done in paralell 
         - Need to use channels
@@ -22,7 +20,7 @@
 
 ## Configs
 
-Ability to put everything into a singular JSON file rather than having seperate features and labels.
+- [] Retry Logic for API failures during live execution 
 
 ### ML
 - [ ] When multiple stock tracking at execution time is complete, create a JSON config to declare which stocks to use

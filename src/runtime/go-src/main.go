@@ -8,5 +8,5 @@ import (
 )
 
 func main() {
-	eventLoop.EventLoop("temp") // reaplce with time checking method after fixes
+	eventLoop.Start()
 } // main

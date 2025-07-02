@@ -34,7 +34,7 @@ func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote
 		burn = append(burn, newQuote[0])
 	
 		go SendPayload(map[string]any {
-			"msg": fmt.Sprintf("QUOTE: $%.2f (%d / %d) burned in", newQuote[0], i + 1, burnTime),
+			"msg": fmt.Sprintf("%s: $%.2f (%d / %d) burned in", ticker, newQuote[0], i + 1, burnTime),
 		}, logLink)
 		
 		time.Sleep(stopTime * time.Second)

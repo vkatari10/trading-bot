@@ -6,11 +6,49 @@ import (
 	"fmt"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+	"sync"
 )
 
 var (
 	us engine.RuntimeSettings // to use its values in the rest of the package
 )
+
+// Start Entry point of the program to read all tickers and 
+// feed them to the Spawner which creates independent event loops for
+// each ticker
+func Start() {
+	// get main trading stocks, 
+
+	tickers, err := engine.GetTradeTickers("../../../" + getFileName())
+	if err != nil {
+		SendPayload(map[string]any{
+			"msg": "ERROR CODE: 3 [See ERRORS.md]",
+		}, logLink)
+		fmt.Println(err)
+		return
+	} // if
+
+	Spawner(tickers)
+} // Start
+
+// Spawner starts runtime loops for every ticker giving each 
+// one its own independent event loop
+func Spawner(tickers []string) {
+
+	var wg sync.WaitGroup
+
+	for i := range tickers {
+		wg.Add(1)
+
+		go func(t string) {
+			defer wg.Done()
+			EventLoop(t)
+		}(tickers[i])
+	} // for
+
+	wg.Wait()
+
+} // Spawner
 
 // tempTicker is how we will integrate specific tickers onto the eventloop
 func EventLoop(tempTicker string) { 
@@ -54,8 +92,8 @@ func EventLoop(tempTicker string) {
 		burnQuote = [5]float64{100, 95, 105, 120, 80}
 		burn = overrideBurnIn(userSettings.BurnTime)
 	} else {
-		fmt.Printf("burn time -> %d, cycletime -> %d\n", userSettings.BurnTime, userSettings.CycleTime)
-		burn, burnQuote = BurnIn(userSettings.BurnTime, thisTicker, userSettings.CycleTime)
+		fmt.Printf("burn time -> %d MINUTES, cycle time -> %d SECONDS\n", userSettings.BurnTime, userSettings.CycleTime)
+		burn, burnQuote = BurnIn(userSettings.BurnTime, tempTicker, userSettings.CycleTime)
 	} // if-else
 
 	// Initialize Technical Values
@@ -74,12 +112,18 @@ func EventLoop(tempTicker string) {
 	for i < thisRunTime {
 
 		// Pull new Quote
-		newQuote, err := api.GetQuote(thisTicker)
+		newQuote, err := api.GetQuote(tempTicker)
 		if err != nil {
 			go SendPayload(map[string]any {
 				"msg" : "ERROR: Could not get market data",
 			}, logLink)
-			break // Stop if we cannot get a quote
+			/*
+
+			Allow user to define how many retries to go for before quitting
+			rather than just stopping
+
+			*/
+			break // Stop if we cannot get a quote 
 		} // if
 
 		UpdateOHLCVDeltas(&userIndicators, newQuote)
@@ -101,21 +145,21 @@ func EventLoop(tempTicker string) {
 		// }
 
 		// Send JSON of features to ML API
-		api.SendData(&userIndicators, thisTicker)
+		api.SendData(&userIndicators, tempTicker) // TODO: Put retry logic here as well if we cannot send the data instead 
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Sent New Features to ML API",
 			}, logLink)
 		
-		// Get prediction back as JSON
-		pred := api.GetPrediction()
+		// Get prediction back as JSON 
+		pred := api.GetPrediction() // TODO: Retry Logic
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Prediction received from ML API",
 			}, logLink)
 
 		// Decide Buy/Sell/Hold 
-		handlePrediction(apiBuf, pred, thisTicker)
+		handlePrediction(apiBuf, pred, tempTicker)
 
 		go apiBuf.enqueue(map[string]any{ 
 			"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", userSettings.BurnTime),

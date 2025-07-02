@@ -48,7 +48,7 @@
         "MSFT"
     ],
     "live_trade_stocks": [
-        "AAPL", 
+        "AAPL",
         "AMZN"
     ],
     "ml_settings": {
@@ -63,7 +63,7 @@
         "log_api_flush_time": 2000,
         "log_to_stdout": true,
         "run_after_close": false,
-        "override_burn_in": false
+        "override_burn_in": true
     }
 }   
 

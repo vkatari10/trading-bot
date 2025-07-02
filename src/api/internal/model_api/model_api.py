@@ -16,8 +16,11 @@ import pickle
 import json
 import numpy as np
 import src.ml.json.json_parser as jp # to get user config info
+import sys
 
-config = jp.UserConfig() # user config
+args = sys.argv
+
+config = jp.UserConfig(args[1]) # user config
 
 # Load in deciding ML model
 file_path = "src/ml/models/decider/" + config.get_model_name()
