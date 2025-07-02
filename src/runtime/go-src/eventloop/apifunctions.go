@@ -36,12 +36,12 @@ func SendPayload(data map[string]any, postLink string) {
 func sendEnvironmentData() {
 	go func() {
 	SendPayload(map[string]any {
-		"refresh_rate": refreshRate,
-		"ticker": thisTicker,
-		"burn_time": burnWindow,
-		"bufer_flush_time": thisBufferFlushTime,
-		"always_run": thisAlwaysRun,
-		"override_burn_in": thisBurnInOverride,
+		// "refresh_rate": refreshRate,
+		// "ticker": thisTicker,
+		// "burn_time": burnWindow,
+		// "bufer_flush_time": thisBufferFlushTime,
+		// "always_run": thisAlwaysRun,
+		// "override_burn_in": thisBurnInOverride,
 	},envLink)
 	}()
 } // sendEnvironmentData
