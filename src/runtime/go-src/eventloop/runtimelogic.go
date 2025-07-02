@@ -1,4 +1,4 @@
-package engine
+package eventloop
 
 import (
 	"fmt"

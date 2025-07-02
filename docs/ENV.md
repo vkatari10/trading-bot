@@ -6,15 +6,6 @@ This documentation serves to help get new users accustomed to the settings that 
 
 **Note:**  If changes are made to the `.env` file you must `source .env` or run `. .env` at the root to update these values. 
 
-## Main Config Files
-
-Learn more about creating your own JSON configurations [here](CONFIG.md)
-
-| Setting | Description | Default |
-|:-------:|-------------|---------|
-| FEATURE_CONFIG_FILE   |  Contains the `JSON` config file inside `/config` to use for feature, live execution technicals, backtesting, and more | [features.json](../config/features.json) |
-| LABEL_CONFIG_FILE     |  Contains the `JSON` config file inside `/config` to use for labelling logic at ML training time | [signals.json](../config/signals.json)| 
-
 ## Alpaca API 
 | Setting | Description | Default |
 |:-------:|-------------|---------|

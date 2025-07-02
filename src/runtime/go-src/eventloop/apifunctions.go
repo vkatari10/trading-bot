@@ -14,7 +14,7 @@ import (
 
 // SendPayload should send the JSON as an Object to the frontend
 func SendPayload(data map[string]any, postLink string) {
-	if postLink == logLink && thisPrintToStdio { // dev debug mode
+	if postLink == logLink && us.LogToStdout { // dev debug mode
 		log.Println(data["msg"])
 	} // if 
 

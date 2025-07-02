@@ -21,9 +21,7 @@ try:
     elif args[1] == "test":
         subprocess.run(["bash", "./scripts/test.sh"])
     elif args[1] == "run":
-        file = args[2]
-        subprocess.run(["bash", "./scripts/gocompile.sh"])
-        
+        file = args[2]        
         process = subprocess.Popen( # forked
             ["go", "run", ".", file],
             cwd="./src/runtime/go-src"
@@ -32,3 +30,5 @@ try:
         process.communicate()
 except ModuleNotFoundError:
     print("venv has been not started, run 'source venv/bin/activate'")
+except KeyboardInterrupt:
+    print('quit')

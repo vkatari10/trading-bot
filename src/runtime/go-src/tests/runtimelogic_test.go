@@ -6,6 +6,7 @@ import (
 	"math"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
+	eventloop "github.com/vkatari10/trading-bot/src/runtime/go-src/eventloop"
 )
 
 // TestLoadBurnData verifies that burn in data is intialized
@@ -21,7 +22,7 @@ func TestLoadBurnData(t *testing.T) {
 
 	testBurnData := getTestData()
 
-	err = engine.LoadBurnData(&userData, testBurnData)
+	err = eventloop.LoadBurnData(&userData, testBurnData)
 	if err != nil {
 		t.Errorf("TestLoadBurnData failed with error %v", err)
 	} // if
@@ -59,12 +60,12 @@ func TestUpdateTechnicals(t *testing.T) {
 	
 	testBurnData := getTestData()
 
-	err = engine.LoadBurnData(&userData, testBurnData)
+	err = eventloop.LoadBurnData(&userData, testBurnData)
 	if err != nil {
 		t.Errorf("TestUpdateTechnicals failed with error %v", err)
 	} // if
 
-	engine.UpdateTechnicals(&userData, 56.56)
+	eventloop.UpdateTechnicals(&userData, 56.56)
 
 	wants := make([]float64, 0)
 

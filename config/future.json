@@ -61,7 +61,7 @@
         "cycle_time": 60,
         "burn_window_time": 31,
         "log_api_flush_time": 2000,
-        "log_to_stdout": false,
+        "log_to_stdout": true,
         "run_after_close": false,
         "override_burn_in": false
     }

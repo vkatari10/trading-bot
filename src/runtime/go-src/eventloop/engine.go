@@ -8,12 +8,32 @@ import (
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
 )
 
-func EventLoop() {
-	thisRunTime := int(390 - thisBurnTime)
-	go sendEnvironmentData() // send env variables to front end
+var (
+	us engine.RuntimeSettings // to use its values in the rest of the package
+)
+
+// tempTicker is how we will integrate specific tickers onto the eventloop
+func EventLoop(tempTicker string) { 
+	thisRunTime := int(390 - thisBurnTime) // market open time - burn time
+	go sendEnvironmentData() // send env variables as JSON
 	
 	// Load User JSON -> Convert to Go Struct
+
+	// TODO create a method to just return the map 
+	// and then send the map ONLY to the parsers
 	userConfigFile := "../../../" + getFileName()
+
+	userSettings, err := engine.GetRuntimeSettings(userConfigFile)
+	if err != nil {
+		SendPayload(map[string]any{
+			"msg": "ERROR CODE: 2 [See ERRORS.md]",
+		}, logLink)
+		fmt.Println(err)
+		return 
+	} // if 
+
+	us = userSettings
+
 	userIndicators, err := engine.ParseLogicJSON(userConfigFile)
 	if err != nil {
 		SendPayload(map[string]any{
@@ -23,20 +43,22 @@ func EventLoop() {
 	} // if
 
 	// fmt.Println(userIndicators)
+	// fmt.Println(userSettings)
 
 	// Burn In Process
 	var burnQuote [5]float64
 	var burn []float64
-	if thisBurnInOverride {
+	if userSettings.OverrideBurnIn {
 		burnQuote = [5]float64{100, 95, 105, 120, 80}
 		burn = overrideBurnIn(thisBurnTime)
 	} else {
-		burn, burnQuote = BurnIn(thisBurnTime, thisTicker, thisRefreshRate)
+		fmt.Printf("burn time -> %d, cycletime -> %d\n", userSettings.BurnTime, userSettings.CycleTime)
+		burn, burnQuote = BurnIn(userSettings.BurnTime, thisTicker, userSettings.CycleTime)
 	} // if-else
 
 	// Initialize Technical Values
-	engine.LoadBurnData(&userIndicators, burn)
-	engine.UpdateOHLCVDeltas(&userIndicators, burnQuote)
+	LoadBurnData(&userIndicators, burn)
+	UpdateOHLCVDeltas(&userIndicators, burnQuote)
 
 	apiBuf := newAPIBuffer() // store logging info in here
 	runtime.GC() // force GC before starting main loop
@@ -58,14 +80,14 @@ func EventLoop() {
 			break // Stop if we cannot get a quote
 		} // if
 
-		engine.UpdateOHLCVDeltas(&userIndicators, newQuote)
+		UpdateOHLCVDeltas(&userIndicators, newQuote)
 
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": fmt.Sprintf("QUOTE: $%.2f", newQuote[0]),
 			}, logLink)
 		
-		engine.UpdateTechnicals(&userIndicators, newQuote[0])  // Close values
+		UpdateTechnicals(&userIndicators, newQuote[0])  // Close values
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Updated Technicals",
@@ -87,7 +109,7 @@ func EventLoop() {
 		pred := api.GetPrediction()
 		go apiBuf.enqueue(
 			map[string]any{
-				"msg": "UPDATE: Prediction recieved from ML API",
+				"msg": "UPDATE: Prediction received from ML API",
 			}, logLink)
 
 		// Decide Buy/Sell/Hold 
@@ -98,14 +120,15 @@ func EventLoop() {
 		}, logLink)
 
 		// Flush all messages to logLink
-		go apiBuf.flush(6, time.Duration(thisBufferFlushTime)) // items, milliseconds buffer
+		go apiBuf.flush(6, time.Duration(userSettings.LogAPIFlushTime)) // items, milliseconds buffer
 		
 		sendTechnicalData(userIndicators) // send new technical data
-		time.Sleep(time.Duration(thisRefreshRate) * time.Second)
+		time.Sleep(time.Duration(userSettings.CycleTime) * time.Second)
 		i++
+		
 	} // for
 
-	go SendPayload(map[string]any{
+	SendPayload(map[string]any{
 		"msg": "STAGE: STOP",
 	}, logLink)
 } // eventLoop

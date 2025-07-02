@@ -52,10 +52,7 @@ func init() {
 	envLink = os.Getenv("ENV_LINK")
 	brokerLink = os.Getenv("BROKER_LINK")
 
-	// User Config File
-	featuresFile = os.Getenv("MAIN_CONFIG_FILE")
-
-	// Call methods to intiailize non string values
+	// Call methods to initialize non string values
 	burnWindow, err := getBurnWindow() // burn in window
 	if err != nil {
 		go SendPayload(map[string]any{

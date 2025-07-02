@@ -141,6 +141,7 @@ To run tests: `python3 stratforge_cli.py test`
 ## Documentation 
 - [CONFIG](docs/CONFIG.md) - Learn the StratForge custom JSON schema
 - [ENV](docs/ENV.md) - Environment settings details
+- [CLI](docs/CLI.md) - How to use the StratForge CLI
 
 ## Notes
 - [CHANGELOG](docs/CHANGELOG.md) - Version history details
