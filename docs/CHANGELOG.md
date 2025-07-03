@@ -1,11 +1,14 @@
 # Version History
 Highlights of all tagged versions of the repo and associated changes.
 
+> Some release descriptions have release names to show the evolution of the project. 
+
 ## [v0.1.0-alpha]
 Goal
 - Create basic MVP  
 
 Changes
+- Released As: "Trading Bot"
 - Initial full stack version prototyped entirely in Python
 - Hardcoded ML Pipeline using Scikit-learn
 - Basic eventloop for runtime
@@ -15,6 +18,7 @@ Goal
 - Improve runtime performance using a lower level language  
 
 Changes
+- Released as: "Trading Bot"
 - Introduced `pybind11` to speed up runtime computations using `C++`
 
 ## [v0.2.0]
@@ -22,6 +26,7 @@ Goal
 - Focus on modularity and remove most hardcoded methods  
 
 Changes
+- Released as: "Trading Bot"
 - Restructured entire beack end architecture
 - Remove `pybind11` integration
 - Used JSON config files to replace hardcoded ML pipeline
@@ -34,6 +39,7 @@ Goal
 - Improve available features and create a demo frontend   
 
 Changes
+- Released As: "Mid-Frequency Trading Bot"
 - Improved ML features to include `Delta` and  `Diff` of technical indicators, supported by JSON configs
 - Exposed runtime engine via with an API
 - Implemented a `Next` based frontend MVP using runtime engine API and `Typescript` API routes
@@ -44,25 +50,35 @@ Goal
 - Increase modularity via `.env` file settings, improve documentation, and add tests
 
 Changes
+- Released As: "BotBuilder"
 - Condensed all setings into a single `env` file, increased number of settings available
 - Improved frontend stying
 - Improved documentation overall in `docs/` and main `README`
 - Added unit tests for `Python` and `Go`
 - Cleaned repo root with new folders: `scripts/`, `configs/`
 
-## [WIP]
+## [v0.3.0]
 Goal 
-- Improve JSON configurability, ML Pipeline Modularity/Power
+- Improve JSON configurability, overhaul current services, improve UI/UX
 
 Changes
-- Condense `JSON` configs into a single file
-- Updated ML Pipeline to handle `JSON` configs more elegantly
-- Removed long `if-else` changes with new dispatch tables
-- Multiple stock training (declared in JSON config)
+- Released As: "StratForge"
+- Condense `JSON` configs into a single file, add more configuration features
+- Refactored `Go`, ML Pipeline Modules. 
+- Added MVP Backtesting Service 
+- Updated ML Pipeline, Runtime Engine to handle `JSON` configs more elegantly
+- Removed long `if-else` changes with new dispatch tables in ML Pipeline
+- Configurable multi-asset training and trading
+- Added CLI tool, TUI skeleton to improve UX/UI for services
+- Removed `Next` demo frontend
+
+## [WIP]
+Goal 
+- Releasing As: "ConTrade"
+- Clean up Runtime Engine, Backtesting Services
 
 In Progress
+- 
 - Continue refactoring `src/runtime/go-src`, especially using generic methods to avoid repetitive code
-- Add Custom backtesting engine in `Python`
-- Finish `Docker` contanierization 
-- Have `Go` adapt to new JSON formatting
+- Finish `Docker` containerization
     

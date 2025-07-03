@@ -18,7 +18,7 @@ import numpy as np
 import src.ml.json.json_parser as jp # to get user config info
 import sys
 
-args = sys.argv
+args = sys.argv     
 
 config = jp.UserConfig(args[1]) # user config
 
@@ -29,7 +29,7 @@ with open(file_path, 'rb') as f:
     model = pickle.load(f)
 
 # features_file = "config/" + os.getenv("FEATURE_CONFIG_FILE")
-# with open(features_file) as f: MAY NOT BE NEDED
+# with open(features_file) as f: MAY NOT BE NEEDED
 #     features = json.load(f)
 
 app = Flask(__name__)

@@ -1,4 +1,4 @@
-# Trading Bot Source Files
+# Source
 
 The `src/` folder contains the backend logic of the trading bot and its runtime environment.<br>  
 

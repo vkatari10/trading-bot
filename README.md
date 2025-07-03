@@ -1,8 +1,8 @@
 ![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)  [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
-# StratForge 
+# ConTrade
 
-StratForge is a platform for building and running custom trading bots, where users define strategies through configuration, no code edits required. It handles the entire ML pipeline, backtesting, and live trading infrastructure, making it easy to prototype and deploy new ideas quickly.
+ConTrade is a platform for building and running custom trading bots, where users define strategies through configuration, no code edits required. It handles the entire ML pipeline, backtesting, and live trading infrastructure, making it easy to prototype and deploy new ideas quickly.
 
 Note: This project is actively under improvement. Here is a list of current and upcoming features. 
 
@@ -136,12 +136,12 @@ To use this program you will need to follow these steps
 
 All `Python` based tests are contained in `./tests/` and all `Go` based tests are located in `./src/runtime/go-src/tests`.
 
-To run tests: `python3 stratforge_cli.py test`
+To run tests: `python3 contrade_cli.py test`
 
 ## Documentation 
-- [CONFIG](docs/CONFIG.md) - Learn the StratForge custom JSON schema
+- [CONFIG](docs/CONFIG.md) - Learn the ConTrade custom JSON schema
 - [ENV](docs/ENV.md) - Environment settings details
-- [CLI](docs/CLI.md) - How to use the StratForge CLI
+- [CLI](docs/CLI.md) - How to use the ConTrade CLI
 
 ## Notes
 - [CHANGELOG](docs/CHANGELOG.md) - Version history details

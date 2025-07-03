@@ -1,6 +1,6 @@
 # JSON Configurations
 
-All features of StratForge are dependent on JSON configs, knowing how to structure them properly and ensuring that they are being used will smoothen the experience with this suite.  
+All features of ConTrade are dependent on JSON configs, knowing how to structure them properly and ensuring that they are being used will smoothen the experience with this suite.  
 
 On this page you will learn 
 - Why the JSON config files are so important
