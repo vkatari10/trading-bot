@@ -1,17 +1,11 @@
 # StratForge CLI 
 
-To get quick jobs done without having the start the TUI, simply use the the CLI. 
-
-## Starting
-
-Simply run `./cli` from the root of the project
+To get quick jobs done rom CLI, you can call the `./contrade_cli.py` tool. 
 
 ## Commands
 
-| Command | Action | Args |
+| Command | Description | Usage |
 |:-------:|--------|------|
-| build | Trains and dumps an ML model based on config file, compiles all dependencies |none |
-| env | Starts the `venv` even if already started, updates the `.env` if any changes were made | none | 
-| mlapi | Starts the ML API Sever | none | 
-| test | Runs tests for both `Python` and `Go` source code | none |
-| train | Trains and dumps an ML model based on config file | none | 
+| run | Starts Live execution with a given JSON configuration file, the path of the config file should be relative from the root | `./contrade_cli.py run <CONFIG_FILE_PATH>` | 
+| test | Runs all unit tests for both `Python` and `Go` source files | `./contrade_cli.py test` |
+| train | Trains ML model given a JSON configuration file, the path of the config file should be relative from the root | `./contrade_cli.py train <CONFIG_FILE_PATH>` | 

@@ -5,7 +5,7 @@ All features of ConTrade are dependent on JSON configs, knowing how to structure
 On this page you will learn 
 - Why the JSON config files are so important
 - How to set up the JSON config properly
-- Avaiable technical indicators and definitions
+- Available technical indicators and definitions
 - How to adjust the `.env` to use specific files
 
 ## Importance
@@ -29,36 +29,36 @@ In general you will need two files
 
 - File naming
     - Should end in `.json`
-    - Beyond that it does not matter since they can be configured in the `.env` flie 
+    - Beyond that it does not matter since they can be configured in the `.env` file
 - How to write
     - Should be a single array of objects (`[{}, {}, {}]`)
     - Each object is required to have two fields in order to work 
-        - "name" = name of the specifc object
+        - "name" = name of the specific object
         - "tech" = type of technical indicator
     - If a object does not have these fields then the configuration file **Will not work**  
 
-Beyond this, there is not much more you need to know but most technical inidcators reqiure certain fields.  
+Beyond this, there is not much more you need to know but most technical indicators require certain fields. 
 
 Let's look at an example 
 
 ```JSON
 [
     {
-        "tech": "SMA",
-        "window": 20,
-        "name": "SMA_20"
+        "tech": "SMA", // type of technical indicator/feature
+        "window": 20, 
+        "name": "SMA_20" // you can name this object whatever
     },
     {
         "tech": "EMA",
         "window": 20,
         "name": "EMA_20",
-        "smoothing": 2
+        "smoothing": 2 // some technical indicators have other attributes that need to be declared
     },
     {
         "tech": "delta",
-        "col1": "SMA_20",
+        "col1": "SMA_20", // we can now call previously declared objects by their given name
         "col2": null,
-        "name": "SMA_20_Delta"
+        "name": "SMA_20_Delta" // and we can give this object a new name as well 
     }
 ]
 ```  
@@ -68,16 +68,16 @@ What does this show?
     - For `EMA` we need a `smoothing` field whereas `SMA` does not require this
 - We can use previously declared objects down the list
     - Look at the third object we use the `SMA_20` column to find deltas of it
-    - The objects are interpeted in order, imagine the program sweeping from top the bottom of the list of objects
-    - **Therefore**: Declare objects in order, do not use something that does not exist yet (like if you were writing in an intpreted language)  
+    - The objects are interpreted in order, imagine the program sweeping from top the bottom of the list of objects
+    - **Therefore**: Declare objects in order, do not use something that does not exist yet (like if you were writing in an interpreted language)  
 
-We can see that making config files is straightfoward which makes this platform so powerful for testing new srategies. The hardest part is learning how to properly declare each technical indicator, which is explained below 
+We can see that making config files is straightforward which makes this platform so powerful for testing new strategies. The hardest part is learning how to properly declare each technical indicator, which is explained below 
 
 ## Label Config File
 
 - File naming
     - Should end in `.json`
-    - Beyond that it does not matter since they can be configured in the `.env` flie 
+    - Beyond that it does not matter since they can be configured in the `.env` file
 - How to write
     - In this file you will describe relationships between technical indicators that you have declared in the feature file
     - This is to inform during ML training what should constitute a buy/sell signal, **NOTE** the ML model is not aware of these relationships though
@@ -89,8 +89,10 @@ Lets keep adding on from the previous example
     {
         "sig": "crossover",
         "name": "SMA_EMA_CROSS",
-        "col1": "SMA_20",
-        "col2": "ENA_20"
+        "col1": "SMA_20", // this is from the previous array
+        "col2": "ENA_20" // same here
+        // call other objects as if they were just declared
+        // above this one as well 
     }
 ]
 ```
@@ -122,14 +124,14 @@ Remember: each object must contain a `tech` field, which **must** match the exam
 |:-----:|-------------|-----------|---------|
 | tech | identifier | string | delta |
 | col1 | Object to find the delta values of, should be the `name` field of another object already declared | string | SMA_10 |
-| col2 | Not required, can be left as `null` but if you want to find the delta of differences then include another object that was also preivously declared | string/null | SMA_30 |  
+| col2 | Not required, can be left as `null` but if you want to find the delta of differences then include another object that was also previously declared | string/null | SMA_30 |  
 
 ### Diff - Difference between two Objects
 | Field | Description | Data Type | Example |
 |:-----:|-------------|-----------|---------|
 | tech | identifier | string | diff |
 | col1 | computed as col1 - col2 | string | SMA_10 | 
-| col2 | **Reqiured** cannot be left as `null` | string | SMA_30 |
+| col2 | **Required** cannot be left as `null` | string | SMA_30 |
 
 ## Available Signaling Logic
 
@@ -156,16 +158,3 @@ Remember: each object must contain a `tech` field, which **must** match the exam
 | tech | identifier | string | below |
 | col1 | computed as col1 < col2, 1 else 0 | string | SMA_10 | 
 | col2 | **Required** - what col1 should be compared to | string | SMA_30 |
-
-
-## Adjusting for new config files in `.env`
-
-At the top of the `.env` file are two options called `FEATURE_CONFIG_FILE` and `LABEL_CONFIG_FILE`.  
-
-If
-- You modify a file, but want to keep using the same one 
-    - just call `./scripts/env.sh` to update the `.env` (or you can call `source .env`)
-- You want to use a new JSON config
-    - redirect the name starting from `/config`, i.e do not include the `config` path in the value  
-
-To see other options available in `.env` read [here](ENV.md)
