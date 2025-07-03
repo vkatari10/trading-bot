@@ -20,13 +20,14 @@ Note: This project is actively under improvement. Here is a list of current and 
 - Quickly test trained ML models on historical data to analyze P/L
 ### Live Execution w/ Broker Integration (Go)
 - Runtime engine
-  - Polls Market Data
-  - Manages declared config value features
-  - Communicates via HTTP REST with a ML API Server for real time inference
-  - Places trades (paper or real) using individual Alpaca account
+  - Manages features from config values
+  - Polls live market data and recomputes features
+  - Communicates via HTTP REST to ML API for live inference
+  - Places trades (paper or real) with Alpaca accounts
   - Exposes own API for live monitoring
-  - Error handling from bad configs, failed API calls, etc
-  - Supports trading intervals from minutes to seconds
+  - Documented error codes ([here](docs/ERRORS.md))
+- Multi-Asset Trading 
+- Supports intervals from minutes to seconds 
 
 ## In Progress
 ### ML Pipeline
@@ -147,5 +148,7 @@ To run tests: `python3 contrade_cli.py test`
 - [CHANGELOG](docs/CHANGELOG.md) - Version history details
 - [TODO](docs/TODO.md) - Other long-term improvements
 - [LICENSE](LICENSE) - License info 
+
+
 
 *This platform is intended for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses.*

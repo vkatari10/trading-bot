@@ -7,20 +7,23 @@ Date: 06/21/2025
 '''
 
 import src.ml.data_processing.data_processing as dp
+import src.ml.json.json_parser as jp
 import src.ml.training.training as train
 import src.backtesting.account as acct
 import os
 import pickle
-from dotenv import load_dotenv
+import pandas as pd
 
-load_dotenv('.env')
+
 
 def backtest(df, stop, model):
     account = acct.Account()
-    val = 0
+    start_val = account.cash
 
     for i in range(len(df)): # df.iloc[i, 0:stop] 
-        pred = model.predict([df.iloc[i, 0:stop]])
+        pred_series = df.iloc[i, 0:stop]
+        pred_df = pred_series.to_frame().T
+        pred = model.predict(pred_df)
         if pred == 1:
             account.buy(df.iloc[i, 0])
         elif pred == -1:
@@ -30,20 +33,28 @@ def backtest(df, stop, model):
         #     val = account.cash
 
     account.sell(df.iloc[len(df) - 1, 0])
-    print(account.cash)
+    print(f"{start_val:.2f} -> {account.cash:.2f}")
 
 
-def run_backtest(ticker: str) -> float:
-    # fit df 
-    df = dp.get_df(ticker)
+def run_backtest(file_name: str, ticker: str) -> float:
 
-    # find stop val
-    stop = train.find_stop(df, os.getenv("LABEL_CONFIG_FILE"))
+    print("Reading configuration")
+    config = jp.UserConfig(file_name)
+
+    print("Creating backtesting dataframe")
+    df = dp.get_single_df(config, ticker)
+
+    # return 0.0
     
     # load ML model 
-    with open('src/ml/models/decider/' + os.getenv("MODEL_RUNTIME_NAME"), 'rb') as f:
+    print(f"Loading {config.get_model_name()}")
+    with open('src/ml/models/decider/' + config.get_model_name(), 'rb') as f:
         model = pickle.load(f)
 
+    stop = train.find_stop(df, config)
+
+
+    print(f"Starting backtest on {len(df)} rows")
     backtest(df, stop, model)
 
 # add graph visualizer kind of like in backtrader
