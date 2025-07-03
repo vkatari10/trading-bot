@@ -154,7 +154,7 @@ def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     else:
         return training_df
     
-def get_single_df(uc: jp.UserConfig, ticker: str, period, timeframe) -> pd.DataFrame:
+def get_single_df(uc: jp.UserConfig, ticker: str) -> pd.DataFrame:
     '''
     Returns a single dataframe with all user defined features and labels,
 
@@ -169,6 +169,6 @@ def get_single_df(uc: jp.UserConfig, ticker: str, period, timeframe) -> pd.DataF
     A single dataframe with the user defined features and labels from the JSON 
     config file 
     '''
-    df = yf.get_data(ticker, period, timeframe)
+    df = yf.get_data(ticker, uc.get_model_training_interval(), uc.get_model_training_timeframe())
     df = process_data(df, uc)
     return df
