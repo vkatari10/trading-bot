@@ -62,7 +62,7 @@ def send_prediction():
 
         final_pred = int(prediction[0])
 
-        return jsonify({"status": "recieved", "prediction": int(prediction[0])})
+        return jsonify({"status": "received", "prediction": int(prediction[0])})
 
     elif request.method == 'GET':
         if final_pred is None:

@@ -88,7 +88,6 @@ func GetTradeTickers(file string) ([]string, error){
 } // GetTradeTickers
 
 
-
 func extractFeatures(config map[string]any) (technicals.UserData, error) {
 
 	features, ok := config["features"].([]any)
@@ -116,8 +115,6 @@ func extractFeatures(config map[string]any) (technicals.UserData, error) {
 
 	return data, nil
 } // extractFeatures
-
-
 
 // decideConstructor calls constructors based on each JSON objected 
 // defined in the features.json file

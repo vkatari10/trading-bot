@@ -1,3 +1,4 @@
+#! /usr/bin/env python3
 '''
 CLI Tool to interact with various services
 
@@ -35,13 +36,11 @@ try:
 
         process.communicate()
     elif args[1] == "mlapi":
-        subprocess.run(["bash", "python3", "-m", "src.api.internal.model_api.model_api", args[2]])
-except None:
-    pass
-
-
-# ModuleNotFoundError:
-#     print(ModuleNotFoundError)
-#     print("venv has been not started, run 'source venv/bin/activate'")
-# except KeyboardInterrupt:
-#     print('quit')
+        if len(args) == 3:
+            subprocess.run(["bash", "python3", "-m", "src.api.internal.model_api.model_api", args[2]])
+        else: 
+            print("usage: ./contrade_cli.py mlapi <path_to_config>")
+except ModuleNotFoundError:
+    print("venv has been not started, run 'source venv/bin/activate'")
+except KeyboardInterrupt:
+    print('quit')

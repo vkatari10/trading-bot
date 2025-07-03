@@ -2,7 +2,6 @@ package eventloop
 
 import (
 	"time"
-	"runtime"
 	"fmt"
 	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
 	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
@@ -92,7 +91,7 @@ func EventLoop(tempTicker string) {
 		burnQuote = [5]float64{100, 95, 105, 120, 80}
 		burn = overrideBurnIn(userSettings.BurnTime)
 	} else {
-		fmt.Printf("burn time -> %d MINUTES, cycle time -> %d SECONDS\n", userSettings.BurnTime, userSettings.CycleTime)
+		//fmt.Printf("burn time -> %d MINUTES, cycle time -> %d SECONDS\n", userSettings.BurnTime, userSettings.CycleTime)
 		burn, burnQuote = BurnIn(userSettings.BurnTime, tempTicker, userSettings.CycleTime)
 	} // if-else
 
@@ -101,10 +100,9 @@ func EventLoop(tempTicker string) {
 	UpdateOHLCVDeltas(&userIndicators, burnQuote)
 
 	apiBuf := newAPIBuffer() // store logging info in here
-	runtime.GC() // force GC before starting main loop
 
 	go SendPayload(map[string]any{
-		"msg": "STAGE: LIVE",
+		"msg": fmt.Sprintf("(%s) STAGE: LIVE", tempTicker),
 	}, logLink)
 
 	// Main Runtime Loop
@@ -115,7 +113,7 @@ func EventLoop(tempTicker string) {
 		newQuote, err := api.GetQuote(tempTicker)
 		if err != nil {
 			go SendPayload(map[string]any {
-				"msg" : "ERROR: Could not get market data",
+				"msg" : fmt.Sprintf("(%s) ERROR: Could not get market data", tempTicker),
 			}, logLink)
 			/*
 
@@ -130,7 +128,7 @@ func EventLoop(tempTicker string) {
 
 		go apiBuf.enqueue(
 			map[string]any{
-				"msg": fmt.Sprintf("QUOTE: $%.2f", newQuote[0]),
+				"msg": fmt.Sprintf("%s: $%.2f", tempTicker, newQuote[0]),
 			}, logLink)
 		
 		UpdateTechnicals(&userIndicators, newQuote[0])  // Close values
@@ -162,7 +160,7 @@ func EventLoop(tempTicker string) {
 		handlePrediction(apiBuf, pred, tempTicker)
 
 		go apiBuf.enqueue(map[string]any{ 
-			"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", userSettings.BurnTime),
+			"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", userSettings.CycleTime),
 		}, logLink)
 
 		// Flush all messages to logLink

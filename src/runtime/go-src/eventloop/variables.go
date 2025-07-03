@@ -9,10 +9,6 @@ import (
 )
 
 var (
-
-	thisTicker string // keep for now remove soon
-	// for when multi asset trading is implemented
-
 	logLink string
 	dataLink string
 	envLink string
@@ -22,13 +18,9 @@ var (
 func init() {
 	godotenv.Load("../../../.env")
 
-	// Main Settings
-	thisTicker = os.Getenv("LIVE_TRADE_TICKER") // Move to JSON later 
-
 	// API Endpoints
 	logLink = os.Getenv("LOG_LINK")
 	dataLink = os.Getenv("DATA_LINK")
 	envLink = os.Getenv("ENV_LINK")
 	brokerLink = os.Getenv("BROKER_LINK")
-
 } // init()
