@@ -47,8 +47,8 @@ Note: This project is actively under improvement. Below is a list of current and
   - Python based CLI for quick jobs (training, backtesting)
 - TUI Client
   - Using `textual`
-  - Planned live dashboard monitoring logging, account, and data information 
-  - Easier interface to modify `.env` or `JSON` configs
+  - Planned live dashboard monitoring logging, account, and data information
+  -Easier interface to modify `.env` or `JSON` configs
 ### Other 
 - Support for more technical indicators / features
   - Current

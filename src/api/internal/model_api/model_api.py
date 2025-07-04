@@ -18,9 +18,12 @@ import numpy as np
 import src.ml.json.json_parser as jp # to get user config info
 import sys
 
+
 args = sys.argv     
 
-config = jp.UserConfig(args[1]) # user config
+print(args)
+
+config = jp.UserConfig(args[-1]) # user config
 
 # Load in deciding ML model
 file_path = "src/ml/models/decider/" + config.get_model_name()

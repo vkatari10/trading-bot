@@ -11,6 +11,7 @@ try:
     import subprocess # run shell scripts
     import src.ml.pipeline as pipe # to train models
     import src.backtesting.backtesting as bt # backtesting module
+    import src.api.internal.model_api.model_api as mlapi
 
     args = sys.argv
 
@@ -38,7 +39,10 @@ try:
         process.communicate()
     elif args[1] == "mlapi":
         if len(args) == 3:
-            subprocess.run(["bash", "python3", "-m", "src.api.internal.model_api.model_api", args[2]])
+            file = args[2]
+            process = subprocess.Popen(
+                ["python", "-m", "src.api.internal.model_api.model_api", file]
+            )
         else: 
             print("usage: ./contrade_cli.py mlapi <PATH_TO_CONFIG_FILE>")
     elif args[1] == "backtest":
