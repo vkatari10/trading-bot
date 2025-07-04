@@ -66,9 +66,9 @@
         "override_burn_in": true
     },
     "backtest_settings": {
-        "starting_cash": 1000,
+        "starting_cash": 10000,
         "commission": 0.00,
-        "position_size": 10
+        "position_size": 1
     } 
 }   
 

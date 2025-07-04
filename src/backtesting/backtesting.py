@@ -17,6 +17,18 @@ import numpy as np
 import pandas as pd
 
 
+# terminal formatting
+from rich.progress import Progress
+from rich.console import Console
+from datetime import datetime
+
+
+def log(message: str, style="bold white"):
+    console = Console()
+    now = datetime.now().strftime("%H:%M:%S")
+    console.print(f"[{now}] [{style}]{message}[/{style}]")
+
+
 def backtest(df: pd.DataFrame, stop: int, model, 
              settings: jp.UserConfig) -> None:
     account = acct.Account(
@@ -28,18 +40,23 @@ def backtest(df: pd.DataFrame, stop: int, model,
 
     bs_list = []
 
-    for i in range(len(df)): # df.iloc[i, 0:stop] 
-        pred_series = df.iloc[i, 0:stop]
-        pred_df = pred_series.to_frame().T
-        pred = model.predict(pred_df)
-        bs_list.append(int(pred))
-        if pred == 1:
-            account.buy(df.iloc[i, 0])
-        elif pred == -1:
-            account.sell(df.iloc[i, 0])
-        # if account.cash != val:
-        #     print(account.cash)
-        #     val = account.cash
+    with Progress() as progress:
+
+        task = progress.add_task("[cyan]Backtesting:", total=len(df))
+
+        for i in range(len(df)): # df.iloc[i, 0:stop] 
+            pred_series = df.iloc[i, 0:stop]
+            pred_df = pred_series.to_frame().T
+            pred = model.predict(pred_df)
+            bs_list.append(int(pred))
+            if pred == 1:
+                account.buy(df.iloc[i, 0])
+            elif pred == -1:
+                account.sell(df.iloc[i, 0])
+            progress.update(task, advance=1)
+            # if account.cash != val:
+            #     print(account.cash)
+            #     val = account.cash
 
 
     account.sell(df.iloc[len(df) - 1, 0])
@@ -57,22 +74,24 @@ def backtest(df: pd.DataFrame, stop: int, model,
 
 def run_backtest(file_name: str, ticker: str) -> None:
 
-    print("Reading configuration")
+    
     config = jp.UserConfig(file_name)
+    log(f"Read {config.file_name} configurations", style="green")
 
-    print("Creating backtesting dataframe")
     df = dp.get_single_df(config, ticker)
+    log(f"Created testing DataFrame with {len(df)} rows", style="green")
 
     # return 0.0
     
     # load ML model 
-    print(f"Loading {config.get_model_name()}")
+
     with open('src/ml/models/decider/' + config.get_model_name(), 'rb') as f:
         model = pickle.load(f)
+    log(f"Loaded {config.get_model_name()}", style="green")
 
     stop = train.find_stop(df, config)
 
-    print(f"Starting backtest on {len(df)} rows")
     backtest(df, stop, model, config)
 
 # add graph visualizer kind of like in backtrader
+

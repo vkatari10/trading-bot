@@ -19,6 +19,7 @@ class UserConfig():
             with open(file_name) as f:
                 file = json.load(f)
             self.file = file
+            self.file_name = file_name
         except Exception:
             raise ValueError("File does not exist or could not be read")
 
