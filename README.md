@@ -20,45 +20,21 @@ Note: This project is actively under improvement. Below is a list of current and
 - Dynamically adjusts features, labels, and training tickers based on config files
 ### Backtesting Module (Python)
 - Quickly test trained ML models on historical data to analyze P/L
-### Live Execution w/ Broker Integration (Go)
-- Runtime engine
-  - Manages features from config values
-  - Polls live market data and recomputes features
-  - Communicates via HTTP REST to ML API for live inference
-  - Places trades (paper or real) with Alpaca accounts
-  - Exposes own API for live monitoring
-  - Documented error codes ([here](docs/ERRORS.md))
+### Live Execution w/ Broker Integration (Go/Python)
+- Run Machine Learning Models Live
+- Alpaca Brokerage Integration (paper or real money)
+- Exposes own API with 4 configurable endpoints for monitoring
 - Multi-Asset Trading 
 - Supports intervals from minutes to seconds 
+- Error documentation ([here](docs/ERRORS.md))
+### UI (Python)
+- CLI Tool to easily call services 
+  - Training
+  - Backtesting
+  - Live Execution 
+  - See docs [here](docs/CLI.md)
 
-## In Progress
-### ML Pipeline
-  - Conversion to `XGBoost` models exclusively 
-  - Hyperparameter tuning via config files
-  - Configurable label rebalancing for training
-### Backtesting Module
-  - Graphical representation of buy/sell history using `matplotlib`
-### Live Execution 
-- Reduce ML inference latency by using gRPC
-- Reduce market data polling latency by using websockets
--  Multi asset trading configurable by JSON
-### UI
-- CLI
-  - Python based CLI for quick jobs (training, backtesting)
-- TUI Client
-  - Using `textual`
-  - Planned live dashboard monitoring logging, account, and data information
-  -Easier interface to modify `.env` or `JSON` configs
-### Other 
-- Support for more technical indicators / features
-  - Current
-    - EMA
-    - SMA
-    - Deltas (and Difference of Deltas)
-  - Future
-    - RSI
-    - MACD
-    - Bollinger Bands
+
 
 Project size is around 2000 LOC divided between ~60 files. 
 
