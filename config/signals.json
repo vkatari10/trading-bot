@@ -1,8 +1,0 @@
-[
-    {
-        "sig": "crossover",
-        "name": "SMA_CROSS",
-        "col1": "SMA_10",
-        "col2": "SMA_30"
-    }
-]
