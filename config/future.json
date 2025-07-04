@@ -65,10 +65,10 @@
         "run_after_close": false,
         "override_burn_in": true
     },
-    "backtesting_settings": {
-        "starting_cash": 10000,
+    "backtest_settings": {
+        "starting_cash": 1000,
         "commission": 0.00,
-        "position_size": 1
+        "position_size": 10
     } 
 }   
 

@@ -17,8 +17,13 @@ import numpy as np
 import pandas as pd
 
 
-def backtest(df: pd.DataFrame, stop: int, model) -> None:
-    account = acct.Account()
+def backtest(df: pd.DataFrame, stop: int, model, 
+             settings: jp.UserConfig) -> None:
+    account = acct.Account(
+        cash=settings.get_backtesting_cash(),
+        commission=settings.get_backtesting_commission(),
+        batch_size=settings.get_backtesting_pos_size()
+    )
     start_val = account.cash
 
     bs_list = []
@@ -36,20 +41,18 @@ def backtest(df: pd.DataFrame, stop: int, model) -> None:
         #     print(account.cash)
         #     val = account.cash
 
+
     account.sell(df.iloc[len(df) - 1, 0])
     print(f"{start_val:.2f} -> {account.cash:.2f}")
 
-    print(bs_list)
     bs_series = pd.Series(bs_list)
-    print(bs_series)
-
     df['bf_col'] = bs_series
     
-    plt.plot(df.index, df.iloc[:, 0])
-    plt.title('Results')
-    plt.xlabel("date")
-    plt.ylabel("price")
-    plt.show()
+    # plt.plot(df.index, df.iloc[:, 0])
+    # plt.title('Results')
+    # plt.xlabel("date")
+    # plt.ylabel("price")
+    # plt.show()
 
 
 def run_backtest(file_name: str, ticker: str) -> None:
@@ -70,6 +73,6 @@ def run_backtest(file_name: str, ticker: str) -> None:
     stop = train.find_stop(df, config)
 
     print(f"Starting backtest on {len(df)} rows")
-    backtest(df, stop, model)
+    backtest(df, stop, model, config)
 
 # add graph visualizer kind of like in backtrader

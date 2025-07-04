@@ -7,15 +7,15 @@ Date: 06/22/2025
 
 class Account():
 
-    def __init__(self, cash=10000.0, comission=0.00, batch_size=1):
+    def __init__(self, cash=10000.0, commission=0.00, batch_size=1):
         self.cash = cash
-        self.comission = comission
+        self.commission = commission
         self.positions = []
         self.batch_size = batch_size
 
     def buy(self, price):
 
-        cost = price * self.batch_size + self.comission
+        cost = price * self.batch_size + self.commission
 
         if self.cash < cost: # cannot afford
             return
@@ -33,7 +33,7 @@ class Account():
             pl += self.positions[i].findReturn(end_price)
         
         self.positions.clear()
-        self.cash += pl - self.comission
+        self.cash += pl - self.commission
 
 
 class Position():
