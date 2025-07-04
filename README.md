@@ -2,9 +2,11 @@
 
 # ConTrade
 
-ConTrade is a platform for building and running custom trading bots, where users define strategies through configuration, no code edits required. It handles the entire ML pipeline, backtesting, and live trading infrastructure, making it easy to prototype and deploy new ideas quickly.
+> *ConTrade -- Configurable Trading*
 
-Note: This project is actively under improvement. Here is a list of current and upcoming features. 
+ConTrade is a platform for building and running custom trading bots, where users can define strategies through configuration files, no code edits required. This same configuration can be applied to every service ConTrade offers: ML training, backtesting (validation), and live trading. This makes it easy to prototype, experiment, and deploy new ideas quickly. 
+
+Note: This project is actively under improvement. Below is a list of current and upcoming features. 
 
 ## Completed Features
 
