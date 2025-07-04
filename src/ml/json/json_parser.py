@@ -70,7 +70,27 @@ class UserConfig():
             return model_name
         except KeyError:
             raise ValueError(make_error_str('model_training_interval'))
-    
+
+    def get_backtesting_cash(self) -> float:
+        try:
+            cash = self.file['backtest_settings']['starting_cash']
+            return cash
+        except KeyError:
+            raise ValueError(make_error_str('starting_cash'))
+        
+    def get_backtesting_commission(self) -> float:
+        try:
+            comish = self.file['backtest_settings']['commission']
+            return comish
+        except KeyError:
+            raise ValueError(make_error_str('commission'))
+        
+    def get_backtesting_pos_size(self) -> int:
+        try:
+            size = self.file['backtest_settings']['position_size']
+            return size
+        except KeyError:
+            raise ValueError(make_error_str('position_size'))    
 
 def make_error_str(key: str) -> str:
     return f"Could not parse '{key}' properly from the " \
