@@ -21,9 +21,13 @@ import sys
 
 args = sys.argv     
 
-print(args)
+config = None
 
-config = jp.UserConfig(args[-1]) # user config
+if len(args) > 1:
+    config = jp.UserConfig(args[-1]) # user config
+else:
+    raise ValueError("usage: ./contrade_cli mlapi <CONFIG_FILE_PATH>")
+
 
 # Load in deciding ML model
 file_path = "src/ml/models/decider/" + config.get_model_name()
@@ -98,4 +102,4 @@ def send_prediction_test():
         
 # Run API server
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False, port=5000)

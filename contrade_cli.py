@@ -11,36 +11,40 @@ try:
     import subprocess # run shell scripts
     import src.ml.pipeline as pipe # to train models
     import src.backtesting.backtesting as bt # backtesting module
-    import src.api.internal.model_api.model_api as mlapi
 
     args = sys.argv
 
-    # TODO implement error handling
-
     if args[1] == "train":
-        pipe.pipeline(args[2]) 
+
+        if len(args) < 3:
+            print("usage: ./contrade_cli.py train <PATH_TO_CONFIG_FILE>")
+        else:
+            pipe.pipeline(args[2]) 
     elif args[1] == "build":
         subprocess.run(["bash", "./scripts/build.sh"])
     elif args[1] == "test":
         subprocess.run(["bash", "./scripts/test.sh"])
     elif args[1] == "run":
-        file = args[2]       
+        if len(args) < 3:
+            print("usage: ./contrade_cli.py run <PATH_TO_CONFIG_FILE")
+        else:
+            file = args[2]       
 
-        compile = subprocess.Popen(
-            ["go", "build"],
-            cwd="./src/runtime/go-src"
-        )
+            compile = subprocess.Popen(
+                ["go", "build"],
+                cwd="./src/runtime/go-src"
+            )
 
-        process = subprocess.Popen( # forked
-            ["go", "run", ".", file],
-            cwd="./src/runtime/go-src"
-        )
+            process = subprocess.Popen( # forked
+                ["go", "run", ".", file],
+                cwd="./src/runtime/go-src"
+            )
 
-        process.communicate()
+            process.communicate()
     elif args[1] == "mlapi":
         if len(args) == 3:
             file = args[2]
-            process = subprocess.Popen(
+            process = subprocess.run(
                 ["python", "-m", "src.api.internal.model_api.model_api", file]
             )
         else: 
