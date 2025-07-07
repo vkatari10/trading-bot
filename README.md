@@ -56,6 +56,7 @@ This design allows for independent parts to be scaled and improved without affec
 ## Tech Stack
 | Feature | Language | Technologies | APIs |
 |:-------:|----------|--------------|------|
+| Config Files | JSON | None | None | 
 | ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn | YFinance |
 | Backtesting | Python | Pandas, NumPy, Scikit-learn | YFinance |
 | Runtime Engine | Go, Python | Flask -> FastAPI | Alpaca |
