@@ -1,4 +1,4 @@
-package api
+package eventloop
 
 // This file interact with the ML model in Python to send data and get 
 // predictions back to inform the broker API
@@ -6,6 +6,7 @@ package api
 import (
     "fmt"
     technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
+    alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
     "encoding/json"
     "bytes"
     "net/http" 
@@ -21,7 +22,7 @@ var (
 // PutPrices loads the intial close, high, low, and open prices that 
 // the ML models was trained on (Yfinance includes these by deafult)
 func PutPrices(data *technicals.UserData, json map[string]any, ticker string) (map[string]any) {
-    bars, err := GetQuote(ticker)
+    bars, err := alpaca.GetQuote(ticker)
     if err != nil {
         log.Println("ERROR: Failed to get market data")
         return nil

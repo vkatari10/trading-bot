@@ -1,4 +1,4 @@
-package api
+package alpaca
 
 import (
        "github.com/joho/godotenv"
@@ -17,7 +17,6 @@ var (
     alpacaOrdersLink string
     alpacaClockLink string
     alpacaMarketDataLink string
-    mlServerLink string
 )
 
 // init loads the environment variable keys in this package
@@ -30,13 +29,8 @@ func init() {
      alpacaOrdersLink = os.Getenv("ALPACA_ORDERS_LINK")
      alpacaClockLink = os.Getenv("ALPACA_CLOCK_LINK")
      alpacaMarketDataLink = os.Getenv("ALPACA_MARKET_DATA_LINK")
-     mlServerLink = os.Getenv("ML_API_LINK")
+  
 } // init
 
-func getAlpacaAPI() string {
-    return alpacaApi
-}
 
-func getAlpacaSec() string {
-    return alpacaSec
-}
+

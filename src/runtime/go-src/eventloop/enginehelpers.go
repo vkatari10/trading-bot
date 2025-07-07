@@ -5,7 +5,7 @@ package eventloop
 import (
 	"time"
 	"fmt"
-	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	"math/rand"
 	"os"
 )
@@ -25,7 +25,7 @@ func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote
 	var newQuote [5]float64
 
 	for i := range burnTime {
-		newQuote, err := api.GetQuote(ticker)
+		newQuote, err := alpaca.GetQuote(ticker)
 		if err != nil {
 			go SendPayload(map[string]any {
 			"msg" : "ERROR: Could not get market data",
@@ -53,11 +53,11 @@ func handlePrediction(apiBuffer *APIBuffer, prediction float64, ticker string) {
 
 		if prediction > 0 { // buy
 			decision = "buy"
-			go api.PlaceMarketOrder(ticker, 1, decision)
+			go alpaca.PlaceMarketOrder(ticker, 1, decision)
 			decisionMsg += "BUY"
 		} else if prediction < 0 { // sell
 			decision = "sell"
-			go api.PlaceMarketOrder(ticker, 1, decision)
+			go alpaca.PlaceMarketOrder(ticker, 1, decision)
 			decisionMsg += "SELL"
 		} else {
 			decisionMsg += "HOLD"

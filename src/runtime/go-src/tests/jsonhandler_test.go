@@ -1,7 +1,7 @@
 package tests
 
 import (
-	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine" 
+	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json" 
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals" 
 	"testing"
 	"fmt"
@@ -12,7 +12,7 @@ import (
 // read 
 func TestParseLogicJSON(t *testing.T) {
 
-	get, err := engine.ParseLogicJSON(fileName)
+	get, err := json.ParseLogicJSON(fileName)
 	if err != nil {
 		t.Errorf("TestParseLogicJSON faied with error %v", err)
 	} // if
@@ -57,7 +57,7 @@ func TestParseLogicJSON(t *testing.T) {
 
 func TestGetTradeTickers(t *testing.T) {
 
-	get, err := engine.GetTradeTickers(fileName)
+	get, err := json.GetTradeTickers(fileName)
 	if err != nil {
 		t.Errorf("TestGetTradeTickers failed with error %v", err)
 	} // if 

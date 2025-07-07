@@ -1,4 +1,4 @@
-package api
+package alpaca
 
 // This file works with the market API to get real time market data
 
@@ -18,13 +18,13 @@ func GetQuote(ticker string) ([5]float64, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", getAlpacaAPI())
-	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSec())
+	req.Header.Add("APCA-API-KEY-ID", alpacaApi)
+	req.Header.Add("APCA-API-SECRET-KEY", alpacaSec)
 
 	res, err := http.DefaultClient.Do(req)
     if err != nil {
         log.Println(err)
-    }
+    } // if
 
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)

@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"bytes"
 	"log"
-	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
+	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 )
 
@@ -51,14 +51,14 @@ func sendEnvironmentData() {
 func sendBrokerData() {
 	go func() {
 
-	qty, avgCost, marketVal, err := api.GetPositions()
+	qty, avgCost, marketVal, err := alpaca.GetPositions()
 	if err != nil {
 		qty = 0
 		avgCost = 0
 		marketVal = 0
 	} // if
 
-	cash, accountValue, err := api.GetCashValue()
+	cash, accountValue, err := alpaca.GetCashValue()
 	if err != nil {
 		cash = 0
 		accountValue = 0

@@ -1,4 +1,4 @@
-package api
+package alpaca
 
 // External API methods to place buy/sell orders on brokerage
 
@@ -140,8 +140,8 @@ func MarketStatus() (bool, error) {
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json")
-	req.Header.Add("APCA-API-KEY-ID", getAlpacaAPI())
-	req.Header.Add("APCA-API-SECRET-KEY", getAlpacaSec())
+	req.Header.Add("APCA-API-KEY-ID", alpacaApi)
+	req.Header.Add("APCA-API-SECRET-KEY", alpacaSec)
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {

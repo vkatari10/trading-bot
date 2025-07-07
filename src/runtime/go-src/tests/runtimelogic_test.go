@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"testing"
 	"math"
-	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 	eventloop "github.com/vkatari10/trading-bot/src/runtime/go-src/eventloop"
 )
@@ -15,7 +15,7 @@ func TestLoadBurnData(t *testing.T) {
 
 	file := "test.json"
 
-	userData, err := engine.ParseLogicJSON(file)
+	userData, err := json.ParseLogicJSON(file)
 	if err != nil {
 		t.Errorf("TestLoadBurnData failed with error %v", err)
 	} // if
@@ -53,7 +53,7 @@ func TestLoadBurnData(t *testing.T) {
 // updating technical indicators works as intended
 func TestUpdateTechnicals(t *testing.T) {
 
-	userData, err := engine.ParseLogicJSON("test.json")
+	userData, err := json.ParseLogicJSON("test.json")
 	if err != nil {
 		t.Errorf("TestUpdateTechnicals failed with error %v", err)
 	} // if

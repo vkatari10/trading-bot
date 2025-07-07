@@ -3,13 +3,13 @@ package eventloop
 import (
 	"time"
 	"fmt"
-	api "github.com/vkatari10/trading-bot/src/runtime/go-src/api"
-	engine "github.com/vkatari10/trading-bot/src/runtime/go-src/engine"
+	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
+	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
 	"sync"
 )
 
 var (
-	us engine.RuntimeSettings // to use its values in the rest of the package
+	us json.RuntimeSettings // to use its values in the rest of the package
 )
 
 // Start Entry point of the program to read all tickers and 
@@ -18,7 +18,7 @@ var (
 func Start() {
 	// get main trading stocks, 
 
-	tickers, err := engine.GetTradeTickers("../../../" + getFileName())
+	tickers, err := json.GetTradeTickers("../../../" + getFileName())
 	if err != nil {
 		SendPayload(map[string]any{
 			"msg": "ERROR CODE: 3 [See ERRORS.md]",
@@ -59,7 +59,7 @@ func EventLoop(tempTicker string) {
 	// and then send the map ONLY to the parsers
 	userConfigFile := "../../../" + getFileName()
 
-	userSettings, err := engine.GetRuntimeSettings(userConfigFile)
+	userSettings, err := json.GetRuntimeSettings(userConfigFile)
 	if err != nil {
 		SendPayload(map[string]any{
 			"msg": "ERROR CODE: 2 [See ERRORS.md]",
@@ -73,7 +73,7 @@ func EventLoop(tempTicker string) {
 	thisRunTime := int(390 - us.BurnTime) // market open time - burn time
 	go sendEnvironmentData() // send env variables as JSON
 
-	userIndicators, err := engine.ParseLogicJSON(userConfigFile)
+	userIndicators, err := json.ParseLogicJSON(userConfigFile)
 	if err != nil {
 		SendPayload(map[string]any{
 			"msg": "ERROR CODE: 1 [See ERRORS.md]",
@@ -110,7 +110,7 @@ func EventLoop(tempTicker string) {
 	for i < thisRunTime {
 
 		// Pull new Quote
-		newQuote, err := api.GetQuote(tempTicker)
+		newQuote, err := alpaca.GetQuote(tempTicker)
 		if err != nil {
 			go SendPayload(map[string]any {
 				"msg" : fmt.Sprintf("(%s) ERROR: Could not get market data", tempTicker),
@@ -143,14 +143,14 @@ func EventLoop(tempTicker string) {
 		// }
 
 		// Send JSON of features to ML API
-		api.SendData(&userIndicators, tempTicker) // TODO: Put retry logic here as well if we cannot send the data instead 
+		SendData(&userIndicators, tempTicker) // TODO: Put retry logic here as well if we cannot send the data instead 
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Sent New Features to ML API",
 			}, logLink)
 		
 		// Get prediction back as JSON 
-		pred := api.GetPrediction() // TODO: Retry Logic
+		pred := GetPrediction() // TODO: Retry Logic
 		go apiBuf.enqueue(
 			map[string]any{
 				"msg": "UPDATE: Prediction received from ML API",

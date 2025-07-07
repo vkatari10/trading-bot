@@ -13,6 +13,7 @@ var (
 	dataLink string
 	envLink string
 	brokerLink string
+	mlServerLink string
 )
 
 func init() {
@@ -23,4 +24,5 @@ func init() {
 	dataLink = os.Getenv("DATA_LINK")
 	envLink = os.Getenv("ENV_LINK")
 	brokerLink = os.Getenv("BROKER_LINK")
+	mlServerLink = os.Getenv("ML_API_LINK")
 } // init()
