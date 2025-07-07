@@ -57,10 +57,13 @@ This design allows for independent parts to be scaled and improved without affec
 | Feature | Language | Technologies | APIs |
 |:-------:|----------|--------------|------|
 | ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn | YFinance |
-| Backtesting Module | Python | Pandas, NumPy, Scikit-learn | YFinance |
-| Runtime Engine | Go, Python | Flask | Alpaca |
-| CLI Tool | Python | N/A | N/A |
-| TUI | Python | Textual | Runtime Engine API |
+| Backtesting | Python | Pandas, NumPy, Scikit-learn | YFinance |
+| Runtime Engine | Go, Python | Flask -> FastAPI | Alpaca |
+| Risk Engine (WIP) | Go | None | None |
+| CLI | Python | Rich | None |
+| TUI (WIP) | Python | Rich | Runtime Engine API |
+| Tests | Python, Go | Pytest | None | 
+| DevOps (WIP) | N/A | Docker | None | 
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity

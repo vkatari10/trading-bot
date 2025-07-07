@@ -43,6 +43,13 @@ class UserConfig():
             return training_stocks
         except KeyError:
             raise ValueError(make_error_str('train_stocks'))
+        
+    def get_live_stocks(self) -> List[str]:
+        try:
+            live_stocks = self.file['live_trade_stocks']
+            return live_stocks
+        except KeyError:
+            raise ValueError(make_error_str('live_trade_stocks'))
 
     def get_model_type(self) -> str:
         try:
