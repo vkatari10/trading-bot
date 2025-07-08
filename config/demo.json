@@ -48,8 +48,7 @@
         "MSFT"
     ],
     "live_trade_stocks": [
-        "AAPL",
-        "AMZN"
+        "AAPL"
     ],
     "ml_settings": {
         "model_type": "RandomForestClassifier",
@@ -58,12 +57,13 @@
         "model_training_interval": "5d"
     },
     "runtime_settings": {
-        "cycle_time": 60,
+        "cycle_time": 15,
         "burn_window_time": 31,
         "log_api_flush_time": 2000,
         "log_to_stdout": true,
         "run_after_close": false,
-        "override_burn_in": true
+        "override_burn_in": true,
+        "mlapi_retry_count": 3
     },
     "backtest_settings": {
         "starting_cash": 10000,

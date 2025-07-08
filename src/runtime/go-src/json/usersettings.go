@@ -24,6 +24,7 @@ type RuntimeSettings struct {
 	LogToStdout bool
 	RunAfterClose bool
 	OverrideBurnIn bool
+	MLAPIRetryCount int
 	// Add more items if needed
 } // RuntimeSettings
 
@@ -69,39 +70,49 @@ func initializeSettingsMap(rs RuntimeSettings) (RuntimeSettings, error) {
 
 	cycleTime, ok := castTo[float64](rs.settingMap["cycle_time"])
 	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%v", ok)
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString("cycle_time"))
 	} // if
 	rs.CycleTime = int(cycleTime)
 
 	burnTime, ok := castTo[float64](rs.settingMap["burn_window_time"])
 	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%v", ok)
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString("burn_window_time"))
 	} // if 
 	rs.BurnTime = int(burnTime)
 
 	flushTime, ok := castTo[float64](rs.settingMap["log_api_flush_time"])
 	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%v", ok)
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString("log_api_flush_time"))
 	} // if 
 	rs.LogAPIFlushTime = int(flushTime)
 
 	logStdout, ok := castTo[bool](rs.settingMap["log_to_stdout"])
 	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%v", ok)
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString(("log_to_stdout")))
 	} // if
 	rs.LogToStdout = logStdout
 
 	alwaysRun, ok := castTo[bool](rs.settingMap["run_after_close"])
 	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%v", ok)
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString("run_after_close"))
 	} // if
 	rs.RunAfterClose = alwaysRun
 
 	jumpBurn, ok := castTo[bool](rs.settingMap["override_burn_in"])
 	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%v", ok)
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString(("override_burn_in")))
 	} // if
 	rs.OverrideBurnIn = jumpBurn
 
+	retryCount, ok := castTo[float64](rs.settingMap["mlapi_retry_count"])
+	if !ok {
+		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString("mlapi_retry_count"))
+	} // if 
+	rs.MLAPIRetryCount = int(retryCount)
+
 	return rs, nil
 } // initializeSettingsMap
+
+func makeErrorString(key string) string {
+	return fmt.Sprintf("could not parse %s from runtime settings in config file", key)
+}
