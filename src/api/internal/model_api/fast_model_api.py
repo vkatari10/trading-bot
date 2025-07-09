@@ -1,4 +1,4 @@
-from fastapi import FastAPI, BackgroundTasks, HTTPException
+from fastapi import FastAPI, BackgroundTasks, HTTPException, WebSocket
 import uvicorn as uvi
 
 # internal
@@ -6,8 +6,6 @@ import src.ml.json.json_parser as jp
 import sys
 import numpy as np
 import pickle
-from typing import Dict, Any
-import copy
 
 # load in ML model based on CLI input
 args = sys.argv
@@ -24,19 +22,16 @@ file_path = "src/ml/models/decider/" + config.get_model_name()
 with open(file_path, 'rb') as f:
     model = pickle.load(f)
 
-# job tracker (job id:data)
-jobs: Dict[str, Any] = {i: None for i in range(len(config.get_live_stocks()))}
-
 # API Server
 
 app = FastAPI()
 
-def run_ml_prediction(job_id: str, data: dict):
+def run_ml_prediction(data: dict):
     features = []
 
     print(f"features -> {features}")
 
-    for i in range(len(data) - 1): # aligns features 
+    for i in range(len(data)): # aligns features 
         features.append(data[str(i)])
 
     features_np = np.array(features).reshape(1, -1)
@@ -45,33 +40,28 @@ def run_ml_prediction(job_id: str, data: dict):
 
     result = int(prediction[0])
 
-    print(f"stock result is -> {result}")
+    return result
 
-    jobs[job_id]["result"] = result
-    jobs[job_id]["status"] = "done"
 
-@app.post("/predict")
-async def predict(data: dict, background_tasks: BackgroundTasks):
-    print(f"data -> {data}")
-    print(jobs)
-    job_id = data['job_number']
-    jobs[job_id] = {"status": "pending", "result": None}
-    background_tasks.add_task(run_ml_prediction, job_id, data)
-    return {"status": "200"}
+@app.websocket("/results-ws/{job_id}")
+async def results_websocket(websocket: WebSocket):
+    await websocket.accept()
 
-@app.get("/results/{job_id}")
-def get_result(job_id: str):
+    while True:
 
-    job = jobs.get(int(job_id))
+        data = await websocket.receive_json()
 
-    if not job:
-        raise HTTPException(status_code=404, detail="job id not found")
-    if job["status"] != "done":
-        raise HTTPException(status_code=202, detail="still processing")
-    print(job)
-    return {"status": "done", "result": job["result"]}
+        print(f"CLIENT ===> {data}")
+
+        result = run_ml_prediction(data) # int
+
+        print(f"SERVER SEND => {result}")
+
+        await websocket.send_json({"result": result})
+   
 
 if __name__ == "__main__":
     uvi.run(
-        'src.api.internal.model_api.fast_model_api:app', reload=True
+        'src.api.internal.model_api.fast_model_api:app', reload=True,
+        workers=len(config.get_live_stocks())
     )

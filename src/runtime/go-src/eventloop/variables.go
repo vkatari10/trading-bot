@@ -24,5 +24,5 @@ func init() {
 	dataLink = os.Getenv("DATA_LINK")
 	envLink = os.Getenv("ENV_LINK")
 	brokerLink = os.Getenv("BROKER_LINK")
-	mlServerLink = os.Getenv("TEST_ML_API_LINK")
+	mlServerLink = os.Getenv("ML_API_LINK")
 } // init()

@@ -7,11 +7,8 @@ import (
     "fmt"
     technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
     alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
-    "encoding/json"
-    "bytes"
-    "net/http" 
     "log"
-    "io"
+    "github.com/gorilla/websocket"
 )
 
 // Use local server right now
@@ -68,7 +65,6 @@ func PutNewTechnicals(data *technicals.UserData, json map[string]any) (map[strin
    
 } // PutNewTechnicals
 
-
 // GetLatestData returns back a JSON representation of the lastest values in 
 // order as the defined JSON in src/logic/features.json
 func MakeMLPayload(obj *technicals.UserData, ticker string) (res map[string]any, err error) {
@@ -78,60 +74,28 @@ func MakeMLPayload(obj *technicals.UserData, ticker string) (res map[string]any,
     return json, nil
 } // Construct
 
-// SendData sends data to the shared ML API to give updated
-// Data
-func SendData(obj *technicals.UserData, ticker string) error {
+func websocketWriter(conn *websocket.Conn, payload <-chan map[string]any) {
+    for {
+        err := conn.WriteJSON(<-payload)
+        if err != nil {
+            log.Println("ERROR: Could not write JSON to ML API")
+        } // if
+    } // for
+} // websocketWriter
 
-    data, err := MakeMLPayload(obj, ticker)
-    if err != nil {
-        log.Fatal(err)
-    } // if
+func websocketReader(conn *websocket.Conn, result chan<- float64) {
+    for {
+        var response map[string]any
+        err := conn.ReadJSON(&response)
+        if err != nil {
+            log.Println("ERROR: Could not get result from ML API", err)
+        } // if
 
-    //fmt.Println(data) // DEBUG Print JSON PAYLOAD
+        serverResult, ok := response["result"].(float64)
+        if !ok {
+            log.Println("ERROR: Could not read response")
+        } // if
 
-    json, err := json.Marshal(data)
-    if err != nil {
-        log.Fatal(err)
-    } // if
-
-    resp, err := http.Post(mlServerLink, "application/json", bytes.NewBuffer(json))
-    if err != nil {
-        log.Fatal(err)
-    } // if
-
-    defer resp.Body.Close()
-
-    if resp.Status == "200" {
-        return nil
-    } else {
-        return err
-    }
-} // SendData
-
-// GetPrediction Gets the prediction back from the ML API   
-// to determine the decision
-func GetPrediction() (float64) {
-
-    var result map[string]any = make(map[string]any)
-
-    resp, err := http.Get(mlServerLink)
-    if err != nil {
-        log.Println("ERROR: Could not get ML prediction")
-    } // if
-    defer resp.Body.Close()
-
-    body, err := io.ReadAll(resp.Body)
-    if err != nil {
-        log.Println("ERROR: Could not get ML prediction")
-    } // if
-
-    json.Unmarshal(body, &result)
-
-    prediction, ok := result["prediction"].(float64)
-    if !ok {
-        log.Println("ERROR: Could not get ML prediction")
-    } // ok
-
-    return prediction
-
-} // GetPrediction
+        result <- serverResult
+    } // for
+} // websocketReader

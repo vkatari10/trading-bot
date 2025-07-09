@@ -45,7 +45,7 @@ try:
         if len(args) == 3:
             file = args[2]
             process = subprocess.run(
-                ["python", "-m", "src.api.internal.model_api.model_api", file]
+                ["python", "-m", "src.api.internal.model_api.fast_model_api", file]
             )
         else: 
             print("usage: ./contrade_cli.py mlapi <PATH_TO_CONFIG_FILE>")

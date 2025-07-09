@@ -6,6 +6,7 @@ import (
 	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
 	"sync"
+	"github.com/gorilla/websocket"
 )
 
 var (
@@ -16,8 +17,6 @@ var (
 // feed them to the Spawner which creates independent event loops for
 // each ticker
 func Start() {
-	// get main trading stocks, 
-
 	tickers, err := json.GetTradeTickers("../../../" + getFileName())
 	if err != nil {
 		SendPayload(map[string]any{
@@ -39,10 +38,10 @@ func Spawner(tickers []string) {
 	for i := range tickers {
 		wg.Add(1)
 
-		go func(t string) {
+		go func(t string, id int) {
 			defer wg.Done()
-			EventLoop(t)
-		}(tickers[i])
+			EventLoop(t, id)
+		}(tickers[i], i)
 	} // for
 
 	wg.Wait()
@@ -50,7 +49,20 @@ func Spawner(tickers []string) {
 } // Spawner
 
 // tempTicker is how we will integrate specific tickers onto the eventloop
-func EventLoop(tempTicker string) { 
+func EventLoop(tempTicker string, tickerID int) {
+	url := fmt.Sprintf("ws://localhost:8000/results-ws/%d", tickerID)
+	c, _, err := websocket.DefaultDialer.Dial(url, nil)
+	if err != nil {
+		fmt.Println("dial error", err)
+		return
+	}
+	defer c.Close()
+
+	apiInputChan := make(chan map[string]any, 1)
+	apiOutputChan := make(chan float64, 1)
+
+	go websocketReader(c, apiOutputChan)
+	go websocketWriter(c, apiInputChan)
 
 	
 	// Load User JSON -> Convert to Go Struct
@@ -109,6 +121,8 @@ func EventLoop(tempTicker string) {
 	i := 0
 	for i < thisRunTime {
 
+		
+
 		// Pull new Quote
 		newQuote, err := alpaca.GetQuote(tempTicker)
 		if err != nil {
@@ -142,19 +156,15 @@ func EventLoop(tempTicker string) {
 		// 	log.Println(userIndicators.Ind[j])
 		// }
 
-		// Send JSON of features to ML API
-		SendData(&userIndicators, tempTicker) // TODO: Put retry logic here as well if we cannot send the data instead 
-		go apiBuf.enqueue(
-			map[string]any{
-				"msg": "UPDATE: Sent New Features to ML API",
+		payload, err := MakeMLPayload(&userIndicators, tempTicker)
+		if err != nil {
+			go SendPayload(map[string]any{
+				"msg": "ERROR: could not produce ML Payload",
 			}, logLink)
-		
-		// Get prediction back as JSON 
-		pred := GetPrediction() // TODO: Retry Logic
-		go apiBuf.enqueue(
-			map[string]any{
-				"msg": "UPDATE: Prediction received from ML API",
-			}, logLink)
+		} // if
+		apiInputChan <- payload
+
+		pred := <-apiOutputChan
 
 		// Decide Buy/Sell/Hold 
 		handlePrediction(apiBuf, pred, tempTicker)
