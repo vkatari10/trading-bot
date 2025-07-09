@@ -1,79 +1,82 @@
-![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white)  [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
+![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
 
 # ConTrade
 
-> *ConTrade -- Configurable Trading*
+*ConTrade -- Configurable Trading*
 
-ConTrade is a platform for building and running custom trading bots, where users can define strategies through configuration files, no code edits required. This same configuration can be applied to every service ConTrade offers: ML training, backtesting (validation), and live trading. This makes it easy to prototype, experiment, and deploy new ideas quickly. 
+ConTrade is a platform allowing users to easily define low/mid frequency trading strategies in a single config file and easily use integrated services to train, backtest, and execute models live using the `Alpaca` broker.  
 
-Note: This project is actively under improvement. Below is a list of current and upcoming features. 
+No more headaches trying to test a new strategy or experiment, simply change a `JSON` file and retrain, retest, or redeploy live. 
 
-## Completed Features
+**Note**: This project is actively under improvement. Below is a list of current and upcoming features. 
+
+## Features
+
+> Every feature uses the same config file, eliminating feature misalignment, and keeping every service on the same page!
 
 ### Config Driven Architecture (JSON)
-- Choose a strategy from supported technical indicators (EMA, Delta, etc.) 
-- Declare labelling logic as the relationships between technical indicators
-- Every service uses the same config, eliminating feature misalignment 
-### Full ML Pipeline (Python)
+- Choose your own strategy from supported technical indicators (SMA, EMA, Delta, etc.) 
+- These technical indicators serve as features to train ML models to your specifications
+### ML Pipeline (Python)
 - Scikit-learn Random Forest Classifier Model 
-- Multi-asset training (configurable)
-- Dynamically adjusts features, labels, and training tickers based on config files
-### Backtesting Module (Python)
-- Quickly test trained ML models on historical data to analyze P/L
+- Support for configurable multi-asset training
+### Backtesting (Python)
+- Quickly test trained ML models on historical stock data to analyze P/L via CLI
 ### Live Execution w/ Broker Integration (Go/Python)
-- Run Machine Learning Models Live
+- Run trained models live
 - Alpaca Brokerage Integration (paper or real money)
-- Exposes own API with 4 configurable endpoints for monitoring
+- Exposes own API with configurable endpoints for monitoring
 - Multi-Asset Trading 
 - Supports intervals from minutes to seconds 
-- Error documentation ([here](docs/ERRORS.md))
+- Error documentation [here](docs/ERRORS.md)
 ### UI (Python)
-- CLI Tool to easily call services 
+- CLI Tool to easily call services for any config files
   - Training
   - Backtesting
   - Live Execution 
+  - Tests
   - See docs [here](docs/CLI.md)
+### Tests (Go, Python)
+ - Unit Tests for both Go (`go test`) and Python (`pytest`) source
 
-
-
-Project size is around 2000 LOC divided between ~60 files. 
+Project size is ~1750 LOC (~40 files). 
 
 ## Architecture
 Philosophy
 - Config Driven 
-  - Prevent feature misalignment by ensuring every service uses the same config setup
-  - Think of the config like a contract that every other service must agree to
+  - Every service uses the **same** config file -- no confusion anywhere about what needs to be computed
+  - Think of the config file as a contract, both the ML Pipeline and Live Execution will agree on what features need to be used
 - Decoupled Systems
-  - All services are separated and independent
-  - At Runtime
-    - The ML Model runs on its own server
-    - The Go runtime computes features and receives inferences via HTTP REST calls
+  - All languages and most systems are decoupled as much as possible 
+    - the ML Pipeline (written in Python) and Live Execution services (written in Go) share **no** code
+    - the ML Pipeline and Backtesting services (both written in Python) do share some code (DataFrame Construction)
+  - Python and Go **only** communicate via websockets for live ML inference 
 
 This design allows for independent parts to be scaled and improved without affecting other systems
 
-![Architecture](docs/images/TradingPlatformDiagram5.svg)
+![Architecture](docs/images/TradingPlatformDiagram7.svg)
 
-## Tech Stack
+## Tech Stack 
 | Feature | Language | Technologies | APIs |
 |:-------:|----------|--------------|------|
-| Config Files | JSON | None | None | 
+| Config Files | JSON | - | - | 
 | ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn | YFinance |
 | Backtesting | Python | Pandas, NumPy, Scikit-learn | YFinance |
-| Runtime Engine | Go, Python | Flask -> FastAPI | Alpaca |
-| Risk Engine (WIP) | Go | None | None |
-| CLI | Python | Rich | None |
+| Runtime Engine | Go, Python | FastAPI, Gorilla Websocket| Alpaca |
+| Risk Engine (WIP) | Go | - | - |
+| CLI | Python | Rich | - |
 | TUI (WIP) | Python | Rich | Runtime Engine API |
-| Tests | Python, Go | Pytest | None | 
-| DevOps (WIP) | N/A | Docker | None | 
+| Tests | Python, Go | Pytest | - | 
+| DevOps (WIP) | YAML | Docker | - | 
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity
 - `Python` GIL overhead and interpreted, not ideal for concurrency
+- `Java` is harder to iterate with compared to `Go`'s module system and single compiled binary
 - `C++` is too complex (for this project), complicating currency, API calls, and other things for slightly better performance
 
 Go is fast enough to support both types of strategies while allowing for faster iteration of code with simple concurrency and low latency
 
-    
 ## Setup
 
 To use this program you will need to follow these steps
@@ -87,7 +90,7 @@ To use this program you will need to follow these steps
   - If on the bash shell run these commands
     - `python3 -m venv venv` (Creates the virtual environment folder)
     - `pip install -r requirements.txt` (Install Python dependencies)
-    - `source ./scripts/env.sh` (Shorthand to start the virtual environment)
+    - `source venv/bin/activate` (Shorthand to start the virtual environment)
 - Configuration
   - The JSON files are configurable, more info [here](config/README.md)
   - Make sure that if you wish to use a different configuration file, change the respective values in [`.env`](.env.example)
@@ -114,13 +117,6 @@ To use this program you will need to follow these steps
   - `YFinance` only has historical data down to a minute, so ML models cannot be trained on faster intervals
   - Therefore unless you can provide a higher tier `Alpaca` account AND higher frequency trained model, keep the `cycle_rate` in the JSON config `>=60`
 
-
-## Testing
-
-All `Python` based tests are contained in `./tests/` and all `Go` based tests are located in `./src/runtime/go-src/tests`.
-
-To run tests: `python3 contrade_cli.py test`
-
 ## Documentation 
 - [CONFIG](docs/CONFIG.md) - Learn the ConTrade custom JSON schema
 - [ENV](docs/ENV.md) - Environment settings details
@@ -130,7 +126,5 @@ To run tests: `python3 contrade_cli.py test`
 - [CHANGELOG](docs/CHANGELOG.md) - Version history details
 - [TODO](docs/TODO.md) - Other long-term improvements
 - [LICENSE](LICENSE) - License info 
-
-
 
 *This platform is intended for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses.*

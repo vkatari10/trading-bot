@@ -74,6 +74,7 @@ func MakeMLPayload(obj *technicals.UserData, ticker string) (res map[string]any,
     return json, nil
 } // Construct
 
+// websocketWriter will write the features to the ML API Server as a JSON
 func websocketWriter(conn *websocket.Conn, payload <-chan map[string]any) {
     for {
         err := conn.WriteJSON(<-payload)
@@ -83,6 +84,7 @@ func websocketWriter(conn *websocket.Conn, payload <-chan map[string]any) {
     } // for
 } // websocketWriter
 
+// websocketReader returns the inference based on the written features
 func websocketReader(conn *websocket.Conn, result chan<- float64) {
     for {
         var response map[string]any

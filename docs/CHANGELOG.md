@@ -1,9 +1,7 @@
 # Version History
 Highlights of all tagged versions of the repo and associated changes.
 
-> Some release descriptions have release names to show the evolution of the project. 
-
-## [v0.1.0-alpha]
+## [v0.1.0-alpha] (05/14/2025)
 Goal
 - Create basic MVP  
 
@@ -13,7 +11,7 @@ Changes
 - Hardcoded ML Pipeline using Scikit-learn
 - Basic eventloop for runtime
 
-## [v0.1.1-alpha]
+## [v0.1.1-alpha] (05/24/2025)
 Goal
 - Improve runtime performance using a lower level language  
 
@@ -21,20 +19,20 @@ Changes
 - Released as: "Trading Bot"
 - Introduced `pybind11` to speed up runtime computations using `C++`
 
-## [v0.2.0]
+## [v0.2.0] (06/04/2025)
 Goal
 - Focus on modularity and remove most hardcoded methods  
 
 Changes
 - Released as: "Trading Bot"
-- Restructured entire beack end architecture
+- Restructured entire back end architecture
 - Remove `pybind11` integration
 - Used JSON config files to replace hardcoded ML pipeline
 - Migrate runtime environment to `Go`
 - Develop a `Flask` based API server to expose trained ML models
 - Introduce `src/runtime/c-src` folder to implement future C methods inside the `Go` runtime
 
-## [v0.2.1]
+## [v0.2.1] (06/12/2025)
 Goal 
 - Improve available features and create a demo frontend   
 
@@ -45,19 +43,19 @@ Changes
 - Implemented a `Next` based frontend MVP using runtime engine API and `Typescript` API routes
 - Refactored `src/runtime/go-src` to improve modularity of `Go` packages  
 
-## [v0.2.2]
+## [v0.2.2] (06/24/2025)
 Goal
 - Increase modularity via `.env` file settings, improve documentation, and add tests
 
 Changes
 - Released As: "BotBuilder"
-- Condensed all setings into a single `env` file, increased number of settings available
-- Improved frontend stying
+- Condensed all settings into a single `env` file, increased number of settings available
+- Improved frontend styling
 - Improved documentation overall in `docs/` and main `README`
 - Added unit tests for `Python` and `Go`
 - Cleaned repo root with new folders: `scripts/`, `configs/`
 
-## [v0.3.0]
+## [v0.3.0] (07/02/2025)
 Goal 
 - Improve JSON configurability, overhaul current services, improve UI/UX
 
@@ -74,8 +72,13 @@ Changes
 
 ## [WIP]
 Goal 
-- Releasing As: "ConTrade"
+
 - Clean up Runtime Engine, Backtesting Services
+
+Changes
+- Releasing As: "ConTrade"
+- Improves Backtesting CLI usage and UI
+- Replaces `Flask` ML API with `FastAPI` to support concurrent inference
 
 In Progress
 - 

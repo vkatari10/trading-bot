@@ -29,7 +29,7 @@ app = FastAPI()
 def run_ml_prediction(data: dict):
     features = []
 
-    print(f"features -> {features}")
+    #print(f"features -> {features}")
 
     for i in range(len(data)): # aligns features 
         features.append(data[str(i)])
@@ -51,11 +51,11 @@ async def results_websocket(websocket: WebSocket):
 
         data = await websocket.receive_json()
 
-        print(f"CLIENT ===> {data}")
+        #print(f"CLIENT ===> {data}")
 
         result = run_ml_prediction(data) # int
 
-        print(f"SERVER SEND => {result}")
+        #print(f"SERVER SEND => {result}")
 
         await websocket.send_json({"result": result})
    

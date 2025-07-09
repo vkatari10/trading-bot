@@ -1,30 +1,64 @@
 # TODO
 
-
 ## In Progress
+
 ### ML Pipeline
-  - Conversion to `XGBoost` 
-  - Hyperparameter tuning via config files
-  - Configurable label rebalancing for training
-  - FUTURE: allow users to us e `Pytorch` as well 
-### Backtesting Module
-  - Graphical representation of buy/sell history using `matplotlib`
+
+#### CURRENT
+- Conversion to `XGBoost` 
+- Hyperparameter tuning via config files\
+
+#### FUTURE
+- Configurable label rebalancing for training
+- Allow users to use `Pytorch` NN as well 
+
+#### MAYBE?
+- None
+
+### Backtesting 
+
+#### CURRENT
+- Graphical representation of buy/sell history using `matplotlib`
+
+#### FUTURE
+- More technicals computed rather than just P/L
+
+#### MAYBE?
+
 ### Live Execution 
-- Reduce ML inference latency by using gRPC
-- Reduce market data polling latency by using websockets
-- Enhanced Support for multiple live tickers
-    - We need to use channels to support API calls not being repeated 
-    - Broker API call for each cycle gets repeated N times where N is the number of stocks being managed at a single time
-    - ML API needs to be able to support multiple calls at once (try `FastAPI` first)
-    - Configurable retry logic for API failure 
+
+#### CURRENT
+  - None
+
+#### FUTURE
+  - Websockets on Alpaca API market data calls 
+  - Use a singular call with all tickers (comma separated) instead of calls on each eventloop for each ticker
+
+#### MAYBE?
+  - gRPC, Redis use between ML API and Runtime Engine
+
 ### UI
+#### CURRENT
+- Improve CLI styling
+#### FUTURE
 - TUI Client
-  - Using `textual`
-  - Planned live dashboard monitoring logging, account, and data information
-  -Easier interface to modify `.env` or `JSON` configs
+  - Using `Rich`
+  - Live dashboard monitoring logging, account and data information
+  - Filter between stocks, logs, and more 
+- JSON builder
+  - some sort of graphical interactive way to build JSONs rather than having to type them out manually
+- DSL Validator 
+  - Validate user JSONs before accepting/parsing them
+#### MAYBE?
+- None
 ### Risk Module 
+#### CURRENT
+- Implement MVP
+#### FUTURE
 - Prevent negative shares to go through (why does Alpaca allow you to sell more than you have? Maybe its shorts?)
-- Increase buy/sell signal strictness; implement sensitivity control for order sizing 
+- Increase buy/sell signal strictness; implement sensitivity control for order sizing
+#### MAYBE?
+- None
 
 ### Other 
 - Support for more technical indicators / features
