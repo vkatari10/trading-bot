@@ -121,8 +121,6 @@ func EventLoop(tempTicker string, tickerID int) {
 	i := 0
 	for i < thisRunTime {
 
-		
-
 		// Pull new Quote
 		newQuote, err := alpaca.GetQuote(tempTicker)
 		if err != nil {

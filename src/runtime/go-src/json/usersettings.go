@@ -24,7 +24,6 @@ type RuntimeSettings struct {
 	LogToStdout bool
 	RunAfterClose bool
 	OverrideBurnIn bool
-	MLAPIRetryCount int
 	// Add more items if needed
 } // RuntimeSettings
 
@@ -103,12 +102,6 @@ func initializeSettingsMap(rs RuntimeSettings) (RuntimeSettings, error) {
 		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString(("override_burn_in")))
 	} // if
 	rs.OverrideBurnIn = jumpBurn
-
-	retryCount, ok := castTo[float64](rs.settingMap["mlapi_retry_count"])
-	if !ok {
-		return RuntimeSettings{}, fmt.Errorf("%s", makeErrorString("mlapi_retry_count"))
-	} // if 
-	rs.MLAPIRetryCount = int(retryCount)
 
 	return rs, nil
 } // initializeSettingsMap
