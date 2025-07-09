@@ -17,6 +17,7 @@ No more headaches trying to test a new strategy or experiment, simply change a `
 ### Config Driven Architecture (JSON)
 - Choose your own strategy from supported technical indicators (SMA, EMA, Delta, etc.) 
 - These technical indicators serve as features to train ML models to your specifications
+- Define your own labelling logic as well to outline buy/sell signals
 ### ML Pipeline (Python)
 - Scikit-learn Random Forest Classifier Model 
 - Support for configurable multi-asset training
@@ -57,17 +58,17 @@ This design allows for independent parts to be scaled and improved without affec
 ![Architecture](docs/images/TradingPlatformDiagram7.svg)
 
 ## Tech Stack 
-| Feature | Language | Technologies | APIs |
+| Feature | Language | Libraries/Frameworks | External APIs |
 |:-------:|----------|--------------|------|
 | Config Files | JSON | - | - | 
-| ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn | YFinance |
+| ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn, TA-Lib | YFinance |
 | Backtesting | Python | Pandas, NumPy, Scikit-learn | YFinance |
-| Runtime Engine | Go, Python | FastAPI, Gorilla Websocket| Alpaca |
-| Risk Engine (WIP) | Go | - | - |
+| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca |
+| Risk Engine (WIP) | Go | - | Alpaca |
 | CLI | Python | Rich | - |
 | TUI (WIP) | Python | Rich | Runtime Engine API |
-| Tests | Python, Go | Pytest | - | 
-| DevOps (WIP) | YAML | Docker | - | 
+| Tests | Go, Python | Pytest | - | 
+| DevOps (WIP) | YAML | Docker, GitHub Actions | - | 
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity
@@ -86,6 +87,9 @@ To use this program you will need to follow these steps
   - Once signed in there will be both API keys and an API secret 
   - At the root is a [`.env.example`](.env.example) file, put the API key and secret in their proper places, and rename the file to `.env`
   - If you wish to test only, make sure you are using **paper money**
+- Download `TA-Lib` dependencies
+  - This project depends on the `TA-Lib` library 
+  - Instructions [here](https://ta-lib.org/install/) and [here](https://github.com/TA-Lib/ta-lib-python?tab=readme-ov-file)
 - Create the virtual environment for `Python` (Python3)
   - If on the bash shell run these commands
     - `python3 -m venv venv` (Creates the virtual environment folder)

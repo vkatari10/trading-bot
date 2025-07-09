@@ -163,6 +163,7 @@ sseclient-py==1.8.0
 stack-data==0.6.3
 starlette==0.46.2
 style==1.1.0
+ta-lib==0.6.4
 tensorboard==2.19.0
 tensorboard-data-server==0.7.2
 termcolor==3.0.1
