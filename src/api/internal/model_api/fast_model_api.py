@@ -1,3 +1,11 @@
+'''
+FastAPI implementation allowing Scikit-learn models
+to communicate with Go
+
+Author: Vikas Katari
+Date: 07/07/2025
+'''
+
 from fastapi import FastAPI, BackgroundTasks, HTTPException, WebSocket
 import uvicorn as uvi
 
@@ -59,9 +67,9 @@ async def results_websocket(websocket: WebSocket):
 
         await websocket.send_json({"result": result})
    
-
+    
 if __name__ == "__main__":
     uvi.run(
         'src.api.internal.model_api.fast_model_api:app', reload=True,
-        workers=len(config.get_live_stocks())
+        workers=len(config.get_live_stocks()) # 1:1 ratio of ticker to worker
     )
