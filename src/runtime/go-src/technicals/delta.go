@@ -73,3 +73,8 @@ func (delta *Delta) Load(data *UserData) (error) {
 
 	return nil
 } // Load (Delta)
+
+// LastValue Gets the latest value of the delta
+func (delta *Delta) LastValue() []float64 {
+	return []float64{delta.Value}
+} // LastValue (Delta)

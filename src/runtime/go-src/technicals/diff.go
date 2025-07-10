@@ -26,7 +26,6 @@ func NewDiff(json map[string]any) (Indicator, error) {
 	}, nil
 } // NewDelta
 
-
 // Load method for Diff objects should be called 
 // after burn-in time
 func (diff *Diff) Load(data *UserData) (error) {
@@ -63,6 +62,11 @@ func (diff *Diff) GetNew(data *UserData) {
 
 	diff.Value = results[0] - results[1]
 } // GetNew (Diff)
+
+// LastValue gets the last value of the diff
+func (diff *Diff) LastValue() []float64 {
+	return []float64{diff.Value}
+} // LastValue (Diff)
 
 
 

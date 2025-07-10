@@ -89,17 +89,11 @@ type MACDSignal struct {
 	Signal EMA
 } // MACDSignal
 
-// BollingerUpper Represents the Upper Bollinger Band Technical
+// BollingerBands Represents the Bollinger Band Technical
 // indicator
-type BollingerUpper struct {
+type BollingerBands struct {
 
-} // BollingerUpper
-
-// BollingerLower Represents the Lower Bollinger Band Technical
-// indicator
-type BollingerLower struct {
-
-} // BollingerLower
+} // BollingerBands
 
 // RSI Represents the relative strength index technical 
 // indicator
@@ -110,11 +104,9 @@ type RSI struct {
 // Declaration of Dummy Method
 func (SMA) 		Tag() {}
 func (EMA) 		Tag() {}
-func (Delta) 	Tag() {}
-func (Diff) 	Tag() {}
+
 
 // Type() Implementations
 func (SMA)		Type() (string) {return "SMA"}
 func (EMA) 		Type() (string) {return "EMA"}
-func (Delta)	Type() (string) {return "delta"}
-func (Diff) 	Type() (string) {return "diff"}
+
