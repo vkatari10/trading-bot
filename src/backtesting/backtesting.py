@@ -42,7 +42,7 @@ def backtest(df: pd.DataFrame, stop: int, model,
 
     with Progress() as progress:
 
-        task = progress.add_task("[cyan]Backtesting:", total=len(df))
+        task = progress.add_task(f"{datetime.now().strftime("%H:%M:%S")} Progress", total=len(df))
 
         for i in range(len(df)): # df.iloc[i, 0:stop] 
             pred_series = df.iloc[i, 0:stop]
@@ -74,12 +74,17 @@ def backtest(df: pd.DataFrame, stop: int, model,
 
 def run_backtest(file_name: str, ticker: str) -> None:
 
+
     
     config = jp.UserConfig(file_name)
-    log(f"Read {config.file_name} configurations", style="green")
+    log(f"Read {config.file_name}", style="green")
+
+    if ticker in config.get_training_stocks():
+        log(f"Note: {config.get_model_name()} was trained on ticker {ticker}", 
+            style="yellow")
 
     df = dp.get_single_df(config, ticker)
-    log(f"Created testing DataFrame with {len(df)} rows", style="green")
+    log(f"Testing data contains {len(df)} rows", style="green")
 
     # return 0.0
     
