@@ -11,7 +11,7 @@ This documentation serves to help get new users accustomed to the settings that 
 |:-------:|-------------|---------|
 | ALPACA_API | Alpaca API associated with your own Alpaca account |- |
 | ALPACA_SECRET | Alpaca secret key associated with your own Alpaca account |- | 
-| ALPACA_XYZ_LINK | All other Alpaca API links DO **NOT** need to be modified if you plan to use paper money. Adjust base URLs if you want to use real money and understand the risk of using non-simulated funds | Various | 
+| ALPACA_XYZ_LINK | All other Alpaca API links DO **NOT** need to be modified if you plan to use paper money. Adjust base URLs if you want to use real money and understand the risk of using non-simulated funds | All default paper links | 
 
 ## Runtime Engine Settings
 | Setting | Description | Default |
@@ -24,7 +24,7 @@ This documentation serves to help get new users accustomed to the settings that 
 ## ML API Settings
 | Setting | Description | Default |
 |:-------:|-------------|---------|
-| ML_API_LINK | Link to host the ML API Server | `http://127.0.0.1:5000` | 
+| ML_API_LINK | Link to host the ML API Server | `http://localhost:8000` | 
 
 <!-- ## ML Pipeline Settings
 | Setting | Description | Default |

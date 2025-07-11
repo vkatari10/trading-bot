@@ -1,4 +1,4 @@
-# StratForge CLI 
+# ConTrade CLI 
 
 To get quick jobs done rom CLI, you can call the `./contrade_cli.py` tool. 
 

@@ -1,46 +1,45 @@
 # TODO
 
-## In Progress
+## ML Pipeline
 
-### ML Pipeline
-
-#### CURRENT
+### CURRENT
 - Conversion to `XGBoost` 
 - Hyperparameter tuning via config files\
 
-#### FUTURE
+### FUTURE
 - Configurable label rebalancing for training
 - Allow users to use `Pytorch` NN as well 
 
-#### MAYBE?
+### MAYBE?
 - None
 
-### Backtesting 
+## Backtesting 
 
-#### CURRENT
+### CURRENT
 - Graphical representation of buy/sell history using `matplotlib`
 
-#### FUTURE
+### FUTURE
 - More technicals computed rather than just P/L
 
-#### MAYBE?
+### MAYBE?
+- None
 
-### Live Execution 
+## Live Execution 
 
-#### CURRENT
+### CURRENT
   - None
 
-#### FUTURE
+### FUTURE
   - Websockets on Alpaca API market data calls 
   - Use a singular call with all tickers (comma separated) instead of calls on each eventloop for each ticker
 
-#### MAYBE?
+### MAYBE?
   - gRPC, Redis use between ML API and Runtime Engine
 
-### UI
-#### CURRENT
+## UI
+### CURRENT
 - Improve CLI styling
-#### FUTURE
+### FUTURE
 - TUI Client
   - Using `Rich`
   - Live dashboard monitoring logging, account and data information
@@ -49,18 +48,18 @@
   - some sort of graphical interactive way to build JSONs rather than having to type them out manually
 - DSL Validator 
   - Validate user JSONs before accepting/parsing them
-#### MAYBE?
+### MAYBE?
 - None
-### Risk Module 
-#### CURRENT
+## Risk Module 
+### CURRENT
 - Implement MVP
-#### FUTURE
+### FUTURE
 - Prevent negative shares to go through (why does Alpaca allow you to sell more than you have? Maybe its shorts?)
 - Increase buy/sell signal strictness; implement sensitivity control for order sizing
-#### MAYBE?
+### MAYBE?
 - None
 
-### Other 
+## Other 
 - Support for more technical indicators / features
   - Current
     - EMA

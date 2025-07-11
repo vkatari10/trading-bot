@@ -1,6 +1,7 @@
 # Architecture 
 
 This file explains
+
 - Implementation 
 - Technology choices & justification 
 
@@ -10,7 +11,9 @@ Language:
 - `JSON`
 
 Implementation
+
 - Contains 
+
     - Features
     - Labelling logic
     - ML model settings
@@ -18,17 +21,20 @@ Implementation
     - Training tickers
     - Live trading tickers
 - Acts as a Single Source of Truth (SSOT)
+
     - Preventing feature misalignment
     - Keeping every service uniform 
 - All services when called by the user should be given the same file
 
 Justification:
+
 - Universally Recognized and is supported well in `Python` and `Go`
 - Why not `YAML`?
     - `YAML` is loosely type compared to `JSON`
     - `JSON`s are easier to parse in `Python` and `Go`
 
 Drawbacks
+
 - Cannot comment in `JSON` files to take notes
     - Could create a section not found in `config/demo.json`
     - The program will never read additional sections added by the user outside of required sections
@@ -40,6 +46,7 @@ Language:
 - `Python`
 
 Technologies:
+
 - `Pandas`
 - `NumPy`
 - `Scikit-learn`
@@ -50,11 +57,13 @@ External API(s):
 - `YFinance`
 
 Implementation 
+
 - Reads features, labelling logic, and ML settings
 - Constructs a `Pandas DataFrame` using config file settings
 - Trains and dumps the model 
 
 Justification 
+
 - `Python` 
     - Mature ecosystem for Data and ML libraries
 - `Pandas`
@@ -73,6 +82,7 @@ Justification
     - Reduces extra code for `DataFrame` conversions
 
 Drawbacks
+
 - `YFinance`
     - The lowest period of data we can get back is 1 minute
     - Meaning all ML models at the minimum can only be trained on 1 minute data
@@ -85,6 +95,7 @@ Language:
 - `Python`
 
 Technologies
+
 - `Pandas`
 - `NumPy`
 - `Scikit-learn`
@@ -92,37 +103,45 @@ Technologies
 - `Rich`
 
 External API(s):
+
 - `YFinance`
 
 Implementation 
+
 - Borrows `DataFrame` fitting method from the `ML Pipeline`
 - Walks a ML model down features, making predictions, and marking buy and sell signals
 - Returns final P/L
 
 Justification 
+
 - See ML Pipeline
 - Same `DataFrame` fitting method
     - By using the same method to fit `DataFrames` at train time and validation time ensures that a `DataFrame` is not made different from the ones it was trained on
 
 Drawbacks
+
 - Current implementation only shows 
     - Final P/L
     - This is fine for the MVP but for true performance analysis more data is needed
 
 ## Runtime Engine (V4)
 Languages: 
+
 - `Go`
 - `Python`
 
 Technologies:
+
 - `FastAPI`
 - `Gorilla WebSocket`
 - `TA-Lib`
 
 External APIs:
+
 - `Alpaca`
 
-Implementation 
+Implementation
+
 - There two pieces used during live execution 
     - Runtime Engine
     - ML API 
@@ -139,6 +158,7 @@ Implementation
     - `Go` communicates with `Alpaca` to place orders 
 
 Justification 
+
 - Language Split
     - Concurrency is harder in `Python` with GIL, `Go` makes it performant compilation 
     - Splitting between `Python` and `Go` establishes clear separation of concerns 
@@ -154,6 +174,7 @@ Justification
     - Chosen as the exclusive broker due to ease of integration and extensive API support for trading
 
 Drawbacks
+
 - Language Split
     - Introduces more complexity as the project must maintain two different languages 
 - `FastAPI` and `Gorilla WebSocket` 
