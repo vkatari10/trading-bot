@@ -17,6 +17,7 @@ from typing import Dict, Any, List
 import src.api.external.historical_api.yfinance_api as yf
 import src.ml.data_processing.signals as sig
 import src.ml.data_processing.dispatcher as dp
+import src.ml.data_processing.technicals as te
 
 # User Config JSON parser
 import src.ml.json.json_parser as jp
@@ -36,6 +37,7 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
 
     A pd.DataFrame with all user defined features and labels
     '''
+    df.columns = [col.lower() for col in df.columns] # rename for TA-lib
     df.dropna(inplace=True)
 
     # put featurs on the training dataframe
@@ -68,8 +70,14 @@ def load_features(df: pd.DataFrame,
     '''
     for i in range(len(features)):
 
-        df[features[i]['name']] = dp.dispatch_feature(features[i]['tech'], 
-                                                      df, features[i])
+        tech = features[i]['tech']
+
+        if tech == 'delta' or tech == 'diff':
+            df[features[i]['name']] = dp.dispatch_feature(features[i]['tech'],
+                                                          df, features[i])
+        else:
+            df[features[i]['name']] = te.put_technical(features[i]['tech'], 
+                                                       df, features[i]['args'])
 
     return df
 
@@ -106,7 +114,7 @@ def relationships(df: pd.DataFrame,
 
 def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
     '''Puts the difference cols of the OHCLV data from Yfinance'''
-    yf_cols = ['Close', 'High', 'Low', 'Open', 'Volume']
+    yf_cols = ['close', 'high', 'low', 'open', 'volume']
 
     for col in yf_cols:
         col_name = col + "_delta"

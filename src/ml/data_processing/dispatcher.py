@@ -27,7 +27,7 @@ LABEL_DISPATCH = {
 def dispatch_feature(dispatch: str, df: pd.DataFrame, 
                      json: Dict[str, Any]) -> pd.Series:
     '''Dispatcher for technical indicators (features)'''
-    return FEATURE_DISPATCH[dispatch](df, json, col="Close")
+    return FEATURE_DISPATCH[dispatch](df, json, col="close")
 
 def dispatch_label(dispatch: str, df: pd.DataFrame, col1: str, 
                    col2: str) -> pd.Series:
