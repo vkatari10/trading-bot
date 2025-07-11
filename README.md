@@ -8,6 +8,8 @@ ConTrade is a platform allowing users to easily define low/mid frequency trading
 
 No more headaches trying to test a new strategy or experiment, simply change a `JSON` file and retrain, retest, or redeploy live. 
 
+For more detailed information about ConTrade, visit the [docs](https://vkatari10.github.io/trading-bot/)
+
 **Note**: This project is actively under improvement. Below is a list of current and upcoming features. 
 
 ## Features
