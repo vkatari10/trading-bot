@@ -1,6 +1,6 @@
 # .env Settings
 
-The [`.env`](../.env.example) file contains many settings that can be changed according to your needs.  
+The `.env` (`.env.example`) file contains many settings that can be changed according to your needs.  
 
 This documentation serves to help get new users accustomed to the settings that are available and what they do  
 

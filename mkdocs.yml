@@ -1,6 +1,6 @@
 site_name: ConTrade Documentation
 nav:
-  - Home: INDEX.md
+  - Home: index.md
   - CLI: CLI.md
   - Configuration Files: CONFIG.md
   - .env Configuration: ENV.md
@@ -11,5 +11,5 @@ nav:
 
 docs_dir: docs
 
-theme: 
+theme:
   name: material
