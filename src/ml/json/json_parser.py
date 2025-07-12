@@ -5,13 +5,13 @@ components
 Author: Vikas Katari
 Date: 06/25/2025
 '''
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 import json
 
 class UserConfig():
     '''
-    Loads the MAIN_CONFIG_FILE, the JSON file declared in the 
-    .env file and loads it into Python as a dict
+    Represents the JSON config file to easily get
+    grab data with wrapper methods
     '''
 
     def __init__(self, file_name: str):
@@ -22,84 +22,63 @@ class UserConfig():
             self.file_name = file_name
         except Exception:
             raise ValueError("File does not exist or could not be read")
+        
+    def get(self, *args: str) -> Any:
+        f = self.file
+        res = None
+        for arg in args:
+            f = f.get(arg)
+        res = f
+        if res is None:
+            raise ValueError(f"{args} could not be parsed")
+        return res
+    
+    # training/stock data 
 
     def get_features(self) -> List[Dict[str, Any]]:
-        try:
-            features = self.file['features']
-            return features
-        except KeyError:
-            raise ValueError(make_error_str("features"))
+        return self.get('features')
 
     def get_labels(self) -> List[Dict[str, Any]]:
-        try:
-            labels = self.file['label_logic']
-            return labels
-        except KeyError:
-            raise ValueError(make_error_str('label_logic'))
+        return self.get('label_logic')
     
     def get_training_stocks(self) -> List[str]:
-        try :
-            training_stocks = self.file['train_stocks']
-            return training_stocks
-        except KeyError:
-            raise ValueError(make_error_str('train_stocks'))
+        return self.get('train_stocks')
         
     def get_live_stocks(self) -> List[str]:
-        try:
-            live_stocks = self.file['live_trade_stocks']
-            return live_stocks
-        except KeyError:
-            raise ValueError(make_error_str('live_trade_stocks'))
+        return self.get('live_trade_stocks')
+    
+    # ML settings
 
     def get_model_type(self) -> str:
-        try:
-            model_type = self.file['ml_settings']['model_type']
-            return model_type
-        except KeyError:
-            raise ValueError(make_error_str('model_type'))
-
+        return self.get('ml_settings', 'model_type')
+    
     def get_model_name(self) -> str:
-        try:
-            model_name = self.file['ml_settings']['model_name']
-            return model_name
-        except KeyError:
-            raise ValueError(make_error_str('model_name'))
+        return self.get('ml_settings', 'model_name')
 
     def get_model_training_timeframe(self) -> str:
-        try:
-            model_name = self.file['ml_settings']['model_training_timeframe']
-            return model_name
-        except KeyError:
-            raise ValueError(make_error_str('model_training_timeframe'))
+        return self.get('ml_settings', 'model_training_timeframe')
 
     def get_model_training_interval(self) -> str:
-        try:
-            model_name = self.file['ml_settings']['model_training_interval']
-            return model_name
-        except KeyError:
-            raise ValueError(make_error_str('model_training_interval'))
+        return self.get('ml_settings', 'model_training_interval')
+    
+    def get_ml_settings(self) -> Dict[str, Any]:
+        return self.get('ml_settings')
+        
+    def get_OHLCV_diffs_setting(self) -> bool:
+        return self.get('ml_settings', 'use_OHLCV_diffs')
+        
+    def get_signal_threshold(self) -> float:
+        return self.get('ml_settings', 'signal_threshold')
+
+    # Backtest settings
 
     def get_backtesting_cash(self) -> float:
-        try:
-            cash = self.file['backtest_settings']['starting_cash']
-            return cash
-        except KeyError:
-            raise ValueError(make_error_str('starting_cash'))
-        
-    def get_backtesting_commission(self) -> float:
-        try:
-            comish = self.file['backtest_settings']['commission']
-            return comish
-        except KeyError:
-            raise ValueError(make_error_str('commission'))
-        
-    def get_backtesting_pos_size(self) -> int:
-        try:
-            size = self.file['backtest_settings']['position_size']
-            return size
-        except KeyError:
-            raise ValueError(make_error_str('position_size'))    
+        return self.get('backtest_settings', 'starting_cash')
 
-def make_error_str(key: str) -> str:
-    return f"Could not parse '{key}' properly from the " \
-    "JSON config"
+    def get_backtesting_commission(self) -> float:
+        return self.get('backtest_settings', 'commission')
+    
+    def get_backtesting_pos_size(self) -> int:
+        return self.get('backtest_settings', 'position_size')
+
+   

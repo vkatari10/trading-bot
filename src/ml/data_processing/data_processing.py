@@ -41,7 +41,8 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
     df.dropna(inplace=True)
 
     # put featurs on the training dataframe
-    df = OHCLV_diffs(df)
+    if config.get_OHLCV_diffs_setting():
+        df = OHCLV_diffs(df)
     df = load_features(df, config.get_features())
     df = relationships(df, config.get_labels())
 

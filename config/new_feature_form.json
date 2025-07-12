@@ -46,6 +46,25 @@
             "col2": "SMA_30"
         }
     ],
+    "label_logic_2": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0,
+            "label_group": "short"
+        },
+        {
+            "sig": "above",
+            "name": "SMA_SHORT_TOP",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0,
+            "persist": 2,
+            "label_group": "long"
+        }
+    ],
      "train_stocks": [
         "BA",
         "MSFT"
@@ -58,12 +77,14 @@
         "model_type": "RandomForestClassifier",
         "model_name": "model_v2.pkl",
         "model_training_timeframe": "1m",
-        "model_training_interval": "5d"
-    },
+        "model_training_interval": "5d",
+        "signal_threshold": 0.50,
+        "use_OHLCV_diffs": true
+    },  
     "runtime_settings": {
         "cycle_time": 15,
         "burn_window_time": 31,
-        "log_api_flush_time": 2000,
+        "log_api_flush_time": 2000, 
         "log_to_stdout": true,
         "run_after_close": false,
         "override_burn_in": true

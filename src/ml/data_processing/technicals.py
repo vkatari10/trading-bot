@@ -56,11 +56,11 @@ def diff(df: pd.DataFrame, json: Dict[str, Any],
 
 def put_technical(tech: str, df: pd.DataFrame, 
                   args: Dict[str, Any]) -> pd.Series:
-    '''Calls TA-lib wrapper given a technical value and args'''
+    '''Calls TA-lib wrapper given a technical value, df, and args'''
     try:
-        func = abstract.Function(tech)
-        res = func(df, **args)
+        func = abstract.Function(tech) # <- TA-lib dispatch table 
+        res = func(df, **args) 
         return res  
     except Exception:
-        raise ValueError(f"{tech}: not a valid technical, check config file")
+        raise ValueError(f"\"{tech}\": not a valid technical, check config file")
 
