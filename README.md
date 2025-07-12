@@ -75,7 +75,9 @@ This design allows for independent parts to be scaled and improved without affec
 | CLI | Python | Rich | - |
 | TUI (WIP) | Python | Rich | Runtime Engine API |
 | Tests | Go, Python | Pytest | - | 
-| DevOps (WIP) | YAML | Docker, GitHub Actions | - | 
+| DevOps (WIP) | YAML | Docker, GitHub Actions | - |
+
+
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity
@@ -138,4 +140,4 @@ To use this program you will need to follow these steps
 - [TODO](docs/TODO.md) - Other long-term improvements
 - [LICENSE](LICENSE) - License info 
 
-*This platform is intended for research and development purposes only, please use paper trading or simulated funds to prevent real financial losses.*
+**Disclaimer**: *This project is provided for educational and research purposes only. It is **not** financial advice. Use it at your own risk.* *The author is **not** responsible for any financial losses or damages resulting from the use of this software, including but not limited to trading with real money.*

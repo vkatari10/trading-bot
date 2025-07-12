@@ -9,8 +9,10 @@ Goal
 Changes
 
 - Releasing As: "ConTrade"
-- Improves Backtesting CLI usage and UI
+- Improves Backtesting CLI usage and UI/UX
 - Replaces `Flask` ML API with `FastAPI` to support concurrent inference
+- Utilizes `TA-lib` for all technical computations outside of `Delta` of `Diff`
+- ML Pipeline overhauled by modularizing around `TA-lib`
 
 In Progress
 

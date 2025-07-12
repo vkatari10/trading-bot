@@ -6,6 +6,7 @@ nav:
   - .env Configuration: ENV.md
   - Runtime Error Codes: ERRORS.md
   - Architecture: ARCHITECTURE.md
+  - Tech Stack: TECHSTACK.md
   - Change Log: CHANGELOG.md
   - Todo/Upcoming Features: TODO.md
 
