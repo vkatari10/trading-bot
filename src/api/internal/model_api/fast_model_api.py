@@ -16,23 +16,36 @@ import numpy as np
 import pickle
 
 # load in ML model based on CLI input
+
 args = sys.argv
 
-config = None
+# config = None
 
-if len(args) > 1:
-    config = jp.UserConfig(args[-1])
-else:
-    raise ValueError("usage: ./contrade_cli mlapi <CONFIG_FILE_PATH>")
+# if len(args) > 1:
+#     config = jp.UserConfig(args[-1])
+# else:
+#     raise ValueError("usage: ./contrade_cli mlapi <CONFIG_FILE_PATH>")
 
-file_path = "src/ml/models/decider/" + config.get_model_name()
+# file_path = "src/ml/models/decider/" + config.get_model_name()
 
-with open(file_path, 'rb') as f:
-    model = pickle.load(f)
+# with open(file_path, 'rb') as f:
+#     model = pickle.load(f)
+
+
+
 
 # API Server
 
 app = FastAPI()
+
+@app.on_event("startup")
+async def load_model():
+    global model 
+    config = jp.UserConfig(args[-1])
+    file_path = "src/ml/models/decider/" + config.get_model_name()
+    print(file_path)
+    with open(file_path, 'rb') as f:
+        model = pickle.load(f)
 
 def run_ml_prediction(data: dict):
     features = []
@@ -66,8 +79,31 @@ async def results_websocket(websocket: WebSocket):
         #print(f"SERVER SEND => {result}")
 
         await websocket.send_json({"result": result})
-   
+
+
+def test_ml_prediction(data: dict):
+
+    features = []
+
+    for i in range(len(data)): # aligns features 
+        features.append(data[str(i)])
+
+    # pretend we ran ML inference
+
+    return 0
+
+@app.websocket("/test-result")
+async def test_websocket(websocket: WebSocket):
+
+    await websocket.accept()
+
+    data = await websocket.receive_json()
+
+    result = test_ml_prediction(data)
+
+    await websocket.send_json({"result": result})
     
+
 if __name__ == "__main__":
     uvi.run(
         'src.api.internal.model_api.fast_model_api:app', reload=True,
