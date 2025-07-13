@@ -27,3 +27,6 @@ __pycache__/
 
 # Go binary 
 ./src/runtime/go-src/go-src
+
+# mkdocs
+./site/
