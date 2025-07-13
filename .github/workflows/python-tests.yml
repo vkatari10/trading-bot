@@ -14,10 +14,15 @@ jobs:
         with: 
           python-version: '3.11'
 
-      - name: Install TA-Lib (C library)
+      - name: Install TA-Lib from source
         run: |
-          sudo apt-get update
-          sudo apt-get install -y libta-lib0 libta-lib-dev
+          curl -L -o ta-lib-0.4.0-src.tar.gz http://prdownloads.sourceforge.net/ta-lib/ta-lib-0.4.0-src.tar.gz
+          tar -xvzf ta-lib-0.4.0-src.tar.gz
+          cd ta-lib
+          ./configure --prefix=/usr
+          make
+          sudo make install
+
        
       - name: Install dependencies
         run: pip install -r requirements.txt
