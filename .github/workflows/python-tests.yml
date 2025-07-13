@@ -23,8 +23,11 @@ jobs:
           make
           sudo make install
 
-       
-      - name: Install dependencies
+      - name: Install TA-lib
+        run: |
+          python3 -m pip install TA-Lib
+
+      - name: Install all other dependencies
         run: pip install -r requirements.txt
 
       - name: Python Tests
