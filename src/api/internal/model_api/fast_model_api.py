@@ -19,19 +19,22 @@ import pickle
 
 args = sys.argv
 
-# config = None
+config = None
 
-# if len(args) > 1:
-#     config = jp.UserConfig(args[-1])
-# else:
-#     raise ValueError("usage: ./contrade_cli mlapi <CONFIG_FILE_PATH>")
+print(args)
 
-# file_path = "src/ml/models/decider/" + config.get_model_name()
+if len(args) > 1:
+    config = jp.UserConfig(args[-1])
 
-# with open(file_path, 'rb') as f:
-#     model = pickle.load(f)
+    file_path = "src/ml/models/decider/" + config.get_model_name()
 
+    with open(file_path, 'rb') as f:
+        model = pickle.load(f)
 
+elif len(args) == 1: # for tests
+    pass
+else:
+    raise ValueError("usage: ./contrade_cli mlapi <CONFIG_FILE_PATH>")
 
 
 # API Server
@@ -40,7 +43,7 @@ app = FastAPI()
 
 @app.on_event("startup")
 async def load_model():
-    global model 
+    global model
     config = jp.UserConfig(args[-1])
     file_path = "src/ml/models/decider/" + config.get_model_name()
     print(file_path)

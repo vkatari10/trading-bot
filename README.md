@@ -47,7 +47,7 @@ For more detailed information about ConTrade, visit the [docs](https://vkatari10
 ### Tests (Go, Python)
  - Unit Tests for both Go (`go test`) and Python (`pytest`) source
 
-Project size is ~1750 LOC (~40 files). 
+Project size is ~3500 total lines (source, comments, structure) across ~50 files.
 
 ## Architecture
 Philosophy
