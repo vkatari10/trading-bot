@@ -52,6 +52,9 @@ class UserConfig():
     def get_model_type(self) -> str:
         return self.get('ml_settings', 'model_type')
     
+    def get_model_framework(self) -> str:
+        return self.get('ml_settings', 'model_framework')
+    
     def get_model_name(self) -> str:
         return self.get('ml_settings', 'model_name')
 
@@ -66,9 +69,6 @@ class UserConfig():
         
     def get_OHLCV_diffs_setting(self) -> bool:
         return self.get('ml_settings', 'use_OHLCV_diffs')
-        
-    def get_signal_threshold(self) -> float:
-        return self.get('ml_settings', 'signal_threshold')
 
     # Backtest settings
 

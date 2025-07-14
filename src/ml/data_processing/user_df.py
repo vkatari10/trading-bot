@@ -12,37 +12,47 @@ import pandas as pd
 
 class UserMLConfig():
 
-    def __init__(self, user_config: jp.UserConfig):
-        # df settings
-        self.features = user_config.get_features()
-        self.label_logic = user_config.get_labels()
-        self.tickers = user_config.get_training_stocks()
+    def __init__(self, config_file: str):
+        self.config = jp.UserConfig(config_file) # JSON config itself
 
-        # all other settings
-        self.config = user_config
+    def generate_model_yfinance(self) -> None:
+        '''
+        Generates a model using a YFinance DF from the config 
+        file declared stocks
+        '''
+        training_df = dp.get_df(self.config)
+        # call training method here
 
-    '''
-    Put user defined features and labels and final label(s)
+    def generate_model_userdata(self, csv_file_path: str) -> None:
+        '''Generates a model using a user CSV that contains OHLCV data'''
+        ohlcv_df = pd.read_csv(csv_file_path)
+        training_df = dp.process_data(ohlcv_df, self.config)
+        # call training method here
 
-    Put OHLCV diffs if they want that (optional)
+    def generate_df_yfinance(self, dump_path: str) -> None:
+        '''
+        Generates a DataFrame with all user features and labels
+        exports as a CSV
 
-    Add method to just train the ML model and then dump it if the df exists ig
-    '''
+        Will concat all the dataframes together if multiple 
+        tickers are declared in the config file
+        '''
+        df = dp.get_df(self.config)
+        df.to_csv(dump_path)
 
-    def get_training_df(self) -> pd.DataFrame:
-        return dp.get_df(self.config)
-    
+    def generate_df_userdata(self, csv_file_path: str,
+                             dump_path: str) -> None:
+        '''
+        Generates a DataFrame with all user features and labels
+        given user data as a CSV exported as a CSV
+        '''
+        df = pd.read_csv(csv_file_path)
+        df = dp.process_data(df, self.config)
+        df.to_csv(dump_path)
+
     def get_single_df(self, ticker: str) -> pd.DataFrame:
+        '''
+        Returns a single df given a ticker with user
+        features and labels
+        '''
         return dp.get_single_df(self.config, ticker)
-    
-    def train_dump_model(self) -> None:
-        # call training method based on sci kit learn or not
-        # training method should dump model as well 
-
-        # specs
-        # takes in DF    -> return None (dump model)
-        
-        pass
-
-    
-

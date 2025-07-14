@@ -21,6 +21,7 @@ __pycache__/
 
 # ML models
 *.pkl
+./src/ml/models/decider/*
 
 # VS Code
 .vscode
