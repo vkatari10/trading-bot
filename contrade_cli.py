@@ -19,7 +19,7 @@ try:
         if len(args) < 3:
             print("usage: ./contrade_cli.py train <PATH_TO_CONFIG_FILE>")
         else:
-            pipe.pipeline(args[2]) 
+            pipe.pipeline_yfinance(args[2]) 
     elif args[1] == "build":
         subprocess.run(["bash", "./scripts/build.sh"])
     elif args[1] == "test":

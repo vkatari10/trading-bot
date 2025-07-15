@@ -50,7 +50,7 @@ class UserConfig():
     # ML settings
 
     def get_model_type(self) -> str:
-        return self.get('ml_settings', 'model_type')
+        return self.get('ml_settings', 'scikit_model_type')
     
     def get_model_framework(self) -> str:
         return self.get('ml_settings', 'model_framework')
@@ -69,6 +69,9 @@ class UserConfig():
         
     def get_OHLCV_diffs_setting(self) -> bool:
         return self.get('ml_settings', 'use_OHLCV_diffs')
+
+    def get_hyperparameters(self) -> Dict[str, Any]:
+        return self.get('ml_settings', "hyperparameters")
 
     # Backtest settings
 

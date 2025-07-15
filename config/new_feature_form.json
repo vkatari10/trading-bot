@@ -65,8 +65,9 @@
             "label_group": "long"
         }
     ],
-    "label_settings": {
-        "threshold": 0.50
+    "label_group_settings": {
+        "short": {"threshold": 0.50},
+        "long": {"threshold": 0.75}
     },
      "train_stocks": [
         "BA",
@@ -77,12 +78,15 @@
         "AMZN"
     ],
     "ml_settings": {
-        "model_framework": "",
-        "model_type": "RandomForestClassifier",
+        "model_framework": "scikit",
+        "scikit_model_type": "RandomForrestClassifier",
         "model_name": "model_v2.pkl",
         "model_training_timeframe": "1m",
         "model_training_interval": "5d",
-        "use_OHLCV_diffs": true
+        "use_OHLCV_diffs": true,
+        "hyperparameters": {
+            "random_state": 42
+        }
     },  
     "runtime_settings": {
         "cycle_time": 15,

@@ -25,6 +25,8 @@ import src.ml.training.training as train
 # user config file 
 import src.ml.json.json_parser as jp
 
+import src.ml.data_processing.user_df as ud
+
 def pipeline(file: str) -> None:
 
     # user config file
@@ -48,3 +50,9 @@ def pipeline(file: str) -> None:
         pickle.dump(model, f)
     log(f"Dumped ML model: {config.get_model_name()}", style="green")
 
+def pipeline_yfinance(file: str) -> None:
+
+    config = ud.UserMLConfig(file)
+    log(f"Read {file} config", style="green")
+
+    config.generate_model_yfinance()

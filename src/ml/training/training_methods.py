@@ -10,13 +10,21 @@ import pickle
 import pandas as pd
 
 import src.ml.data_processing.user_df as ud
+import src.ml.training.training as train
+
+ML_TRAINING_DISPATCH = {
+    "lightgbm": train.lightgbm_train,
+    "xgboost": train.xgboost_train,
+    "scikit": train.scikit_train
+} 
+
+def train_dispatch(config: ud.UserMLConfig, df: pd.DataFrame) -> None:
+    '''Trains and dumps a model given user config specifications'''
+    return ML_TRAINING_DISPATCH[config.config.get_model_framework()](config, df)
+
 
 def dump_model(user_config: ud.UserMLConfig) -> None:
     with open('src/ml/models/decider' + user_config.config.get_model_name(), 
               'wb') as f:
         pickle.dump(f)
-
-def find_stop(user_config: ud.UserMLConfig) -> int:
-    '''Finds the index of the first label column'''
-    return 5 # STUB 
 

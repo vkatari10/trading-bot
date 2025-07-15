@@ -1,10 +1,4 @@
-![Go](https://img.shields.io/badge/go-%2300ADD8.svg?style=for-the-badge&logo=go&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54) ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=for-the-badge&logo=scikit-learn&logoColor=white) ![TA-Lib](https://img.shields.io/badge/TA--Lib-0055FF?style=for-the-badge&logo=gnuplot&logoColor=white) [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](LICENSE)
-
-<!-- ![XGBoost](https://img.shields.io/badge/XGBoost-FF6600?style=for-the-badge&logo=xgboost&logoColor=white)
-
-![LightGBM](https://img.shields.io/badge/LightGBM-00B14F?style=for-the-badge&logo=microsoftazure&logoColor=white) -->
-
-
+![License](https://img.shields.io/badge/license-MIT-green) ![CI](https://github.com/vkatari10/trading-bot/actions/workflows/go-tests.yml/badge.svg?branch=main) ![CI](https://github.com/vkatari10/trading-bot/actions/workflows/python-tests.yml/badge.svg?branch=main)
 # ConTrade
 
 *ConTrade -- Configurable Trading*

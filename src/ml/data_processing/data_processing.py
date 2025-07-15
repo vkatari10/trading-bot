@@ -10,7 +10,7 @@ Author: Vikas Katari
 Date: 05/03/2025
 '''
 import pandas as pd
-from typing import Dict, Any, List
+from typing import Dict, Any, List, Tuple
 
 
 # Python technical indicators
@@ -22,8 +22,11 @@ import src.ml.data_processing.technicals as te
 # User Config JSON parser
 import src.ml.json.json_parser as jp
 
+# User ML settings
+import src.ml.data_processing.user_df as ud
 
-def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
+
+def process_data(df: pd.DataFrame, ud: ud.UserMLConfig) -> pd.DataFrame:
     '''
     Modifies a YFinance DataFrame to specifications used by the jp.UserConfig
     features and label configuration
@@ -41,10 +44,10 @@ def process_data(df: pd.DataFrame, config: jp.UserConfig) -> pd.DataFrame:
     df.dropna(inplace=True)
 
     # put featurs on the training dataframe
-    if config.get_OHLCV_diffs_setting():
+    if ud.get_OHLCV_diffs_setting():
         df = OHCLV_diffs(df)
-    df = load_features(df, config.get_features())
-    df = relationships(df, config.get_labels())
+    df = load_features(df, ud.get_features())
+    df = relationships(df, ud.get_labels())
 
     # print("Number of things that are not hold")
     # print(len(df[df['final_signal'] != 0]))
@@ -163,7 +166,7 @@ def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
     else:
         return training_df
     
-def get_single_df(uc: jp.UserConfig, ticker: str) -> pd.DataFrame:
+def get_single_df(ud: ud.UserMLConfig, ticker: str) -> pd.DataFrame:
     '''
     Returns a single dataframe with all user defined features and labels,
 
@@ -178,6 +181,25 @@ def get_single_df(uc: jp.UserConfig, ticker: str) -> pd.DataFrame:
     A single dataframe with the user defined features and labels from the JSON 
     config file 
     '''
-    df = yf.get_data(ticker, uc.get_model_training_interval(), uc.get_model_training_timeframe())
-    df = process_data(df, uc)
+    df = yf.get_data(ticker, ud.config.get_model_training_interval(), ud.config.get_model_training_timeframe())
+    df = process_data(df, ud)
     return df
+
+def rebalance_df(ud: ud.UserMLConfig, 
+                 df: pd.DataFrame) -> List[pd.DataFrame | pd.Series]:
+    '''Rebalance dataframe by features and labelling logic, useful for all models'''
+    from imblearn.under_sampling import RandomUnderSampler
+
+    cols = [i for i in range(ud.stop)]
+
+    X = df.iloc[:, cols]
+    y = df.iloc[:, -1]
+
+    rus = RandomUnderSampler(random_state=42)
+    X_res, y_res = rus.fit_resample(X, y)
+
+    return [X_res, y_res]
+
+def normalize_df(ud: ud.UserMLConfig, df: pd.DataFrame) -> pd.DataFrame:
+    '''Normalizes the data in a DF, not needed for tree based models'''
+    pass # TODO implement
