@@ -1,4 +1,6 @@
-![License](https://img.shields.io/badge/license-MIT-green) ![CI](https://github.com/vkatari10/trading-bot/actions/workflows/go-tests.yml/badge.svg?branch=main) ![CI](https://github.com/vkatari10/trading-bot/actions/workflows/python-tests.yml/badge.svg?branch=main)
+
+
+![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge) ![CI](https://img.shields.io/github/actions/workflow/status/vkatari10/trading-bot/go-tests.yml?branch=main&label=Go%20Tests&style=for-the-badge&color=2ECC71) ![CI](https://img.shields.io/github/actions/workflow/status/vkatari10/trading-bot/python-tests.yml?branch=main&label=Python%20Tests&style=for-the-badge&color=2ECC71)
 # ConTrade
 
 *ConTrade -- Configurable Trading*
@@ -62,24 +64,26 @@ This design allows for independent parts to be scaled and improved without affec
 | Feature | Language | Libraries/Frameworks | External APIs |
 |:-------:|----------|--------------|------|
 | Config Files | JSON | - | - | 
-| ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn, TA-Lib | YFinance |
-| Backtesting | Python | Pandas, NumPy, Scikit-learn | YFinance |
-| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca |
-| Risk Engine (WIP) | Go | - | Alpaca |
+| ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn, XGBoost, LightGBM, TA-Lib | YFinance |
+| Backtesting | Python | -| YFinance |
+| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca Market, Alpaca Account |
+| Risk Engine (WIP) | Go | - | Alpaca Account |
 | CLI | Python | Rich | - |
 | TUI (WIP) | Python | Rich | Runtime Engine API |
-| Tests | Go, Python | Pytest | - | 
-| DevOps (WIP) | YAML | Docker, GitHub Actions | - |
+| Tests & CI | Go, Python, YAML | Pytest, `go test`, Github Actions | - | 
 
 
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity
-- `Python` GIL overhead and interpreted, not ideal for concurrency
-- `Java` is harder to iterate with compared to `Go`'s module system and single compiled binary
-- `C++` is too complex (for this project), complicating currency, API calls, and other things for slightly better performance
 
-Go is fast enough to support both types of strategies while allowing for faster iteration of code with simple concurrency and low latency
+Here are alternatives and why they were not chosen:
+
+- `Python`: GIL overhead and interpreted, not ideal for concurrency
+- `Java`: Harder to iterate with compared to `Go`'s module system and single compiled binary
+- `C++`: too complex (for this project), complicating concurrency, API calls, and other things for ultra low latency which is not the goal of this project
+
+Go is fast enough to support both types of frequency strategies while allowing for faster iteration of code with simple concurrency and low latency
 
 ## Setup
 
