@@ -56,7 +56,7 @@ def find_stop(df: pd.DataFrame, uc: jp.UserConfig) -> int:
     '''
     return df.columns.get_loc((uc.get_labels()[0]['name']))
 
-
+# DEPRECATED
 def model_training(df: pd.DataFrame, to_col: int,
                    *args) -> RandomForestClassifier:
     '''Training for Scikit learn models'''
@@ -102,8 +102,44 @@ def scikit_train(ud: ud.UserMLConfig, df: pd.DataFrame) -> None:
 
 def lightgbm_train(ud: ud.UserMLConfig, df: pd.DataFrame) -> None:
     '''Training for LightGBM models'''
-    pass
+    
+    model = lgb.LGBMClassifier(**ud.config.get_hyperparameters())
+
+    X_bal, y_bal = dp.rebalance_df(ud, df)
+
+    X_train, X_test, y_train, y_test = train_test_split(X_bal, y_bal,
+                                                        test_size=0.2,
+                                                        random_state=42)
+    
+    model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_test)
+    print("Test Accuracy", accuracy_score(y_test, y_pred))
+
+    model.booster_.save_model("models" + ud.config.get_model_name())
 
 def xgboost_train(ud: ud.UserMLConfig, df: pd.DataFrame) -> None:
     '''Training for XGBoost models'''
-    pass    
+
+    X_bal, y_bal = dp.rebalance_df(ud, df)
+
+    y_bal = y_bal + 1 # adj for XGBoost
+
+
+    X_train, X_test, y_train, y_test = train_test_split(X_bal, y_bal, test_size
+                                                        =0.2, 
+                                                        random_state=42)
+    # Strip col names for all 
+    X_train_np = X_train.values
+    X_test_np = X_test.values
+    y_train_np = y_train.values
+    y_test_np = y_test.values
+
+    model = xgb.XGBClassifier()
+    model.fit(X_train_np, y_train_np)
+
+    y_pred = model.predict(X_test_np)
+
+    print("Test Accuracy:", accuracy_score(y_test_np, y_pred))
+
+    model.save_model("models/" + ud.config.get_model_name())

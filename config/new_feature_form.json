@@ -78,14 +78,14 @@
         "AMZN"
     ],
     "ml_settings": {
-        "model_framework": "scikit",
+        "model_framework": "xgboost",
         "scikit_model_type": "RandomForrestClassifier",
-        "model_name": "model_v2.pkl",
-        "model_training_timeframe": "1m",
+        "model_name": "model_xgb.json",
+        "model_training_timeframe": "1m",   
         "model_training_interval": "5d",
         "use_OHLCV_diffs": true,
         "hyperparameters": {
-            "random_state": 42
+            "device": "cpu"
         }
     },  
     "runtime_settings": {

@@ -193,7 +193,7 @@ def rebalance_df(ud: ud.UserMLConfig,
     cols = [i for i in range(ud.stop)]
 
     X = df.iloc[:, cols]
-    y = df.iloc[:, -1]
+    y = df.iloc[:, -1] # TODO accept multiple back column
 
     rus = RandomUnderSampler(random_state=42)
     X_res, y_res = rus.fit_resample(X, y)
