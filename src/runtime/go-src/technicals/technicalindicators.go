@@ -75,32 +75,6 @@ type Diff struct {
 	Value		float64
 } // Diff
 
-// MACD Represents a Moving Average Convergence Divergence
-// technical indicator
-type MACD struct {
-	EMA1 EMA
-	EMA2 EMA
-	Diff float64 // may not be needed
-} // MACD
-
-// MACDsignal Represents a Moving Average Convergence Divergence
-// Signal Line (To be used with the MACD Struct)
-type MACDSignal struct {
-	Signal EMA
-} // MACDSignal
-
-// BollingerBands Represents the Bollinger Band Technical
-// indicator
-type BollingerBands struct {
-
-} // BollingerBands
-
-// RSI Represents the relative strength index technical 
-// indicator
-type RSI struct {
-
-} // RSI
-
 // Declaration of Dummy Method
 func (SMA) 		Tag() {}
 func (EMA) 		Tag() {}

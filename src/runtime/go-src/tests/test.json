@@ -1,41 +1,60 @@
 {
+    "notes": {
+        "note": "Testing TA-Lib style formatting to support more technicals"
+    },
     "features": [
         {
             "tech": "SMA",
-            "window": 20,
-            "name": "SMA_20"
+            "args": {"timeperiod": 10},
+            "name": "SMA_10"
         },
         {
-            "tech": "EMA",
-            "window": 20,
-            "name": "EMA_20",
-            "smoothing": 2
+            "tech": "SMA",
+            "args": {"timeperiod": 30},
+            "name": "SMA_30"
         },
         {
             "tech": "delta",
-            "col1": "SMA_20",
+            "col1": "SMA_10",
             "col2": null,
-            "name": "SMA_20_delta"
+            "name": "SMA_10_delta"
         },
         {
             "tech": "diff",
-            "col1": "SMA_20",
-            "col2": "EMA_20",
-            "name": "SMA_EMA_diff"
+            "col1": "SMA_30",
+            "col2": "SMA_10",
+            "name": "SMA_30_10_diff"
         },
         {
             "tech": "delta",
-            "col1": "SMA_20",
-            "col2": "EMA_20",
-            "name": "SMA_EMA_delta_of_diff"
+            "col1": "SMA_30",
+            "col2": "SMA_10",
+            "name": "SMA_10_30_delta_diff"
         }
-    ], 
+    ],
     "label_logic": [
         {
             "sig": "crossover",
-            "name": "CROSS_EMA_SMA",
-            "col1": "SMA_20",
-            "col2": "EMA_20"
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30"
+        }
+    ],
+    "label_logic_2": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0
+        },
+        {
+            "sig": "above",
+            "name": "SHORT_SMA_ABOVE",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0,
+            "persist": 2
         }
     ],
     "train_stocks": [
@@ -44,12 +63,31 @@
     ],
     "live_trade_stocks": [
         "AAPL",
-        "AMZN"
+        "AMZN", 
+        "BA"
     ],
-    "model_type": "RandomForestClassifier",
-    "model_name": "model_v2.pkl",
-    "model_training_timeframe": "1m",
-    "model_training_interval": "5d" 
-} 
-
-
+    "ml_settings": {
+        "model_framework": "xgboost",
+        "scikit_model_type": "RandomForrestClassifier",
+        "model_name": "model_xgb.json",
+        "model_training_timeframe": "1m",   
+        "model_training_interval": "5d",
+        "use_OHLCV_diffs": true,
+        "hyperparameters": {
+            "device": "cpu"
+        }
+    },  
+    "runtime_settings": {
+        "cycle_time": 15,
+        "burn_window_time": 31,
+        "log_api_flush_time": 2000, 
+        "log_to_stdout": true,
+        "run_after_close": false,
+        "override_burn_in": true
+    },
+    "backtest_settings": {
+        "starting_cash": 10000,
+        "commission": 0.00,
+        "position_size": 1
+    } 
+}

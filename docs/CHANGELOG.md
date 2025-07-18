@@ -13,6 +13,9 @@ Changes
 - Replaces `Flask` ML API with `FastAPI` to support concurrent inference
 - Utilizes `TA-lib` for all technical computations outside of `Delta` of `Diff`
 - ML Pipeline overhauled by modularizing around `TA-lib`
+- Implemented CI scripts for automated testing via `GitHub Actions`
+- Added configurable model selection including `XGBoost` and `LightGBM` and 12 `Scikit-learn` models
+
 
 In Progress
 

@@ -52,8 +52,7 @@
             "name": "SMA_CROSS",
             "col1": "SMA_10",
             "col2": "SMA_30",
-            "weight": 1.0,
-            "label_group": "short"
+            "weight": 1.0
         },
         {
             "sig": "above",
@@ -61,21 +60,17 @@
             "col1": "SMA_10",
             "col2": "SMA_30",
             "weight": 1.0,
-            "persist": 2,
-            "label_group": "long"
+            "persist": 2
         }
     ],
-    "label_group_settings": {
-        "short": {"threshold": 0.50},
-        "long": {"threshold": 0.75}
-    },
-     "train_stocks": [
+    "train_stocks": [
         "BA",
         "MSFT"
     ],
     "live_trade_stocks": [
-        "AAPL", 
-        "AMZN"
+        "AAPL",
+        "AMZN",
+        "BA"
     ],
     "ml_settings": {
         "model_framework": "xgboost",

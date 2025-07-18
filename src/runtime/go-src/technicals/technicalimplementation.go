@@ -8,6 +8,7 @@ package technicals
 func (Delta) 	Tag() {}
 func (Diff) 	Tag() {}
 
+
 // Type Methods
 func (Delta)	Type() (string) {return "delta"}
 func (Diff) 	Type() (string) {return "diff"}

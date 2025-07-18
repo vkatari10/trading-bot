@@ -1,16 +1,20 @@
 package eventloop
 
+// UNCOMMENT SECTIONS THAT USE OLD RUNTIME SETTINGS
+// CALLS IN THE MAIN EVENTLOOP
+
 import (
-	"time"
+	// "time"
 	"fmt"
 	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
+	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 	"sync"
 	"github.com/gorilla/websocket"
 )
 
 var (
-	us json.RuntimeSettings // to use its values in the rest of the package
+	us technicals.RuntimeSettings // to use its values in the rest of the package
 )
 
 // Start Entry point of the program to read all tickers and 
@@ -71,16 +75,16 @@ func EventLoop(tempTicker string, tickerID int) {
 	// and then send the map ONLY to the parsers
 	userConfigFile := "../../../" + getFileName()
 
-	userSettings, err := json.GetRuntimeSettings(userConfigFile)
-	if err != nil {
-		SendPayload(map[string]any{
-			"msg": "ERROR CODE: 2 [See ERRORS.md]",
-		}, logLink)
-		fmt.Println(err)
-		return 
-	} // if 
+	// userSettings, err := json.GetRuntimeSettings(userConfigFile)
+	// if err != nil {
+	// 	SendPayload(map[string]any{
+	// 		"msg": "ERROR CODE: 2 [See ERRORS.md]",
+	// 	}, logLink)
+	// 	fmt.Println(err)
+	// 	return 
+	// } // if 
 
-	us = userSettings
+	// us = userSettings
 
 	thisRunTime := int(390 - us.BurnTime) // market open time - burn time
 	go sendEnvironmentData() // send env variables as JSON
@@ -99,13 +103,13 @@ func EventLoop(tempTicker string, tickerID int) {
 	// Burn In Process
 	var burnQuote [5]float64
 	var burn []float64
-	if userSettings.OverrideBurnIn {
-		burnQuote = [5]float64{100, 95, 105, 120, 80}
-		burn = overrideBurnIn(userSettings.BurnTime)
-	} else {
-		//fmt.Printf("burn time -> %d MINUTES, cycle time -> %d SECONDS\n", userSettings.BurnTime, userSettings.CycleTime)
-		burn, burnQuote = BurnIn(userSettings.BurnTime, tempTicker, userSettings.CycleTime)
-	} // if-else
+	// if userSettings.OverrideBurnIn {
+	// 	burnQuote = [5]float64{100, 95, 105, 120, 80}
+	// 	burn = overrideBurnIn(userSettings.BurnTime)
+	// } else {
+	// 	//fmt.Printf("burn time -> %d MINUTES, cycle time -> %d SECONDS\n", userSettings.BurnTime, userSettings.CycleTime)
+	// 	burn, burnQuote = BurnIn(userSettings.BurnTime, tempTicker, userSettings.CycleTime)
+	// } // if-else
 
 	// Initialize Technical Values
 	LoadBurnData(&userIndicators, burn)
@@ -167,16 +171,16 @@ func EventLoop(tempTicker string, tickerID int) {
 		// Decide Buy/Sell/Hold 
 		handlePrediction(apiBuf, pred, tempTicker)
 
-		go apiBuf.enqueue(map[string]any{ 
-			"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", userSettings.CycleTime),
-		}, logLink)
+		// go apiBuf.enqueue(map[string]any{ 
+		// 	"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", userSettings.CycleTime),
+		// }, logLink)
 
-		// Flush all messages to logLink
-		go apiBuf.flush(6, time.Duration(userSettings.LogAPIFlushTime)) // items, milliseconds buffer
+		// // Flush all messages to logLink
+		// go apiBuf.flush(6, time.Duration(userSettings.LogAPIFlushTime)) // items, milliseconds buffer
 		
-		sendTechnicalData(userIndicators) // send new technical data
-		time.Sleep(time.Duration(userSettings.CycleTime) * time.Second)
-		i++
+		// sendTechnicalData(userIndicators) // send new technical data
+		// time.Sleep(time.Duration(userSettings.CycleTime) * time.Second)
+		// i++
 		
 	} // for
 
