@@ -5,6 +5,8 @@ import (
 	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
 )
 
+// TestNewRuntimeData checks if given a json file the object representation 
+// matches what was in the JSON file 
 func TestNewRuntimeData(t *testing.T) {
 
 	data, err := json.NewRuntimeData(fileName)

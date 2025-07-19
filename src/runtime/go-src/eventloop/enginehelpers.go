@@ -10,6 +10,7 @@ import (
 	"os"
 )
 
+// DEPRECATED
 //BurnIn Loads the Burn in Data to intialize technical indicators
 func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote [5]float64) {
 	go SendPayload(map[string]any{
@@ -71,6 +72,7 @@ func handlePrediction(apiBuffer *APIBuffer, prediction float64, ticker string) {
 
 } // handlePrediction
 
+// DEPRECATED
 // overrideBurnIn overides the burn in by creating random values of the specified window size 
 func overrideBurnIn(windowSize int) []float64 {
 	result := make([]float64, 0)

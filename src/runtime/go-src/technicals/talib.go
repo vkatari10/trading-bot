@@ -28,25 +28,89 @@ func CopySlice(slice []float64) []float64 {
 	return copied
 } // CopySlice
 
-// newTALIBWrapper creates a new TALIBWrapper object given
-// the max lookback value and OHLCV arrays of length max lookback 
-func NewTALIBWrapper(maxWindow int, 
-					open []float64, 
-					high []float64, 
-					low []float64, 
-					close []float64, 
-					volume []float64) (*TALIBWrapper) {
+// CDoublePointerToSlice returns a C double pointer to a given index
+// in a Go []float64 slice
+func CDoublePointerToSlice(arr []float64, index int) (*C.double) {
+	return (*C.double)(unsafe.Pointer(&arr[index]))
+} // CDoublePointerToSlice
 
-	return &TALIBWrapper{ // initialize pointers during technical initialization
-		MaxLookBack: maxWindow,
-		Open: open,
-		High: high,
-		Low: low,
-		Close: close,
-		Volume: volume,
+// InitializeAllPointers will initialize all pointers to point to every 
+// OHLCV array to a given index, this method assumes that all OHLCV arrays exist
+func (rd *RuntimeData) SetAllPointersToIndex(index int) {
+	rd.OHLCV.OpenPtr = CDoublePointerToSlice(rd.OHLCV.Open, index)
+	rd.OHLCV.HighPtr = CDoublePointerToSlice(rd.OHLCV.High, index)
+	rd.OHLCV.LowPtr = CDoublePointerToSlice(rd.OHLCV.Low, index)
+	rd.OHLCV.ClosePtr = CDoublePointerToSlice(rd.OHLCV.Close, index)
+	rd.OHLCV.VolumePtr = CDoublePointerToSlice(rd.OHLCV.Volume, index)
+} // InitializeAllPointers
+
+// NullifyAllPointers set all C pointers in the RuntimeData object
+// to null, used during slice copying 
+func (rd *RuntimeData) NullifyAllPointers() {
+	rd.OHLCV.OpenPtr = nil
+	rd.OHLCV.HighPtr = nil
+	rd.OHLCV.LowPtr = nil
+	rd.OHLCV.ClosePtr = nil
+	rd.OHLCV.VolumePtr = nil
+} // NullifyAllPointers
+
+// CopyArray resets the array back down to the original burn time * 2
+// to prevent dangling C pointers
+func CopyArray(arr []float64, newCap int) []float64 {
+	new := make([]float64, len(arr), newCap)
+	copy(new, arr)
+	return new
+} // CopyArray
+
+// CopyArrays resets the capacity of all the OHLCV arrays in a RuntimeData
+// object
+func (rd *RuntimeData) CopyArrays() {
+	rd.OHLCV.Open = CopyArray(rd.OHLCV.Open, rd.RuntimeSettings.BurnTime * 2)
+	rd.OHLCV.High = CopyArray(rd.OHLCV.High, rd.RuntimeSettings.BurnTime * 2)
+	rd.OHLCV.Low = CopyArray(rd.OHLCV.Low, rd.RuntimeSettings.BurnTime * 2)
+	rd.OHLCV.Close = CopyArray(rd.OHLCV.Close, rd.RuntimeSettings.BurnTime * 2)
+	rd.OHLCV.Volume = CopyArray(rd.OHLCV.Volume, rd.RuntimeSettings.BurnTime * 2)
+	rd.OHLCV.sliceCapCount = 0
+} // CopyArrays
+
+// UpdateDeltas updates the delta values for every OHLCV array 
+func (rd *RuntimeData) UpdateDeltas() {
+	len := rd.RuntimeSettings.BurnTime
+	rd.OHLCV.OpenDelta = rd.OHLCV.Open[len - 1] - rd.OHLCV.Open[len - 2]
+	rd.OHLCV.HighDelta = rd.OHLCV.High[len - 1] - rd.OHLCV.High[len - 2]
+	rd.OHLCV.LowDelta = rd.OHLCV.Low[len - 1] - rd.OHLCV.Low[len - 2]
+	rd.OHLCV.CloseDelta = rd.OHLCV.Close[len - 1] - rd.OHLCV.Close[len - 2]
+	rd.OHLCV.VolumeDelta = rd.OHLCV.Volume[len - 1] - rd.OHLCV.Volume[len - 2]
+} // UpdateDeltas()
+
+// DropFirstArrayValues slices off the first value for all OHLCV arrays 
+func (rd *RuntimeData) DropFirstArrayValues() {
+	if rd.OHLCV.sliceCapCount > rd.OHLCV.SliceMaxCap {
+		rd.NullifyAllPointers()
+		rd.CopyArrays()
 	}
-} // newTALIBWrapper
 
+	rd.SetAllPointersToIndex(1)
+	rd.cleanUpArrays()
+
+	rd.OHLCV.Open = rd.OHLCV.Open[1:]
+	rd.OHLCV.High = rd.OHLCV.High[1:]
+	rd.OHLCV.Low = rd.OHLCV.Low[1:]
+	rd.OHLCV.Close = rd.OHLCV.Close[1:]
+	rd.OHLCV.Volume = rd.OHLCV.Volume[1:]
+
+	rd.OHLCV.sliceCapCount += 1
+} // DropFirstArrayValues
+
+// cleanUpArrays just resets the most recent dropped value
+// in a slice to its default to flag GC its unused
+func (rd *RuntimeData) cleanUpArrays() {
+	rd.OHLCV.Open[0] = 0.0
+	rd.OHLCV.High[0] = 0.0
+	rd.OHLCV.Low[0] = 0.0
+	rd.OHLCV.Close[0] = 0.0
+	rd.OHLCV.Volume[0] = 0.0
+} // cleanUpArrays()
 
 func (rd *RuntimeData) InitializeTechnicals() {
 
@@ -55,7 +119,6 @@ func (rd *RuntimeData) InitializeTechnicals() {
 func (rd *RuntimeData) UpdateTechnicals() {
 
 }
-
 
 func (rd *RuntimeData) computeTechnicalValues() {
 

@@ -45,8 +45,9 @@ type RuntimeSettings struct {
 // TALIBWrapper represents a TA-Lib wrapper to interact
 // with the compiled C code using cgo 
 type TALIBWrapper struct {
-	// OHLCV array size
-	MaxLookBack int
+	// slice capacity tracker
+	sliceCapCount int
+	SliceMaxCap int
 
 	// historical data
 	Open 	[]float64

@@ -2,6 +2,9 @@ package eventloop
 
 // This file interact with the ML model in Python to send data and get 
 // predictions back to inform the broker API
+//
+// Author: Vikas Katari
+// Date: 05/30/2025
 
 import (
     "fmt"

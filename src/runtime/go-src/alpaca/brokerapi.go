@@ -1,6 +1,9 @@
 package alpaca
 
 // External API methods to place buy/sell orders on brokerage
+//
+// Author: Vikas Katari
+// Date: 05/30/2025
 
 import (
 	"io"

@@ -1,5 +1,11 @@
 package json
 
+// This file contains a method to obtain a RuntimeData object
+// by parsing the user JSON file
+//
+// Author: Vikas Katari
+// Date: 07/17/2025
+
 import (
 	"encoding/json"
 	"fmt"
@@ -60,14 +66,8 @@ func NewRuntimeData(file string) (*technicals.RuntimeData, error) {
 		res.ColNames[data.Labels[i].Name] = i + len(data.Features)
 	}
 
-	res.OHLCV = *technicals.NewTALIBWrapper(
-		res.RuntimeSettings.BurnTime,
-		make([]float64, 0, res.RuntimeSettings.BurnTime),
-		make([]float64, 0, res.RuntimeSettings.BurnTime),
-		make([]float64, 0, res.RuntimeSettings.BurnTime),
-		make([]float64, 0, res.RuntimeSettings.BurnTime),
-		make([]float64, 0, res.RuntimeSettings.BurnTime),
-	)
+	res.OHLCV = technicals.TALIBWrapper{} // init during burn in period
+	res.OHLCV.SliceMaxCap = res.RuntimeSettings.BurnTime * 2 - 2
 	
 	return &res, nil
 } 
@@ -78,15 +78,7 @@ func GetRuntimeData(json map[string]any, maxLookback int) (*technicals.RuntimeDa
 	// Init col names
 	colNames := make(map[string]int, 0)
 	
-	// init TALIB wrapper
-	priceData := technicals.NewTALIBWrapper(
-		maxLookback, // OHLCV
-		make([]float64, 0, maxLookback),
-		make([]float64, 0, maxLookback),
-		make([]float64, 0, maxLookback),
-		make([]float64, 0, maxLookback),
-		make([]float64, 0, maxLookback),
-	)
+
 
 	// init feature payloads 
 	featureJSON := make(map[string]float64, 0)
@@ -98,7 +90,6 @@ func GetRuntimeData(json map[string]any, maxLookback int) (*technicals.RuntimeDa
 	return &technicals.RuntimeData{
 		ColNames: colNames,
 		Objects: features,
-		OHLCV: *priceData,
 		FeatureJSON: featureJSON,
 		FeatureArray: featureArray,
 	}

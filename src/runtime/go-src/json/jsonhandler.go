@@ -1,5 +1,7 @@
 package json
 
+// THIS FILE IS DEPRECATED  
+
 // Parses User Config Features To Construct the technicals.UserData Object
 
 import (
