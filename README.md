@@ -1,78 +1,89 @@
-
-
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge) ![CI](https://img.shields.io/github/actions/workflow/status/vkatari10/trading-bot/go-tests.yml?branch=main&label=Go%20Tests&style=for-the-badge&color=2ECC71) ![CI](https://img.shields.io/github/actions/workflow/status/vkatari10/trading-bot/python-tests.yml?branch=main&label=Python%20Tests&style=for-the-badge&color=2ECC71)
 # ConTrade
 
-*ConTrade -- Configurable Trading*
+**ConTrade** is a modular, config-driven trading platform designed for rapid prototyping and deployment of **machine learning based trading strategies**. It allows users to define everything from a single config file and easily run:
+- ML training pipeline
+- Historical validation backtests
+- Live trading via Alpaca 
 
-ConTrade is a platform allowing users to easily define low/mid frequency trading strategies in a single config file and easily use integrated services to train, backtest, and execute models live using the `Alpaca` broker.  
-
-No more headaches trying to test a new strategy or experiment, simply change a `JSON` file and retrain, retest, or redeploy live. 
+ConTrade is language-decoupled, real-time capable, and architected for both experimentation and deployment **without ever ** touching core logic, only config files.
 
 For more detailed information about ConTrade, visit the [docs](https://vkatari10.github.io/trading-bot/)
 
-**Note**: This project is actively under improvement. Below is a list of current and upcoming features. 
+**Note**: This project is under active development, expect new features weekly. Below is a list of current features
 
-## Features
+## Core Features
 
-> Every feature uses the same config file, eliminating feature misalignment, and keeping every service on the same page!
+### Unified Config Driven Architecture
 
-### Config Driven Architecture (JSON)
-- Choose your own strategy from supported technical indicators (SMA, EMA, Delta, etc.) 
-- These technical indicators serve as features to train ML models to your specifications
-- Define your own labelling logic as well to outline buy/sell signals
+- One config file defines **everything**: features, signals, ML settings, Live Settings, and more 
+- Used for all services: Training, Backtesting, and Live Execution
+- This eliminates config drift and ensures alignment for all services
+
 ### ML Pipeline (Python)
-- Scikit-learn Random Forest Classifier Model 
-- Support for configurable multi-asset training
+- Supports 
+  - 12 Scikit-learn models
+  - XGBoost
+  - LightGBM
+- Train Models with 
+  - Multiple assets
+  - Intervals from minutes to days
+  - TA-Lib derived features supporting most technicals found [here](https://ta-lib.github.io/ta-lib-python/doc_index.html)
+  - Custom labelling logic (crossover, thresholds, weights, persistence windows)
+  - Hyperparameter tuning 
+- Easily extensible to support more features, labels, and ML frameworks
+
 ### Backtesting (Python)
-- Quickly test trained ML models on historical stock data to analyze P/L via CLI
-### Live Execution w/ Broker Integration (Go/Python)
-- Run trained models live
-- Alpaca Brokerage Integration (paper or real money)
-- Exposes own API with configurable endpoints for monitoring
-- Multi-Asset Trading 
-- Supports intervals from minutes to seconds 
-- Error documentation [here](docs/ERRORS.md)
-### UI (Python)
-- CLI Tool to easily call services for any config files
+- CLI powered historical testing on asset strategies
+- Simulate commission, slippage, latency 
+- Quickly obtain profit/loss metrics with optional visualizations
+
+### Live Execution Engine (Go)
+- Serve ML models via FastAPI or ONXX
+- Real time trading with Alpaca (paper or live accounts)
+- High performance via
+  - TA-Lib integration 
+  - ML service via FastAPI + Websocket or ONXXRuntime
+- Multi asset support with second level cycle support
+- Self hosted API for trade monitoring and internal logging exposure 
+
+### CLI Tools
+- Easily call commands and interact with ConTrade's features via the CLI
   - Training
   - Backtesting
-  - Live Execution 
+  - Live Deployment
   - Tests
-  - See docs [here](docs/CLI.md)
-### Tests (Go, Python)
- - Unit Tests for both Go (`go test`) and Python (`pytest`) source
 
-Project size is ~3500 total lines (source, comments, structure) across ~50 files.
+### Testing and CI 
+- Unit tested across Python and Go
+- Github Actions CI for automated checks
 
-## Architecture
-Philosophy
-- Config Driven 
-  - Every service uses the **same** config file -- no confusion anywhere about what needs to be computed
-  - Think of the config file as a contract, both the ML Pipeline and Live Execution will agree on what features need to be used
-- Decoupled Systems
-  - All languages and most systems are decoupled as much as possible 
-    - the ML Pipeline (written in Python) and Live Execution services (written in Go) share **no** code
-    - the ML Pipeline and Backtesting services (both written in Python) do share some code (DataFrame Construction)
-  - Python and Go **only** communicate via websockets for live ML inference 
+Project size is ~5000 total lines (code, docs) across ~82 files.
 
-This design allows for independent parts to be scaled and improved without affecting other systems
-
-![Architecture](docs/images/TradingPlatformDiagram7.svg)
-
-## Tech Stack 
+### Tech Stack Overview 
 | Feature | Language | Libraries/Frameworks | External APIs |
 |:-------:|----------|--------------|------|
 | Config Files | JSON | - | - | 
 | ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn, XGBoost, LightGBM, TA-Lib | YFinance |
-| Backtesting | Python | -| YFinance |
-| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca Market, Alpaca Account |
+| Backtesting Engine | Python | -| YFinance |
+| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca Market |
 | Risk Engine (WIP) | Go | - | Alpaca Account |
 | CLI | Python | Rich | - |
-| TUI (WIP) | Python | Rich | Runtime Engine API |
-| Tests & CI | Go, Python, YAML | Pytest, `go test`, Github Actions | - | 
+| TUI (WIP) | Python | Rich | Internal API |
+| Testing & CI | Go, Python, YAML | Pytest, `go test`, Github Actions | - | 
 
+## Architecture
 
+### Modular & Decoupled 
+- Python handles ML and backtesting
+- Go handles real-time data and broker execution
+- Python and Go communicate **only through WebSockets** (no shared code)
+
+### Config as a Contract 
+- The JSON config acts as the **single source of truth** for all services
+- No repeated logic and no mismatch between what's trained and what's deployed
+
+![Architecture](docs/images/TradingPlatformDiagram7.svg)
 
 ### Why Use Go?
 To support both low (minutes) and mid (seconds) frequency trading strategies `Go` provided a fair trade between speed and complexity
