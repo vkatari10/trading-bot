@@ -6,7 +6,7 @@
 - Historical validation backtests
 - Live trading via Alpaca 
 
-ConTrade is language-decoupled, real-time capable, and architected for both experimentation and deployment **without ever ** touching core logic, only config files.
+ConTrade is language-decoupled, real-time capable, and architected for both experimentation and deployment **without ever** touching core logic, only config files.
 
 For more detailed information about ConTrade, visit the [docs](https://vkatari10.github.io/trading-bot/)
 
@@ -69,7 +69,6 @@ Project size is ~5000 total lines (code, docs) across ~82 files.
 | Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca Market |
 | Risk Engine (WIP) | Go | - | Alpaca Account |
 | CLI | Python | Rich | - |
-| TUI (WIP) | Python | Rich | Internal API |
 | Testing & CI | Go, Python, YAML | Pytest, `go test`, Github Actions | - | 
 
 ## Architecture
