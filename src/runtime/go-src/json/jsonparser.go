@@ -67,31 +67,9 @@ func NewRuntimeData(file string) (*technicals.RuntimeData, error) {
 	}
 
 	res.OHLCV = technicals.TALIBWrapper{} // init during burn in period
-	res.OHLCV.SliceMaxCap = res.RuntimeSettings.BurnTime * 2 - 2
+
+	// let the max capacity have -2 from limit to prevent unwanted GC
+	res.OHLCV.SliceMaxCap = res.RuntimeSettings.BurnTime * technicals.CapLimitMultiplier - 2 
 	
 	return &res, nil
-} 
-
-// GetRuntimeData initializes and returns the RuntimeData object 
-func GetRuntimeData(json map[string]any, maxLookback int) (*technicals.RuntimeData) {
-
-	// Init col names
-	colNames := make(map[string]int, 0)
-	
-
-
-	// init feature payloads 
-	featureJSON := make(map[string]float64, 0)
-	featureArray := make([]float64, 0)
-
-	// init object array of features
-	features := make([]technicals.Feature, 0)
-
-	return &technicals.RuntimeData{
-		ColNames: colNames,
-		Objects: features,
-		FeatureJSON: featureJSON,
-		FeatureArray: featureArray,
-	}
-} // GetRuntimeData	
-
+} // NewRuntimeData

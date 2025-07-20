@@ -1,0 +1,93 @@
+{
+    "notes": {
+        "note": "Testing TA-Lib style formatting to support more technicals"
+    },
+    "features": [
+        {
+            "tech": "SMA",
+            "args": {"timeperiod": 10},
+            "name": "SMA_10"
+        },
+        {
+            "tech": "SMA",
+            "args": {"timeperiod": 30},
+            "name": "SMA_30"
+        },
+        {
+            "tech": "delta",
+            "col1": "SMA_10",
+            "col2": null,
+            "name": "SMA_10_delta"
+        },
+        {
+            "tech": "diff",
+            "col1": "SMA_30",
+            "col2": "SMA_10",
+            "name": "SMA_30_10_diff"
+        },
+        {
+            "tech": "delta",
+            "col1": "SMA_30",
+            "col2": "SMA_10",
+            "name": "SMA_10_30_delta_diff"
+        }
+    ],
+    "label_logic": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30"
+        }
+    ],
+    "label_logic_2": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0
+        },
+        {
+            "sig": "above",
+            "name": "SHORT_SMA_ABOVE",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0,
+            "persist": 2
+        }
+    ],
+    "train_stocks": [
+        "BA",
+        "MSFT"
+    ],
+    "live_trade_stocks": [
+        "AAPL",
+        "AMZN", 
+        "BA"
+    ],
+    "ml_settings": {
+        "model_framework": "xgboost",
+        "scikit_model_type": "RandomForrestClassifier",
+        "model_name": "model_xgb.json",
+        "model_training_timeframe": "1m",   
+        "model_training_interval": "5d",
+        "use_OHLCV_diffs": true,
+        "hyperparameters": {
+            "device": "cpu"
+        }
+    },  
+    "runtime_settings": {
+        "cycle_time": 15,
+        "burn_window_time": 31,
+        "log_api_flush_time": 2000, 
+        "log_to_stdout": true,
+        "run_after_close": false,
+        "override_burn_in": true
+    },
+    "backtest_settings": {
+        "starting_cash": 10000,
+        "commission": 0.00,
+        "position_size": 1
+    } 
+}

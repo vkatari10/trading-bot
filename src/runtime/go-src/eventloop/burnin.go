@@ -22,21 +22,18 @@ import (
 // 2. Initialize C pointers to all 5 arrays
 // 3. Return the delta of each OHLCV as well from the last to second to last bars
 
-// this file should also construct the pointers to the first array
-// when initializing the technical indicators
-
-// Generate Runtime Data Object (not here assume the obj alr exists)
-
+// BurnIn burns in the OHLCV arrays with real time data via the market data API,
+// modifies the RuntimeData object in place 
 func burnIn(rd *technicals.RuntimeData, ticker string) (error) {
 	log.Printf("STAGE: BURN IN (%d minutes)", rd.RuntimeSettings.BurnTime)
 
 	len := rd.RuntimeSettings.BurnTime
 
-	open := make([]float64, 0, len * 2)
-	high := make([]float64, 0, len * 2)
-	low := make([]float64, 0, len * 2)
-	close := make([]float64, 0, len * 2)
-	vol := make([]float64, 0, len * 2)
+	open := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	high := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	low := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	close := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	vol := make([]float64, 0, len * technicals.CapLimitMultiplier)
 
 	for i := range len {
 		newQuote, err := alpaca.GetAlpacaBars(ticker)
@@ -68,7 +65,7 @@ func burnIn(rd *technicals.RuntimeData, ticker string) (error) {
 	rd.UpdateDeltas()
 	
 	return nil
-}
+} // BurnIn
 
 // overrideBurnIn creates fake data to skip the burn in process
 // immediately, modifies the RuntimeData object in place
@@ -77,13 +74,13 @@ func OverrideBurnIn(rd *technicals.RuntimeData) { // RENAME METHOD TO BE UNEXPOR
 
 	len := rd.RuntimeSettings.BurnTime
 
-	open := make([]float64, 0,  len * 2)
-	high := make([]float64, 0, len * 2)
-	low := make([]float64, 0, len * 2)
-	close := make([]float64, 0, len * 2)
-	vol := make([]float64, 0, len * 2)
+	open := make([]float64, 0,len * technicals.CapLimitMultiplier)
+	high := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	low := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	close := make([]float64, 0, len * technicals.CapLimitMultiplier)
+	vol := make([]float64, 0, len * technicals.CapLimitMultiplier)
 
-	for _ = range len {
+	for range len {
 		open = append(open, rand.Float64() * 10)
 		high = append(high, rand.Float64() * 10)
 		low = append(low, rand.Float64() * 10)

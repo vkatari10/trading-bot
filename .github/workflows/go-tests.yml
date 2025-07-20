@@ -25,6 +25,6 @@ jobs:
 
       - name: Run Go Tests
         run: |
-          cd src/runtime/go-src/tests
+          cd src/runtime/go-src/
           go mod tidy
-          go test
+          go test ./...
