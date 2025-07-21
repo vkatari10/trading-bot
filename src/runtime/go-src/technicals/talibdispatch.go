@@ -1,36 +1,175 @@
 package technicals
 
-// Dispatch table to call TA-Lib C based methods
+// Contains talib method dispatch table to 
+// call TA-Lib C wrapper methods
+// 
+// Author: Vikas Katari 
+// Date: 07/21/2025
 
-type talibMethod func(tw *TALIBWrapper, technicalType string) (float64, error)
+// method signature for all TA-Lib wrapper methods
+type talibMethod func(ft Feature, tw *TALIBWrapper) ([]float64, error)
 
 var (
-	talibDispatchTable map[string]talibMethod
+	talibDispatch map[string]talibMethod
 )
 
-func init() {
-	// talibDispatchTable := map[string]talibMethod {
-	// 	"SMA": dummy,
-	// }
+// to satisfy compiler 
+// NOT FOR PRODUCTION CODE
+func tempMethod(ft Feature, tw *TALIBWrapper) ([]float64, error) {
+	return nil, nil
 }
 
+// initializes the main TA-Lib dispatch table for TA-Lib wrapper methods
+func init() {
+	_ = map[string]talibMethod {
+		// Overlap Studies
+		// "BBANDS": TA_BBANDS,
+		// "DEMA": TA_DEMA,
+		// "EMA": TA_EMA,
+		// "HT_TRENDLINE": TA_HT_TRENDLINE,
+		// "KAMA": TA_KAMA,
+		// "MA": TA_SMA,
+		// "MAMA": TA_MAMA,
+		// "MIDPOINT": TA_MIDPOINT,
+		// "MIDPRICE": TA_MIDPRICE,
+		// "SAR": TA_SAR,
+		// "SAREXT": TA_SAREXT,
+		// "SMA": TA_SMA,
+		// "T3": TA_T3,
+		// "TEMA": TA_TEMA,
+		// "TRIMA": TA_TRIMA,
+		// "WMA": TA_WMA,
+
+		// Momentum indicators 
+		//"ADX": TA_ADX,
+		//"ADXR": TA_ADXR,
+		//"APO": TA_APO,
+		//"AROON": TA_AROON,
+		//"AROONOSC": TA_AROONOSC,
+		// "BOP": TA_BOP,
+		//"CCI": TA_CCI,
+		//"CMO": TA_CMO,
+		//"DX": TA_DX,
+		// "MACD": TA_MACD,
+		// "MACDEXT": TA_MACDEXT,
+		// "MACDFIX": TA_MACDFIX,
+		//"MFI": TA_MFI,
+		//"MINUS_DI": TA_MINUS_DI,
+		//"MINUS_DM": TA_MINUS_DM,
+		//"MOM": TA_MOM,
+		//"PLUS_DI": TA_PLUS_DI,
+		//"PLUS_DM": TA_PLUS_DM,
+		// "PPO": TA_PPO,
+		//"ROC": TA_ROC,
+		// "ROCP": TA_ROCP,
+		// "ROCR": TA_ROCR,
+		// "ROCR100": TA_ROCR100,
+		// "RSI": TA_RSI,
+		// "STOCH": TA_STOCH,
+		// "STOCHF": TA_STOCHF,
+		//"STOCHRSI": TA_STOCRSI,
+		// "TRIX": TA_TRIX,
+		//"ULTOSC": TA_ULTOSC,
+		//"WILLR": TA_WILLR,
+
+		// Volume Indicators
+		// "AD": TA_AD,
+		// "ADOSC": TA_ADOSC,
+		// "OBV": TA_OBV,
+
+		// Cycle Indicators
+		// "HT_DCPERIOD": TA_HT_DCPERIOD,
+		// "HT_DCPHASE": TA_HT_DCPHASE,
+		// "HT_PHASOR": TA_HT_PHASOR,
+		// "HT_SINE": TA_HT_SINE,
+		// "HT_TRENDMODE": TA_HT_TRENDMODE,
+
+		// Price Transform
+		// "AVGPRICE": TA_AVGPRICE,
+		// "MEDPRICE": TA_MEDPRICE,
+		// "TYPPRICE": TA_TYPPRICE,
+		// "WCLPRICE": TA_WCLPRICE,
+
+		// Volatility Indicators
+		// "ATR": TA_ATR,
+		// "NATR": TA_NATR,
+		// "TRANGE": TA_TRANGE,
+
+		// Pattern Recognition
+		"CDL2CROWS": TA_CDL2CROWS,
+		"CDL3BLACKCROWS": TA_CDL3BLACKCROWS,
+		"CDL3INSIDE": TA_CDL3INSIDE,
+		"CDL3LINESTRIKE": TA_CDL3LINESTRIKE,
+		"CDL3OUTSIDE": TA_CDL3OUTSIDE,
+		"CDL3STARSINSOUTH": TA_CDL3STARSINSOUTH,
+		"CDL3WHITESOLDIERS": TA_CDL3WHITESOLDIERS,
+		"CDLABANDONEDBABY": TA_CDLABANDONEDBABY,
+		"CDLADVANCEBLOCK": TA_CDLADVANCEBLOCK,
+		"CDLBELTHOLD": TA_CDLBELTHOLD,
+		"CDLBREAKAWAY": TA_CDLBREAKAWAY,
+		"CDLCLOSINGMARUBOZU": TA_CDLCLOSINGMARUBOZU,
+		"CDLCONCEALBABYSWALL": TA_CDLCONCEALBABYSWALL,
+		"CDLCOUNTERATTACK": TA_CDLCOUNTERATTACK,
+		"CDLDARKCLOUDCOVER": TA_CDLDARKCLOUDCOVER,
+		"CDLDOJI": TA_CDLDOJI,
+		"CDLDOJISTAR": TA_CDLDOJISTAR,
+		"CDLDRAGONFLYDOJI": TA_CDLDRAGONFLYDOJI,
+		"CDLENGULFING": TA_CDLENGULFING,
+		"CDLEVENINGDOJISTAR": TA_CDLEVENINGDOJISTAR,
+		"CDLEVENINGSTAR": TA_CDLEVENINGSTAR,
+		"CDLGAPSIDESIDEWHITE": TA_CDLGAPSIDESIDEWHITE,
+		"CDLGRAVESTONEDOJI": TA_CDLGRAVESTONEDOJI,
+		"CDLHAMMER": TA_CDLHAMMER,
+		"CDLHANGINGMAN": TA_CDLHANGINGMAN,
+		"CDLHARAMI": TA_CDLHARAMI,
+		"CDLHARAMICROSS": TA_CDLHARAMICROSS,
+		"CDLHIGHWAVE": TA_CDLHIGHWAVE,
+		"CDLHIKKAKE": TA_CDLHIKKAKE,
+		"CDLHIKKAKEMOD": TA_CDLHIKKAKEMOD,
+		"CDLHOMINGPIGEON": TA_CDLHOMINGPIGEON,
+		"CDLIDENTICAL3CROWS": TA_CDLIDENTICAL3CROWS,
+		"CDLINNECK": TA_CDLINNECK,
+		"CDLINVERTEDHAMMER": TA_CDLINVERTEDHAMMER,
+		"CDLKICKING": TA_CDLKICKING,
+		"CDLKICKINGBYLENGTH": TA_CDLKICKINGBYLENGTH,
+		"CDLLADDERBOTTOM": TA_CDLLADDERBOTTOM,
+		"CDLLONGLEGGEDDOJI": TA_CDLLONGLEGGEDDOJI,
+		"CDLLONGLINE": TA_CDLLONGLINE,
+		"CDLMARUBOZU": TA_CDLMARUBOZU,
+		"CDLMATCHINGLOW": TA_CDLMATCHINGLOW,
+		"CDLMATHOLD": TA_CDLMATHOLD,
+		"CDLMORNINGDOJISTAR": TA_CDLMORNINGDOJISTAR,
+		"CDLMORNINGSTAR": TA_CDLMORNINGSTAR,
+		"CDLONNECK": TA_CDLONNECK,
+		"CDLPIERCING": TA_CDLPIERCING,
+		"CDLRICKSHAWMAN": TA_CDLRICKSHAWMAN,
+		"CDLRISEFALL3METHODS": TA_CDLRISEFALL3METHODS,
+		"CDLSEPARATINGLINES": TA_CDLSEPARATINGLINES,
+		"CDLSHOOTINGSTAR": TA_CDLSHOOTINGSTAR,
+		"CDLSHORTLINE": TA_CDLSHORTLINE,
+		"CDLSPINNINGTOP": TA_CDLSPINNINGTOP,
+		"CDLSTALLEDPATTERN": TA_CDLSTALLEDPATTERN,
+		"CDLSTICKSANDWICH": TA_CDLSTICKSANDWICH,
+		"CDLTAKURI": TA_CDLTAKURI,
+		"CDLTASUKIGAP": TA_CDLTASUKIGAP,
+		"CDLTHRUSTING": TA_CDLTHRUSTING,
+		"CDLTRISTAR": TA_CDLTRISTAR,
+		"CDLUNIQUE3RIVER": TA_CDLUNIQUE3RIVER,
+		"CDLUPSIDEGAP2CROWS": TA_CDLUPSIDEGAP2CROWS,
+		"CDLXSIDEGAP3METHODS": TA_CDLXSIDEGAP3METHODS,
 
 
-/*
-
-Overlap Studies 
-- every technical goes to a new method that groups all these together
-- within this method is something like a overlapStudies dispatch again 
-- that calls another table to put a new method again from TA_XXXX and handles
-- certain technicals that have more infromation like bollinger bands
-- overlapStudies dispatch and move from there
-
-Whatever is above we just do for every study 
-like momentum and bolumne volatiltiy and maybe the pattern recognitions if we can 
-make it applicable
+		// Statistic Functions
+		"BETA": tempMethod,
+		"CORREL": tempMethod,
+		"LINEARREG": TA_LINEARREG,
+		"LINEARREG_ANGLE": TA_LINEARREG_ANGLE,
+		"LINEARREG_INTERCEPT": TA_LINEARREG_INTERCEPT,
+		"LINEARREG_SLOPE": TA_LINEARREG_SLOPE,
+		"STDDEV": TA_STDDEV,
+		"TSF": TA_TSF,
+		"VAR": TA_VAR,
 
 
-
-
-
-*/
+	} // talibDispatch
+}

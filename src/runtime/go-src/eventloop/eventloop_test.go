@@ -34,13 +34,15 @@ func TestRuntimeDataStressed(t *testing.T) {
 
 	OverrideBurnIn(gotConfig)
 
+	
+
 	for range 1_000_000 { // 0.05s @ CapLimitMultiplier = 2
 		gotConfig.PopLeft()
 		gotConfig.TestAppend(5.0)
 		gotConfig.UpdateDeltas()
 	}
 	
-	checkArr := gotConfig.OHLCV.Volume	
+	checkArr := gotConfig.OHLCV.Close
 
 	if len(checkArr) > 31 && cap(checkArr) > 62 {
 		t.Errorf("cap or len grew beyond permitted size")
