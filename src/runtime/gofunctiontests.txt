@@ -1,34 +1,3 @@
-package tests 
-
-import (
-	"testing"
-	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
-	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
-	eventloop "github.com/vkatari10/trading-bot/src/runtime/go-src/eventloop"
-)
-
-// func TestTalibSMA(t *testing.T) {
-// 	runtimeData, err := json.NewRuntimeData("../test.json")
-// 	if err != nil {
-// 		t.Errorf("failed to create runtimeData Object")
-// 	}
-
-// 	eventloop.OverrideBurnIn(runtimeData)
-
-// 	res, err := technicals.TA_SMA( // ~10-20 microseconds w/ len 31 window
-// 		runtimeData.Objects[0],
-// 		&runtimeData.OHLCV,
-// 	)
-
-// 	if err != nil {
-// 		t.Errorf("TA SMA failed")
-// 	} 
-
-// 	if res == nil {
-// 		t.Errorf("no valid result came back")
-// 	}
-// } // TestTalibSMA
-
 
 func TestTalibBBANDS(t *testing.T) {
 	runtimeData, err := json.NewRuntimeData("../talib_test.json")
@@ -161,6 +130,28 @@ func TestTalibMA(t *testing.T) {
 		t.Errorf("TA_MA invalid result came back")
 	}
 } // TestTalibMA
+
+func TestTalibMAMA(t *testing.T) {
+	runtimeData, err := json.NewRuntimeData("../talib_test.json")
+	if err != nil {
+		t.Errorf("failed to create runtimeData Object")
+	}
+
+	eventloop.OverrideBurnIn(runtimeData)
+
+	res, err := technicals.TA_MAMA( 
+		runtimeData.Objects[6],
+		&runtimeData.OHLCV,
+	)
+
+	if err != nil {
+		t.Errorf("TA MAMA failed to run: %v", err)
+	}
+
+	if res == nil {
+		t.Errorf("TA_MAMA invalid result came back")
+	}
+} // TestTalibMAMA
 
 func TestTalibMIDPOINT(t *testing.T) {
 	runtimeData, err := json.NewRuntimeData("../talib_test.json")

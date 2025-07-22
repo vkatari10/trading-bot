@@ -1,0 +1,627 @@
+{
+    "notes": {
+        "note": "Testing TA-Lib style formatting to support more technicals"
+    },
+    "features": [
+        {
+            "tech": "BBANDS",
+            "args": {
+                "timeperiod": 5,
+                "nbdevup": 2,
+                "nbdevdn": 2,
+                "matype": 0
+            },
+            "name": "TEST_BBANDS"
+        },
+        {
+            "tech": "DEMA",
+            "args": {
+                "timeperiod": 10
+            },
+            "name": "TEST_DEMA"
+        },
+        {
+            "tech": "EMA",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_EMA"
+        },
+        {
+            "tech": "HT_TRENDLINE",
+            "args": {},
+            "name": "TEST_HT_TRENDLINE"
+        },
+        {
+            "tech": "KAMA",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_KAMA"
+        },
+        {
+            "tech": "MA",
+            "args": {
+                "timeperiod": 30,
+                "matype": 0
+            },
+            "name": "TEST_MA"
+        },
+        {
+            "tech": "MAMA",
+            "args": {
+                "fastlimit": 1,
+                "slowlimit": 0
+            },
+            "name": "TEST_MAMA"
+        },
+        {
+            "tech": "MIDPOINT",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_MIDPOINT"
+        },
+        {
+            "tech": "MIDPRICE",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_MIDPRICE"
+        },
+        {
+            "tech": "SAR",
+            "args": {
+                "acceleration": 0,
+                "maximum": 0
+            },
+            "name": "TEST_SAR"
+        },
+        {
+            "tech": "SAREXT",
+            "args": {
+                "startvalue": 0,
+                "offsetonreverse": 0,
+                "accelerationinitlong": 0,
+                "accelerationlong": 0,
+                "accelerationmaxlong": 0,
+                "accelerationinitshort": 0,
+                "accelerationshort": 0,
+                "accelerationmaxshort": 0
+            },
+            "name": "TEST_SAREXT"
+        },
+        {
+            "tech": "SMA",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_SMA"
+        },
+        {
+            "tech": "T3",
+            "args": {
+                "timeperiod": 5,
+                "vfactor": 0
+            },
+            "name": "TEST_T3"
+        },
+        {
+            "tech": "TEMA",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_TEMA"
+        },
+        {
+            "tech": "TRIMA",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_TRIMA"
+        },
+        {
+            "tech": "WMA",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_WMA"
+        },
+        {
+            "tech": "ADX",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_ADX"
+        },
+        {
+            "tech": "ADXR",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_ADXR"
+        },
+        {
+            "tech": "APO",
+            "args": {
+                "fastperiod": 12,
+                "slowperiod": 26,
+                "matype": 0
+            },
+            "name": "TEST_APO"
+        },
+        {
+            "tech": "AROON",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_AROON"
+        },
+        {
+            "tech": "AROONOSC",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_AROONOSC"
+        },
+        {
+            "tech": "BOP",
+            "args": {},
+            "name": "TEST_BOP"
+        },
+        {
+            "tech": "CCI",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_CCI"
+        },
+        {
+            "tech": "CMO",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_CMO"
+        },
+        {
+            "tech": "DX",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_DX"
+        },
+        {
+            "tech": "MACD",
+            "args": {
+                "fastperiod": 12,
+                "slowperiod": 26,
+                "signalperiod": 9
+            },
+            "name": "TEST_MACD"
+        },
+        {
+            "tech": "MACDEXT",
+            "args": {
+                "fastperiod": 12,
+                "fastmatype": 0,
+                "slowperiod": 26,
+                "slowmatype": 0,
+                "signalperiod": 9,
+                "signalmatype": 0
+            },
+            "name": "TEST_MACDEXT"
+        },
+        {
+            "tech": "MACDFIX",
+            "args": {
+                "signalperiod": 9
+            },
+            "name": "TEST_MACDFIX"
+        },
+        {
+            "tech": "MFI",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_MFI"
+        },
+        {
+            "tech": "MINUS_DI",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_MINUS_DI"
+        },
+        {
+            "tech": "MINUS_DM",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_MINUS_DM"
+        },
+        {
+            "tech": "MOM",
+            "args": {
+                "timeperiod": 10
+            },
+            "name": "TEST_MOM"
+        },
+        {
+            "tech": "PLUS_DI",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_PLUS_DI"
+        },
+        {
+            "tech": "PLUS_DM",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_PLUS_DM"
+        },
+        {
+            "tech": "PPO",
+            "args": {
+                "fastperiod": 12,
+                "slowperiod": 26,
+                "matype": 0
+            },
+            "name": "TEST_PPO"
+        },
+        {
+            "tech": "ROC",
+            "args": {
+                "timeperiod": 10
+            },
+            "name": "TEST_ROC"
+        },
+        {
+            "tech": "ROCP",
+            "args": {
+                "timeperiod": 10
+            },
+            "name": "TEST_ROCP"
+        },
+        {
+            "tech": "ROCR",
+            "args": {
+                "timeperiod": 10
+            },
+            "name": "TEST_ROCR"
+        },
+        {
+            "tech": "ROCR100",
+            "args": {
+                "timeperiod": 10
+            },
+            "name": "TEST_ROCR100"
+        },
+        {
+            "tech": "RSI",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_RSI"
+        },
+        {
+            "tech": "STOCH",
+            "args": {
+                "fastk_period": 5,
+                "slowk_period": 3,
+                "slowk_matype": 0,
+                "slowd_period": 3,
+                "slowd_matype": 0
+            },
+            "name": "TEST_STOCH"
+        },
+        {
+            "tech": "STOCHF",
+            "args": {
+                "fastk_period": 5,
+                "fastd_period": 3,
+                "fastd_matype": 0
+            },
+            "name": "TEST_STOCHF"
+        },
+        {
+            "tech": "STOCHRSI",
+            "args": {
+                "timeperiod": 14,
+                "fastk_period": 5,
+                "fastd_period": 3,
+                "fastd_matype": 0
+            },
+            "name": "TEST_STOCHRSI"
+        },
+        {
+            "tech": "TRIX",
+            "args": {
+                "timeperiod": 30
+            },
+            "name": "TEST_TRIX"
+        },
+        {
+            "tech": "ULTOSC",
+            "args": {
+                "timeperiod1": 7,
+                "timeperiod2": 14,
+                "timeperiod3": 28
+            },
+            "name": "TEST_ULTOSC"
+        },
+        {
+            "tech": "WILLR",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_WILLR"
+        },
+        {
+            "tech": "AD",
+            "args": {},
+            "name": "TEST_AD"
+        },
+        {
+            "tech": "ADOSC",
+            "args": {
+                "fastperiod": 3,
+                "slowperiod": 10
+            },
+            "name": "TEST_ADOSC"
+        },
+        {
+            "tech": "OBV",
+            "args": {},
+            "name": "TEST_OBV"
+        },
+        {
+            "tech": "HT_DCPERIOD",
+            "args": {},
+            "name": "TEST_HT_DCPERIOD"
+        },
+        {
+            "tech": "HT_DCPHASE",
+            "args": {},
+            "name": "TEST_HT_DCPHASE"
+        },
+        {
+            "tech": "HT_PHASOR",
+            "args": {},
+            "name": "TEST_HT_PHASOR"
+        },
+        {
+            "tech": "HT_SINE",
+            "args": {},
+            "name": "TEST_HT_SINE"
+        },
+        {
+            "tech": "HT_TRENDMODE",
+            "args": {},
+            "name": "TEST_HT_TRENDMODE"
+        },
+        {
+            "tech": "AVGPRICE",
+            "args": {},
+            "name": "TEST_AVGPRICE"
+        },
+        {
+            "tech": "MEDPRICE",
+            "args": {},
+            "name": "TEST_MEDPRICE"
+        },
+        {
+            "tech": "TYPPRICE",
+            "args": {},
+            "name": "TEST_TYPPRICE"
+        },
+        {
+            "tech": "WCLPRICE",
+            "args": {},
+            "name": "TEST_WCLPRICE"
+        },
+        {
+            "tech": "ATR",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_ATR"
+        },
+        {
+            "tech": "NATR",
+            "args": {
+                "timeperiod": 14
+            },
+            "name": "TEST_NATR"
+        },
+        {
+            "tech": "TRANGE",
+            "args": {},
+            "name": "TEST_TRANGE"
+        },
+        { "tech": "CDL2CROWS", "args": {}, "name": "TEST_CDL2CROWS" },
+        { "tech": "CDL3BLACKCROWS", "args": {}, "name": "TEST_CDL3BLACKCROWS" },
+        { "tech": "CDL3INSIDE", "args": {}, "name": "TEST_CDL3INSIDE" },
+        { "tech": "CDL3LINESTRIKE", "args": {}, "name": "TEST_CDL3LINESTRIKE" },
+        { "tech": "CDL3OUTSIDE", "args": {}, "name": "TEST_CDL3OUTSIDE" },
+        { "tech": "CDL3STARSINSOUTH", "args": {}, "name": "TEST_CDL3STARSINSOUTH" },
+        { "tech": "CDL3WHITESOLDIERS", "args": {}, "name": "TEST_CDL3WHITESOLDIERS" },
+        { "tech": "CDLABANDONEDBABY", "args": { "penetration": 0 }, "name": "TEST_CDLABANDONEDBABY" },
+        { "tech": "CDLADVANCEBLOCK", "args": {}, "name": "TEST_CDLADVANCEBLOCK" },
+        { "tech": "CDLBELTHOLD", "args": {}, "name": "TEST_CDLBELTHOLD" },
+        { "tech": "CDLBREAKAWAY", "args": {}, "name": "TEST_CDЛBREAKAWAY" },
+        { "tech": "CDLCLOSINGMARUBOZU", "args": {}, "name": "TEST_CDLCLOSINGMARUBOZU" },
+        { "tech": "CDLCONCEALBABYSWALL", "args": {}, "name": "TEST_CDLCONCEALBABYSWALL" },
+        { "tech": "CDLCOUNTERATTACK", "args": {}, "name": "TEST_CDLCOUNTERATTACK" },
+        { "tech": "CDLDARKCLOUDCOVER", "args": { "penetration": 0 }, "name": "TEST_CDLDARKCLOUDCOVER" },
+        { "tech": "CDLDOJI", "args": {}, "name": "TEST_CDLDOJI" },
+        { "tech": "CDLDOJISTAR", "args": {}, "name": "TEST_CDLDOJISTAR" },
+        { "tech": "CDLDRAGONFLYDOJI", "args": {}, "name": "TEST_CDLDRAGONFLYDOJI" },
+        { "tech": "CDLENGULFING", "args": {}, "name": "TEST_CDLENGULFING" },
+        { "tech": "CDLEVENINGDOJISTAR", "args": { "penetration": 0 }, "name": "TEST_CDLEVENINGDOJISTAR" },
+        { "tech": "CDLEVENINGSTAR", "args": { "penetration": 0 }, "name": "TEST_CDLEVENINGSTAR" },
+        { "tech": "CDLGAPSIDESIDEWHITE", "args": {}, "name": "TEST_CDLGAPSIDESIDEWHITE" },
+        { "tech": "CDLGRAVESTONEDOJI", "args": {}, "name": "TEST_CDLGRAVESTONEDOJI" },
+        { "tech": "CDLHAMMER", "args": {}, "name": "TEST_CDLHAMMER" },
+        { "tech": "CDLHANGINGMAN", "args": {}, "name": "TEST_CDLHANGINGMAN" },
+        { "tech": "CDLHARAMI", "args": {}, "name": "TEST_CDLHARAMI" },
+        { "tech": "CDLHARAMICROSS", "args": {}, "name": "TEST_CDLHARAMICROSS" },
+        { "tech": "CDLHIGHWAVE", "args": {}, "name": "TEST_CDLHIGHWAVE" },
+        { "tech": "CDLHIKKAKE", "args": {}, "name": "TEST_CDLHIKKAKE" },
+        { "tech": "CDLHIKKAKEMOD", "args": {}, "name": "TEST_CDLHIKKAKEMOD" },
+        { "tech": "CDLHOMINGPIGEON", "args": {}, "name": "TEST_CDLHOMINGPIGEON" },
+        { "tech": "CDLIDENTICAL3CROWS", "args": {}, "name": "TEST_CDLIDENTICAL3CROWS" },
+        { "tech": "CDLINNECK", "args": {}, "name": "TEST_CDLINNECK" },
+        { "tech": "CDLINVERTEDHAMMER", "args": {}, "name": "TEST_CDLINVERTEDHAMMER" },
+        { "tech": "CDLKICKING", "args": {}, "name": "TEST_CDLKICKING" },
+        { "tech": "CDLKICKINGBYLENGTH", "args": {}, "name": "TEST_CDLKICKINGBYLENGTH" },
+        { "tech": "CDLLADDERBOTTOM", "args": {}, "name": "TEST_CDLLADDERBOTTOM" },
+        { "tech": "CDLLONGLEGGEDDOJI", "args": {}, "name": "TEST_CDLLONGLEGGEDDOJI" },
+        { "tech": "CDLLONGLINE", "args": {}, "name": "TEST_CDLLONGLINE" },
+        { "tech": "CDLMARUBOZU", "args": {}, "name": "TEST_CDLMARUBOZU" },
+        { "tech": "CDLMATCHINGLOW", "args": {}, "name": "TEST_CDLMATCHINGLOW" },
+        { "tech": "CDLMATHOLD", "args": { "penetration": 0 }, "name": "TEST_CDLMATHOLD" },
+        { "tech": "CDLMORNINGDOJISTAR", "args": { "penetration": 0 }, "name": "TEST_CDLMORNINGDOJISTAR" },
+        { "tech": "CDLMORNINGSTAR", "args": { "penetration": 0 }, "name": "TEST_CDLMORNINGSTAR" },
+        { "tech": "CDLONNECK", "args": {}, "name": "TEST_CDLONNECK" },
+        { "tech": "CDLPIERCING", "args": {}, "name": "TEST_CDLPIERCING" },
+        { "tech": "CDLRICKSHAWMAN", "args": {}, "name": "TEST_CDLRICKSHAWMAN" },
+        { "tech": "CDLRISEFALL3METHODS", "args": {}, "name": "TEST_CDLRISEFALL3METHODS" },
+        { "tech": "CDLSEPARATINGLINES", "args": {}, "name": "TEST_CDLSEPARATINGLINES" },
+        { "tech": "CDLSHOOTINGSTAR", "args": {}, "name": "TEST_CDLSHOOTINGSTAR" },
+        { "tech": "CDLSHORTLINE", "args": {}, "name": "TEST_CDLSHORTLINE" },
+        { "tech": "CDLSPINNINGTOP", "args": {}, "name": "TEST_CDLSPINNINGTOP" },
+        { "tech": "CDLSTALLEDPATTERN", "args": {}, "name": "TEST_CDLSTALLEDPATTERN" },
+        { "tech": "CDLSTICKSANDWICH", "args": {}, "name": "TEST_CDLSTICKSANDWICH" },
+        { "tech": "CDLTAKURI", "args": {}, "name": "TEST_CDLTAKURI" },
+        { "tech": "CDLTASUKIGAP", "args": {}, "name": "TEST_CDLTASUKIGAP" },
+        { "tech": "CDLTHRUSTING", "args": {}, "name": "TEST_CDLTHRUSTING" },
+        { "tech": "CDLTRISTAR", "args": {}, "name": "TEST_CDLTRISTAR" },
+        { "tech": "CDLUNIQUE3RIVER", "args": {}, "name": "TEST_CDLUNIQUE3RIVER" },
+        { "tech": "CDLUPSIDEGAP2CROWS", "args": {}, "name": "TEST_CDLUPSIDEGAP2CROWS" },
+        { "tech": "CDLXSIDEGAP3METHODS", "args": {}, "name": "TEST_CDLXSIDEGAP3METHODS" },
+        {
+        "tech": "BETA",
+        "args": {
+            "timeperiod": 5
+        },
+        "name": "TEST_BETA"
+        },
+        {
+        "tech": "CORREL",
+        "args": {
+            "timeperiod": 30
+        },
+        "name": "TEST_CORREL"
+        },
+        {
+        "tech": "LINEARREG",
+        "args": {
+            "timeperiod": 14
+        },
+        "name": "TEST_LINEARREG"
+        },
+        {
+        "tech": "LINEARREG_ANGLE",
+        "args": {
+            "timeperiod": 14
+        },
+        "name": "TEST_LINEARREG_ANGLE"
+        },
+        {
+        "tech": "LINEARREG_INTERCEPT",
+        "args": {
+            "timeperiod": 14
+        },
+        "name": "TEST_LINEARREG_INTERCEPT"
+        },
+        {
+        "tech": "LINEARREG_SLOPE",
+        "args": {
+            "timeperiod": 14
+        },
+        "name": "TEST_LINEARREG_SLOPE"
+        },
+        {
+        "tech": "STDDEV",
+        "args": {
+            "timeperiod": 5,
+            "nbdev": 1
+        },
+        "name": "TEST_STDDEV"
+        },
+        {
+        "tech": "TSF",
+        "args": {
+            "timeperiod": 14
+        },
+        "name": "TEST_TSF"
+        },
+        {
+        "tech": "VAR",
+        "args": {
+            "timeperiod": 5,
+            "nbdev": 1
+        },
+        "name": "TEST_VAR"
+        }
+    ],
+    "label_logic": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30"
+        }
+    ],
+    "label_logic_2": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0
+        },
+        {
+            "sig": "above",
+            "name": "SHORT_SMA_ABOVE",
+            "col1": "SMA_10",
+            "col2": "SMA_30",
+            "weight": 1.0,
+            "persist": 2
+        }
+    ],
+    "train_stocks": [
+        "BA",
+        "MSFT"
+    ],
+    "live_trade_stocks": [
+        "AAPL",
+        "AMZN", 
+        "BA"
+    ],
+    "ml_settings": {
+        "model_framework": "xgboost",
+        "scikit_model_type": "RandomForrestClassifier",
+        "model_name": "model_xgb.json",
+        "model_training_timeframe": "1m",   
+        "model_training_interval": "5d",
+        "use_OHLCV_diffs": true,
+        "hyperparameters": {
+            "device": "cpu"
+        }
+    },  
+    "runtime_settings": {
+        "cycle_time": 15,
+        "burn_window_time": 100,
+        "log_api_flush_time": 2000, 
+        "log_to_stdout": true,
+        "run_after_close": false,
+        "override_burn_in": true
+    },
+    "backtest_settings": {
+        "starting_cash": 10000,
+        "commission": 0.00,
+        "position_size": 1
+    } 
+}

@@ -60,297 +60,70 @@ func TA_{func}(
     }} 
 }} // TA_{func}""")
     
-def get_moving_avg_timeperiod_only_high_low_close(func: str) -> str:
-    print(f""" 
-// TA_{func} is a wrapper for the {func} function in TA-Lib
-// single return value only inside index 0
-func TA_{func}(
-    ft Feature,
-    tw *TALIBWrapper,
-) ([]float64, error) {{ 
+def test_func(func: str, i: int) -> str:
+    print(f"""
+func TestTalib{func}(t *testing.T) {{
+	runtimeData, err := json.NewRuntimeData("../talib_test.json")
+	if err != nil {{
+		t.Errorf("failed to create runtimeData Object")
+	}}
 
-    err := C.TA_Initialize()
-    if err != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib failed to initialize")
-    }}
-    defer C.TA_Shutdown()
+	eventloop.OverrideBurnIn(runtimeData)
 
-    f, ok := ft.(FeatureTechnical)
-    if !ok {{
-        return nil, fmt.Errorf("TA_{func}: Provided objects is not a technicals.FeatureTechnical")
-    }}
+	res, err := technicals.TA_{func}( 
+		runtimeData.Objects[{i}],
+		&runtimeData.OHLCV,
+	)
 
-    period := f.Args["timeperiod"]
+	if err != nil {{
+		t.Errorf("TA {func} failed to run: %v", err)
+	}}
 
-    timePeriod := C.int(period)
-
-    output := make([]float64, len(tw.Close))
-    outPtr := (*C.double)(unsafe.Pointer(&output[0]))
-
-    var outBegIdx, outNBElement C.int
-
-    retCode := C.TA_{func}(
-        C.int(0), 
-        C.int(len(tw.Close) - 1),
-        tw.HighPtr,
-        tw.LowPtr,
-        tw.ClosePtr,
-        timePeriod,
-        &outBegIdx,
-        &outNBElement,
-        outPtr,
-    )
-    if retCode != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Computation failed")
-    }}
-
-    if int(outNBElement) == 0 {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Wrote no results")
-    }} else {{
-        return []float64{{output[outNBElement - 1]}}, nil
-    }} 
-}} // TA_{func}""")
-
-def get_moving_avg_timeperiod_only_high_low(func: str) -> str:
-    print(f""" 
-// TA_{func} is a wrapper for the {func} function in TA-Lib
-// single return value only inside index 0
-func TA_{func}(
-    ft Feature,
-    tw *TALIBWrapper,
-) ([]float64, error) {{ 
-
-    err := C.TA_Initialize()
-    if err != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib failed to initialize")
-    }}
-    defer C.TA_Shutdown()
-
-    f, ok := ft.(FeatureTechnical)
-    if !ok {{
-        return nil, fmt.Errorf("TA_{func}: Provided objects is not a technicals.FeatureTechnical")
-    }}
-
-    period := f.Args["timeperiod"]
-
-    timePeriod := C.int(period)
-
-    output := make([]float64, len(tw.Close))
-    outPtr := (*C.double)(unsafe.Pointer(&output[0]))
-
-    var outBegIdx, outNBElement C.int
-
-    retCode := C.TA_{func}(
-        C.int(0), 
-        C.int(len(tw.Close) - 1),
-        tw.HighPtr,
-        tw.LowPtr,
-        tw.ClosePtr,
-        tw.VolumePtr
-        timePeriod,
-        &outBegIdx,
-        &outNBElement,
-        outPtr,
-    )
-    if retCode != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Computation failed")
-    }}
-
-    if int(outNBElement) == 0 {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Wrote no results")
-    }} else {{
-        return []float64{{output[outNBElement - 1]}}, nil
-    }} 
-}} // TA_{func}""")
-    
-def no_args(func: str) -> str:
-    print(f""" 
-// TA_{func} is a wrapper for the {func} function in TA-Lib
-// single return value only inside index 0
-func TA_{func}(
-    ft Feature,
-    tw *TALIBWrapper,
-) ([]float64, error) {{ 
-
-    err := C.TA_Initialize()
-    if err != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib failed to initialize")
-    }}
-    defer C.TA_Shutdown()
-
-    output := make([]float64, len(tw.Close))
-    outPtr := (*C.double)(unsafe.Pointer(&output[0]))
-
-    var outBegIdx, outNBElement C.int
-
-    retCode := C.TA_{func}(
-        C.int(0), 
-        C.int(len(tw.Close) - 1),
-        tw.OpenPtr,
-        tw.HighPtr,
-        tw.LowPtr,
-        tw.ClosePtr,
-        tw.VolumePtr,
-        &outBegIdx,
-        &outNBElement,
-        outPtr,
-    )
-    if retCode != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Computation failed")
-    }}
-
-    if int(outNBElement) == 0 {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Wrote no results")
-    }} else {{
-        return []float64{{output[outNBElement - 1]}}, nil
-    }} 
-}} // TA_{func}""")
+	if res == nil {{
+		t.Errorf("TA_{func} invalid result came back")
+	}}
+}} // TestTalib{func}""")
     
 
-def cycle_indicators(func: str) -> str:
-    print(f""" 
-// TA_{func} is a wrapper for the {func} function in TA-Lib
-// single return value only inside index 0
-func TA_{func}(
-    ft Feature,
-    tw *TALIBWrapper,
-) ([]float64, error) {{ 
 
-    err := C.TA_Initialize()
-    if err != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib failed to initialize")
-    }}
-    defer C.TA_Shutdown()
 
-    output := make([]float64, len(tw.Close))
-    output2 := make([]float64, len(tw.Close))
-    outPtr := (*C.double)(unsafe.Pointer(&output[0]))
-    out2Ptr := (*C.double)(unsafe.Pointer(&output2[0]))
 
-    var outBegIdx, outNBElement C.int
+ta_functions = [
+    "BBANDS", "DEMA", "EMA", "HT_TRENDLINE", "KAMA", "MA", "MAMA", "MIDPOINT",
+    "MIDPRICE", "SAR", "SAREXT", "SMA", "T3", "TEMA", "TRIMA", "WMA",
 
-    retCode := C.TA_{func}(
-        C.int(0), 
-        C.int(len(tw.Close) - 1),
-        tw.ClosePtr,
-        &outBegIdx,
-        &outNBElement,
-        outPtr,
-        out2Ptr,
-    )
-    if retCode != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Computation failed")
-    }}
+    "ADX", "ADXR", "APO", "AROON", "AROONOSC", "BOP", "CCI", "CMO", "DX", "MACD", "MACDEXT",
+    "MACDFIX", "MFI", "MINUS_DI", "MINUS_DM", "MOM", "PLUS_DI", "PLUS_DM", "PPO", "ROC",
+    "ROCP", "ROCR", "ROCR100", "RSI", "STOCH", "STOCHF", "STOCHRSI", "TRIX", "ULTOSC", "WILLR",
 
-    if int(outNBElement) == 0 {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Wrote no results")
-    }} else {{
-        return []float64{{
-            output[outNBElement - 1],
-            output2[outNBElement - 1],
-            }}, nil
-    }} 
-}} // TA_{func}""")
-    
-def pattern_no_args(func: str) -> str:
-    print(f""" 
-// TA_{func} is a wrapper for the {func} function in TA-Lib
-// single return value only inside index 0
-func TA_{func}(
-    ft Feature,
-    tw *TALIBWrapper,
-) ([]float64, error) {{ 
+    "AD", "ADOSC", "OBV",
 
-    err := C.TA_Initialize()
-    if err != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib failed to initialize")
-    }}
-    defer C.TA_Shutdown()
+    "HT_DCPERIOD", "HT_DCPHASE", "HT_PHASOR", "HT_SINE", "HT_TRENDMODE",
 
-    output := make([]int, len(tw.Close))
-    outPtr := (*C.int)(unsafe.Pointer(&output[0]))
+    "AVGPRICE", "MEDPRICE", "TYPPRICE", "WCLPRICE",
 
-    var outBegIdx, outNBElement C.int
+    "ATR", "NATR", "TRANGE",
 
-    retCode := C.TA_{func}(
-        C.int(0), 
-        C.int(len(tw.Close) - 1),
-        tw.OpenPtr,
-        tw.HighPtr,
-        tw.LowPtr,
-        tw.ClosePtr,
-        &outBegIdx,
-        &outNBElement,
-        outPtr,
-    )
-    if retCode != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Computation failed")
-    }}
+    "CDL2CROWS", "CDL3BLACKCROWS", "CDL3INSIDE", "CDL3LINESTRIKE", "CDL3OUTSIDE",
+    "CDL3STARSINSOUTH", "CDL3WHITESOLDIERS", "CDLABANDONEDBABY", "CDLADVANCEBLOCK",
+    "CDLBELTHOLD", "CDLBREAKAWAY", "CDLCLOSINGMARUBOZU", "CDLCONCEALBABYSWALL",
+    "CDLCOUNTERATTACK", "CDLDARKCLOUDCOVER", "CDLDOJI", "CDLDOJISTAR", "CDLDRAGONFLYDOJI",
+    "CDLENGULFING", "CDLEVENINGDOJISTAR", "CDLEVENINGSTAR", "CDLGAPSIDESIDEWHITE",
+    "CDLGRAVESTONEDOJI", "CDLHAMMER", "CDLHANGINGMAN", "CDLHARAMI", "CDLHARAMICROSS",
+    "CDLHIGHWAVE", "CDLHIKKAKE", "CDLHIKKAKEMOD", "CDLHOMINGPIGEON", "CDLIDENTICAL3CROWS",
+    "CDLINNECK", "CDLINVERTEDHAMMER", "CDLKICKING", "CDLKICKINGBYLENGTH", "CDLLADDERBOTTOM",
+    "CDLLONGLEGGEDDOJI", "CDLLONGLINE", "CDLMARUBOZU", "CDLMATCHINGLOW", "CDLMATHOLD",
+    "CDLMORNINGDOJISTAR", "CDLMORNINGSTAR", "CDLONNECK", "CDLPIERCING", "CDLRICKSHAWMAN",
+    "CDLRISEFALL3METHODS", "CDLSEPARATINGLINES", "CDLSHOOTINGSTAR", "CDLSHORTLINE",
+    "CDLSPINNINGTOP", "CDLSTALLEDPATTERN", "CDLSTICKSANDWICH", "CDLTAKURI", "CDLTASUKIGAP",
+    "CDLTHRUSTING", "CDLTRISTAR", "CDLUNIQUE3RIVER", "CDLUPSIDEGAP2CROWS",
+    "CDLXSIDEGAP3METHODS",
 
-    if int(outNBElement) == 0 {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Wrote no results")
-    }} else {{
-        return []float64{{float64(output[outNBElement - 1])}}, nil
-    }} 
-}} // TA_{func}""")
-    
-def pattern_w_penetration(func: str) -> str:
-    print(f""" 
-// TA_{func} is a wrapper for the {func} function in TA-Lib
-// single return value only inside index 0
-func TA_{func}(
-    ft Feature,
-    tw *TALIBWrapper,
-) ([]float64, error) {{ 
-
-    err := C.TA_Initialize()
-    if err != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib failed to initialize")
-    }}
-    defer C.TA_Shutdown()
-
-    f, ok := ft.(FeatureTechnical)
-    if !ok {{
-        return nil, fmt.Errorf("TA_{func}: Provided objects is not a technicals.FeatureTechnical")
-    }}
-
-    penetration := f.Args["penetration"]
-
-    penetrationArg := C.double(penetration)
-
-    output := make([]int, len(tw.Close))
-    outPtr := (*C.int)(unsafe.Pointer(&output[0]))
-
-    var outBegIdx, outNBElement C.int
-
-    retCode := C.TA_{func}(
-        C.int(0), 
-        C.int(len(tw.Close) - 1),
-        tw.OpenPtr,
-        tw.HighPtr,
-        tw.LowPtr,
-        tw.ClosePtr,
-        penetrationArg,
-        &outBegIdx,
-        &outNBElement,
-        outPtr,
-    )
-    if retCode != C.TA_SUCCESS {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Computation failed")
-    }}
-
-    if int(outNBElement) == 0 {{
-        return nil, fmt.Errorf("TA_{func}: TA-Lib Wrote no results")
-    }} else {{
-        return []float64{{float64(output[outNBElement - 1])}}, nil
-    }} 
-}} // TA_{func}""")
-
-args = [
-    
-    "CORREL"    
+    "BETA", "CORREL", "LINEARREG", "LINEARREG_ANGLE", "LINEARREG_INTERCEPT",
+    "LINEARREG_SLOPE", "STDDEV", "TSF", "VAR"
 ]
 
 
-for arg in args:
-    get_moving_avg_timeperiod_only(arg)
+
+for i in range(131):
+    test_func(ta_functions[i], i)

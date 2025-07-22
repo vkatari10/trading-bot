@@ -23,6 +23,8 @@ import (
 
 // UNSUPPORTED METHODS
 // MAVP
+// MAMA
+// ALL MATH TRANSFORMS AND ALL MATH OPERATORS
 
 //==============OVERLAP STUDIES================
 
@@ -63,7 +65,7 @@ func TA_SMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_SMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_SMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -110,7 +112,7 @@ func TA_EMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_EMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_EMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -157,8 +159,9 @@ func TA_DEMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_DEMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_DEMA: TA-Lib Computation failed with code %v", retCode)
     }
+    
 
     if int(outNBElement) == 0 {
         return nil, fmt.Errorf("TA_DEMA: TA-Lib Wrote no results")
@@ -204,7 +207,7 @@ func TA_KAMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_KAMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_KAMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -251,7 +254,7 @@ func TA_MIDPOINT(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MIDPOINT: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MIDPOINT: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -298,7 +301,7 @@ func TA_TEMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_TEMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_TEMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -345,7 +348,7 @@ func TA_TRIMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_TRIMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_TRIMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -392,7 +395,7 @@ func TA_WMA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_WMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_WMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -429,7 +432,7 @@ func TA_HT_TRENDLINE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_HT_TRENDLINE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_HT_TRENDLINE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -479,7 +482,7 @@ func TA_MA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -527,7 +530,7 @@ func TA_MIDPRICE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MIDPRICE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MIDPRICE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -578,7 +581,7 @@ func TA_SAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_SAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_SAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -647,7 +650,7 @@ func TA_SAREXT(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_SAREXT: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_SAREXT: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -702,7 +705,7 @@ func TA_T3(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_T3: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_T3: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -756,7 +759,7 @@ func TA_MAMA(
         famaPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MAMA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MAMA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -820,7 +823,7 @@ func TA_BBANDS(
         lowerPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_BBANDS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_BBANDS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -873,7 +876,7 @@ func TA_CMO(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CMO: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CMO: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -920,7 +923,7 @@ func TA_MOM(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MOM: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MOM: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -967,7 +970,7 @@ func TA_ROC(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ROC: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ROC: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1014,7 +1017,7 @@ func TA_ROCP(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ROCP: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ROCP: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1061,7 +1064,7 @@ func TA_ROCR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ROCR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ROCR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1108,7 +1111,7 @@ func TA_ROCR100(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ROCR100: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ROCR100: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1155,7 +1158,7 @@ func TA_RSI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_RSI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_RSI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1202,7 +1205,7 @@ func TA_TRIX(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_TRIX: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_TRIX: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1251,7 +1254,7 @@ func TA_ADX(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ADX: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ADX: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1300,7 +1303,7 @@ func TA_ADXR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ADXR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ADXR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1349,7 +1352,7 @@ func TA_CCI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CCI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CCI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1398,7 +1401,7 @@ func TA_DX(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_DX: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_DX: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1447,7 +1450,7 @@ func TA_MINUS_DI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MINUS_DI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MINUS_DI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1496,7 +1499,7 @@ func TA_PLUS_DI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_PLUS_DI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_PLUS_DI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1545,7 +1548,7 @@ func TA_WILLR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_WILLR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_WILLR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1598,7 +1601,7 @@ func TA_AROON(
         downPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_AROON: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_AROON: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1649,7 +1652,7 @@ func TA_AROONOSC(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_AROONOSC: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_AROONOSC: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1697,7 +1700,7 @@ func TA_MINUS_DM(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MINUS_DM: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MINUS_DM: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1745,7 +1748,7 @@ func TA_PLUS_DM(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_PLUS_DM: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_PLUS_DM: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1796,7 +1799,7 @@ func TA_MFI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MFI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MFI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1851,7 +1854,7 @@ func TA_ULTOSC(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ULTOSC: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ULTOSC: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1904,7 +1907,7 @@ func TA_APO(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_APO: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_APO: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1944,7 +1947,7 @@ func TA_BOP(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_BOP: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_BOP: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -1997,7 +2000,7 @@ func TA_MACDFIX(
         macdHistPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MACDFIX: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MACDFIX: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2061,7 +2064,7 @@ func TA_MACD(
         macdHistPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MACD: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MACD: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2136,7 +2139,7 @@ func TA_MACDEXT(
         macdHistPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MACDEXT: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MACDEXT: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2192,7 +2195,7 @@ func TA_PPO(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_PPO: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_PPO: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2257,7 +2260,7 @@ func TA_STOCH(
         slowdPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_STOCH: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_STOCH: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2318,7 +2321,7 @@ func TA_STOCHF(
         slowdPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_STOCHF: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_STOCHF: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2333,7 +2336,7 @@ func TA_STOCHF(
 
 // TA_STOCHRSI is a wrapper for the STOCHRSI function in TA-Lib
 // return [fastk, fastd]
-func TA_STOCRSI(
+func TA_STOCHRSI(
     ft Feature,
     tw *TALIBWrapper,
 ) ([]float64, error) { 
@@ -2381,7 +2384,7 @@ func TA_STOCRSI(
         slowdPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_STOCHRSI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_STOCHRSI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2426,7 +2429,7 @@ func TA_AD(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_AD: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_AD: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2464,7 +2467,7 @@ func TA_OBV(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_OBV: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_OBV: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2517,7 +2520,7 @@ func TA_ADOSC(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ADOSC: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ADOSC: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2555,7 +2558,7 @@ func TA_HT_DCPERIOD(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_HT_DCPERIOD: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_HT_DCPERIOD: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2592,7 +2595,7 @@ func TA_HT_DCPHASE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_HT_DCPHASE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_HT_DCPHASE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2629,7 +2632,7 @@ func TA_HT_TRENDMODE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_HT_TRENDMODE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_HT_TRENDMODE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2670,7 +2673,7 @@ func TA_HT_PHASOR(
         out2Ptr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_HT_PHASOR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_HT_PHASOR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2713,7 +2716,7 @@ func TA_HT_SINE(
         out2Ptr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_HT_SINE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_HT_SINE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2758,7 +2761,7 @@ func TA_AVGPRICE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_AVGPRICE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_AVGPRICE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2796,7 +2799,7 @@ func TA_MEDPRICE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_MEDPRICE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_MEDPRICE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2835,7 +2838,7 @@ func TA_TYPPRICE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_TYPPRICE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_TYPPRICE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2874,7 +2877,7 @@ func TA_WCLPRICE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_WCLPRICE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_WCLPRICE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2915,7 +2918,7 @@ func TA_TRANGE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_TRANGE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_TRANGE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -2964,7 +2967,7 @@ func TA_ATR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_ATR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_ATR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3013,7 +3016,7 @@ func TA_NATR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_NATR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_NATR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3055,7 +3058,7 @@ func TA_CDL2CROWS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL2CROWS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL2CROWS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3095,7 +3098,7 @@ func TA_CDL3BLACKCROWS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL3BLACKCROWS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL3BLACKCROWS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3135,7 +3138,7 @@ func TA_CDL3INSIDE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL3INSIDE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL3INSIDE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3175,7 +3178,7 @@ func TA_CDL3LINESTRIKE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL3LINESTRIKE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL3LINESTRIKE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3215,7 +3218,7 @@ func TA_CDL3OUTSIDE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL3OUTSIDE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL3OUTSIDE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3255,7 +3258,7 @@ func TA_CDL3STARSINSOUTH(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL3STARSINSOUTH: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL3STARSINSOUTH: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3295,7 +3298,7 @@ func TA_CDL3WHITESOLDIERS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDL3WHITESOLDIERS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDL3WHITESOLDIERS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3335,7 +3338,7 @@ func TA_CDLADVANCEBLOCK(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLADVANCEBLOCK: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLADVANCEBLOCK: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3375,7 +3378,7 @@ func TA_CDLBELTHOLD(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLBELTHOLD: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLBELTHOLD: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3415,7 +3418,7 @@ func TA_CDLBREAKAWAY(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLBREAKAWAY: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLBREAKAWAY: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3455,7 +3458,7 @@ func TA_CDLCLOSINGMARUBOZU(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLCLOSINGMARUBOZU: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLCLOSINGMARUBOZU: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3495,7 +3498,7 @@ func TA_CDLCONCEALBABYSWALL(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLCONCEALBABYSWALL: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLCONCEALBABYSWALL: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3535,7 +3538,7 @@ func TA_CDLCOUNTERATTACK(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLCOUNTERATTACK: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLCOUNTERATTACK: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3575,7 +3578,7 @@ func TA_CDLDOJI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLDOJI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLDOJI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3615,7 +3618,7 @@ func TA_CDLDOJISTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLDOJISTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLDOJISTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3655,7 +3658,7 @@ func TA_CDLDRAGONFLYDOJI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLDRAGONFLYDOJI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLDRAGONFLYDOJI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3695,7 +3698,7 @@ func TA_CDLENGULFING(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLENGULFING: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLENGULFING: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3735,7 +3738,7 @@ func TA_CDLGAPSIDESIDEWHITE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLGAPSIDESIDEWHITE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLGAPSIDESIDEWHITE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3775,7 +3778,7 @@ func TA_CDLGRAVESTONEDOJI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLGRAVESTONEDOJI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLGRAVESTONEDOJI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3815,7 +3818,7 @@ func TA_CDLHAMMER(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHAMMER: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHAMMER: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3855,7 +3858,7 @@ func TA_CDLHANGINGMAN(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHANGINGMAN: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHANGINGMAN: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3895,7 +3898,7 @@ func TA_CDLHARAMI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHARAMI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHARAMI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3935,7 +3938,7 @@ func TA_CDLHARAMICROSS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHARAMICROSS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHARAMICROSS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -3975,7 +3978,7 @@ func TA_CDLHIGHWAVE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHIGHWAVE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHIGHWAVE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4015,7 +4018,7 @@ func TA_CDLHIKKAKE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHIKKAKE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHIKKAKE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4055,7 +4058,7 @@ func TA_CDLHIKKAKEMOD(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHIKKAKEMOD: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHIKKAKEMOD: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4095,7 +4098,7 @@ func TA_CDLHOMINGPIGEON(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLHOMINGPIGEON: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLHOMINGPIGEON: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4135,7 +4138,7 @@ func TA_CDLIDENTICAL3CROWS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLIDENTICAL3CROWS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLIDENTICAL3CROWS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4175,7 +4178,7 @@ func TA_CDLINNECK(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLINNECK: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLINNECK: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4215,7 +4218,7 @@ func TA_CDLINVERTEDHAMMER(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLINVERTEDHAMMER: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLINVERTEDHAMMER: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4255,7 +4258,7 @@ func TA_CDLKICKING(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLKICKING: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLKICKING: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4295,7 +4298,7 @@ func TA_CDLKICKINGBYLENGTH(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLKICKINGBYLENGTH: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLKICKINGBYLENGTH: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4335,7 +4338,7 @@ func TA_CDLLADDERBOTTOM(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLLADDERBOTTOM: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLLADDERBOTTOM: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4375,7 +4378,7 @@ func TA_CDLLONGLEGGEDDOJI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLLONGLEGGEDDOJI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLLONGLEGGEDDOJI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4415,7 +4418,7 @@ func TA_CDLLONGLINE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLLONGLINE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLLONGLINE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4455,7 +4458,7 @@ func TA_CDLMARUBOZU(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLMARUBOZU: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLMARUBOZU: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4495,7 +4498,7 @@ func TA_CDLMATCHINGLOW(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLMATCHINGLOW: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLMATCHINGLOW: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4535,7 +4538,7 @@ func TA_CDLONNECK(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLONNECK: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLONNECK: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4575,7 +4578,7 @@ func TA_CDLPIERCING(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLPIERCING: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLPIERCING: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4615,7 +4618,7 @@ func TA_CDLRICKSHAWMAN(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLRICKSHAWMAN: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLRICKSHAWMAN: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4655,7 +4658,7 @@ func TA_CDLRISEFALL3METHODS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLRISEFALL3METHODS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLRISEFALL3METHODS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4695,7 +4698,7 @@ func TA_CDLSEPARATINGLINES(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLSEPARATINGLINES: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLSEPARATINGLINES: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4735,7 +4738,7 @@ func TA_CDLSHOOTINGSTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLSHOOTINGSTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLSHOOTINGSTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4775,7 +4778,7 @@ func TA_CDLSHORTLINE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLSHORTLINE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLSHORTLINE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4815,7 +4818,7 @@ func TA_CDLSPINNINGTOP(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLSPINNINGTOP: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLSPINNINGTOP: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4855,7 +4858,7 @@ func TA_CDLSTALLEDPATTERN(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLSTALLEDPATTERN: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLSTALLEDPATTERN: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4895,7 +4898,7 @@ func TA_CDLSTICKSANDWICH(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLSTICKSANDWICH: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLSTICKSANDWICH: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4935,7 +4938,7 @@ func TA_CDLTAKURI(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLTAKURI: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLTAKURI: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -4975,7 +4978,7 @@ func TA_CDLTASUKIGAP(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLTASUKIGAP: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLTASUKIGAP: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5015,7 +5018,7 @@ func TA_CDLTHRUSTING(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLTHRUSTING: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLTHRUSTING: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5055,7 +5058,7 @@ func TA_CDLTRISTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLTRISTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLTRISTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5095,7 +5098,7 @@ func TA_CDLUNIQUE3RIVER(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLUNIQUE3RIVER: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLUNIQUE3RIVER: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5135,7 +5138,7 @@ func TA_CDLUPSIDEGAP2CROWS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLUPSIDEGAP2CROWS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLUPSIDEGAP2CROWS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5175,7 +5178,7 @@ func TA_CDLXSIDEGAP3METHODS(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLXSIDEGAP3METHODS: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLXSIDEGAP3METHODS: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5226,7 +5229,7 @@ func TA_CDLABANDONEDBABY(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLABANDONEDBABY: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLABANDONEDBABY: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5276,7 +5279,7 @@ func TA_CDLDARKCLOUDCOVER(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLDARKCLOUDCOVER: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLDARKCLOUDCOVER: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5326,7 +5329,7 @@ func TA_CDLEVENINGDOJISTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLEVENINGDOJISTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLEVENINGDOJISTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5376,7 +5379,7 @@ func TA_CDLEVENINGSTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLEVENINGSTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLEVENINGSTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5426,7 +5429,7 @@ func TA_CDLMATHOLD(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLMATHOLD: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLMATHOLD: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5476,7 +5479,7 @@ func TA_CDLMORNINGDOJISTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLMORNINGDOJISTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLMORNINGDOJISTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5526,7 +5529,7 @@ func TA_CDLMORNINGSTAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CDLMORNINGSTAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CDLMORNINGSTAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5576,7 +5579,7 @@ func TA_LINEARREG(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_LINEARREG: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_LINEARREG: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5623,7 +5626,7 @@ func TA_LINEARREG_ANGLE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_LINEARREG_ANGLE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_LINEARREG_ANGLE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5670,7 +5673,7 @@ func TA_LINEARREG_INTERCEPT(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_LINEARREG_INTERCEPT: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_LINEARREG_INTERCEPT: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5717,7 +5720,7 @@ func TA_LINEARREG_SLOPE(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_LINEARREG_SLOPE: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_LINEARREG_SLOPE: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5764,7 +5767,7 @@ func TA_TSF(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_TSF: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_TSF: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5815,7 +5818,7 @@ func TA_VAR(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_VAR: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_VAR: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5865,7 +5868,7 @@ func TA_STDDEV(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_STDDEV: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_STDDEV: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5914,7 +5917,7 @@ func TA_BETA(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_BETA: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_BETA: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
@@ -5963,7 +5966,7 @@ func TA_CORREL(
         outPtr,
     )
     if retCode != C.TA_SUCCESS {
-        return nil, fmt.Errorf("TA_CORREL: TA-Lib Computation failed")
+        return nil, fmt.Errorf("TA_CORREL: TA-Lib Computation failed with code %v", retCode)
     }
 
     if int(outNBElement) == 0 {
