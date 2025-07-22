@@ -62,7 +62,7 @@ func burnIn(rd *technicals.RuntimeData, ticker string) (error) {
 	rd.SetAllPointersToIndex(0)
 
 	// find deltas
-	rd.UpdateDeltas()
+	rd.UpdateOHLCVDeltas()
 	
 	return nil
 } // BurnIn
@@ -98,5 +98,5 @@ func OverrideBurnIn(rd *technicals.RuntimeData) { // RENAME METHOD TO BE UNEXPOR
 	rd.SetAllPointersToIndex(0)
 
 	// find deltas
-	rd.UpdateDeltas()
+	rd.UpdateOHLCVDeltas()
 } // OverrideBurnIn

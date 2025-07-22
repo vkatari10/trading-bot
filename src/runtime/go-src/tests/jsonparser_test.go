@@ -37,4 +37,17 @@ func TestNewRuntimeData(t *testing.T) {
 	if data.RuntimeSettings.CycleTime != wantCycleTime || data.RuntimeSettings.OverrideBurnIn != wantOverride {
 		t.Errorf("TestNewRuntimeData runtime settings do not match expected values")
 	}
+
+
+	if len(data.Relationships) == 0 {
+		t.Errorf("TestNewRuntimeData relationships array was not initialized properly")
+	}
+
+	if len(data.OtherFeatureTechnicals) == 0 {
+		t.Errorf("TestNewRuntimeData other feature technicals array was not initialized properly")
+	}
+
+	if len(data.TALIBFeatureTechnicals) == 0 {
+		t.Errorf("TestNewRuntimeData TALIB features technicals were not initialized properly")
+	}
 }

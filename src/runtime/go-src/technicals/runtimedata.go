@@ -8,12 +8,23 @@ package technicals
 
 import "C"
 import (
+	"fmt"
 	"unsafe"
 )
 
 const (
 	CapLimitMultiplier = 2
 )
+
+/*
+GENERAL FLOW
+
+1. PopLeft()
+2. AppendNewOHLCV()
+3. UpdateTALIBTechnicals()
+4. UpdateOtherTechnicals()
+5. UpdateRelationships()
+*/
 
 // CopySlice copies the Slice to reduce the capacity
 // of the underlying array
@@ -69,7 +80,7 @@ func (rd *RuntimeData) CopyArrays() {
 } // CopyArrays
 
 // UpdateDeltas updates the delta values for every OHLCV array
-func (rd *RuntimeData) UpdateDeltas() {
+func (rd *RuntimeData) UpdateOHLCVDeltas() {
 	len := rd.RuntimeSettings.BurnTime
 	rd.OHLCV.OpenDelta = rd.OHLCV.Open[len-1] - rd.OHLCV.Open[len-2]
 	rd.OHLCV.HighDelta = rd.OHLCV.High[len-1] - rd.OHLCV.High[len-2]
@@ -122,3 +133,49 @@ func (rd *RuntimeData) TestAppend(val float64) {
 	rd.OHLCV.Close = append(rd.OHLCV.Close, val)
 	rd.OHLCV.Volume = append(rd.OHLCV.Volume, val)
 } // TestAppend
+
+// UpdateTALIBTechnicals updates the rd.TALIBTechnicals
+// object after the rd.OHLCV arrays have been updated
+func (rd *RuntimeData) UpdateTALIBTechnicals() error {
+	for i := range rd.TALIBFeatureTechnicals {
+
+
+		obj := &rd.TALIBFeatureTechnicals[i]
+
+		// TODO: See issue #38
+		res, err := talibDispatch[obj.Technical](Feature(*obj), &rd.OHLCV)
+		if err != nil {
+			return fmt.Errorf("%v", err)
+		}
+
+		obj.Value = res[0]
+	}
+	return nil
+} // UpdateTALIBTechnicals
+
+// UpdateOtherTechnicals updates the rd.OhterTechincals
+// array after UpdateTALIBTechnicals() has been called
+func (rd *RuntimeData) UpdateOtherTechnicals() error {
+	for i := range rd.OtherFeatureTechnicals {
+
+		obj := &rd.OtherFeatureTechnicals[i]
+
+		if obj.Technical == "diff" {
+			obj.Value = rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col1]].Value - rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col2]].Value
+		} else { /// delta
+			if obj.Col2 == "" { // single col
+				obj.Value -= rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col1]].Value
+			} else { // delta of differences
+				obj.Value -= rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col1]].Value - rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col2]].Value
+			}
+		}
+	}
+
+	return nil
+} // UpdateOtherTechnicals
+
+// UpdateOtherTechnicals updates the rd.Relationships
+// array after UpdateOtherTechnicals() has been called
+func (rd *RuntimeData) UpdateRelationships() error {
+	return nil
+} // UpdateOtherTechnicals

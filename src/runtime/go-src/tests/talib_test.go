@@ -5,6 +5,8 @@ import (
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 	json "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
 	eventloop "github.com/vkatari10/trading-bot/src/runtime/go-src/eventloop"
+	"log"
+	"time"
 )
 
 // func TestTalibSMA(t *testing.T) {
@@ -30,6 +32,7 @@ import (
 // } // TestTalibSMA
 
 
+
 func TestTalibBBANDS(t *testing.T) {
 	runtimeData, err := json.NewRuntimeData("../talib_test.json")
 	if err != nil {
@@ -38,10 +41,13 @@ func TestTalibBBANDS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_BBANDS( 
-		runtimeData.Objects[0],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[0]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_BBANDS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA BBANDS failed to run: %v", err)
@@ -60,10 +66,13 @@ func TestTalibDEMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_DEMA( 
-		runtimeData.Objects[1],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[1]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_DEMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA DEMA failed to run: %v", err)
@@ -82,10 +91,13 @@ func TestTalibEMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_EMA( 
-		runtimeData.Objects[2],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[2]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_EMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA EMA failed to run: %v", err)
@@ -104,10 +116,13 @@ func TestTalibHT_TRENDLINE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_HT_TRENDLINE( 
-		runtimeData.Objects[3],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[3]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_HT_TRENDLINE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA HT_TRENDLINE failed to run: %v", err)
@@ -126,10 +141,13 @@ func TestTalibKAMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_KAMA( 
-		runtimeData.Objects[4],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[4]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_KAMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA KAMA failed to run: %v", err)
@@ -148,10 +166,13 @@ func TestTalibMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MA( 
-		runtimeData.Objects[5],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[5]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MA failed to run: %v", err)
@@ -170,10 +191,13 @@ func TestTalibMIDPOINT(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MIDPOINT( 
-		runtimeData.Objects[7],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[7]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MIDPOINT execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MIDPOINT failed to run: %v", err)
@@ -192,10 +216,13 @@ func TestTalibMIDPRICE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MIDPRICE( 
-		runtimeData.Objects[8],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[8]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MIDPRICE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MIDPRICE failed to run: %v", err)
@@ -214,10 +241,13 @@ func TestTalibSAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_SAR( 
-		runtimeData.Objects[9],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[9]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_SAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA SAR failed to run: %v", err)
@@ -236,10 +266,13 @@ func TestTalibSAREXT(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_SAREXT( 
-		runtimeData.Objects[10],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[10]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_SAREXT execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA SAREXT failed to run: %v", err)
@@ -258,10 +291,13 @@ func TestTalibSMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_SMA( 
-		runtimeData.Objects[11],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[11]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_SMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA SMA failed to run: %v", err)
@@ -280,10 +316,13 @@ func TestTalibT3(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_T3( 
-		runtimeData.Objects[12],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[12]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_T3 execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA T3 failed to run: %v", err)
@@ -302,10 +341,13 @@ func TestTalibTEMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_TEMA( 
-		runtimeData.Objects[13],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[13]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_TEMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA TEMA failed to run: %v", err)
@@ -324,10 +366,13 @@ func TestTalibTRIMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_TRIMA( 
-		runtimeData.Objects[14],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[14]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_TRIMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA TRIMA failed to run: %v", err)
@@ -346,10 +391,13 @@ func TestTalibWMA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_WMA( 
-		runtimeData.Objects[15],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[15]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_WMA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA WMA failed to run: %v", err)
@@ -368,10 +416,13 @@ func TestTalibADX(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ADX( 
-		runtimeData.Objects[16],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[16]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ADX execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ADX failed to run: %v", err)
@@ -390,10 +441,13 @@ func TestTalibADXR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ADXR( 
-		runtimeData.Objects[17],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[17]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ADXR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ADXR failed to run: %v", err)
@@ -412,10 +466,13 @@ func TestTalibAPO(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_APO( 
-		runtimeData.Objects[18],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[18]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_APO execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA APO failed to run: %v", err)
@@ -434,10 +491,13 @@ func TestTalibAROON(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_AROON( 
-		runtimeData.Objects[19],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[19]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_AROON execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA AROON failed to run: %v", err)
@@ -456,10 +516,13 @@ func TestTalibAROONOSC(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_AROONOSC( 
-		runtimeData.Objects[20],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[20]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_AROONOSC execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA AROONOSC failed to run: %v", err)
@@ -478,10 +541,13 @@ func TestTalibBOP(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_BOP( 
-		runtimeData.Objects[21],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[21]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_BOP execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA BOP failed to run: %v", err)
@@ -500,10 +566,13 @@ func TestTalibCCI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CCI( 
-		runtimeData.Objects[22],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[22]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CCI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CCI failed to run: %v", err)
@@ -522,10 +591,13 @@ func TestTalibCMO(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CMO( 
-		runtimeData.Objects[23],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[23]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CMO execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CMO failed to run: %v", err)
@@ -544,10 +616,13 @@ func TestTalibDX(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_DX( 
-		runtimeData.Objects[24],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[24]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_DX execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA DX failed to run: %v", err)
@@ -566,10 +641,13 @@ func TestTalibMACD(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MACD( 
-		runtimeData.Objects[25],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[25]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MACD execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MACD failed to run: %v", err)
@@ -588,10 +666,13 @@ func TestTalibMACDEXT(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MACDEXT( 
-		runtimeData.Objects[26],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[26]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MACDEXT execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MACDEXT failed to run: %v", err)
@@ -610,10 +691,13 @@ func TestTalibMACDFIX(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MACDFIX( 
-		runtimeData.Objects[27],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[27]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MACDFIX execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MACDFIX failed to run: %v", err)
@@ -632,10 +716,13 @@ func TestTalibMFI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MFI( 
-		runtimeData.Objects[28],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[28]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MFI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MFI failed to run: %v", err)
@@ -654,10 +741,13 @@ func TestTalibMINUS_DI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MINUS_DI( 
-		runtimeData.Objects[29],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[29]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MINUS_DI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MINUS_DI failed to run: %v", err)
@@ -676,10 +766,13 @@ func TestTalibMINUS_DM(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MINUS_DM( 
-		runtimeData.Objects[30],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[30]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MINUS_DM execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MINUS_DM failed to run: %v", err)
@@ -698,10 +791,13 @@ func TestTalibMOM(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MOM( 
-		runtimeData.Objects[31],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[31]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MOM execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MOM failed to run: %v", err)
@@ -720,10 +816,13 @@ func TestTalibPLUS_DI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_PLUS_DI( 
-		runtimeData.Objects[32],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[32]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_PLUS_DI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA PLUS_DI failed to run: %v", err)
@@ -742,10 +841,13 @@ func TestTalibPLUS_DM(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_PLUS_DM( 
-		runtimeData.Objects[33],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[33]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_PLUS_DM execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA PLUS_DM failed to run: %v", err)
@@ -764,10 +866,13 @@ func TestTalibPPO(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_PPO( 
-		runtimeData.Objects[34],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[34]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_PPO execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA PPO failed to run: %v", err)
@@ -786,10 +891,13 @@ func TestTalibROC(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ROC( 
-		runtimeData.Objects[35],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[35]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ROC execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ROC failed to run: %v", err)
@@ -808,10 +916,13 @@ func TestTalibROCP(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ROCP( 
-		runtimeData.Objects[36],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[36]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ROCP execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ROCP failed to run: %v", err)
@@ -830,10 +941,13 @@ func TestTalibROCR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ROCR( 
-		runtimeData.Objects[37],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[37]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ROCR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ROCR failed to run: %v", err)
@@ -852,10 +966,13 @@ func TestTalibROCR100(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ROCR100( 
-		runtimeData.Objects[38],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[38]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ROCR100 execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ROCR100 failed to run: %v", err)
@@ -874,10 +991,13 @@ func TestTalibRSI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_RSI( 
-		runtimeData.Objects[39],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[39]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_RSI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA RSI failed to run: %v", err)
@@ -896,10 +1016,13 @@ func TestTalibSTOCH(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_STOCH( 
-		runtimeData.Objects[40],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[40]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_STOCH execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA STOCH failed to run: %v", err)
@@ -918,10 +1041,13 @@ func TestTalibSTOCHF(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_STOCHF( 
-		runtimeData.Objects[41],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[41]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_STOCHF execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA STOCHF failed to run: %v", err)
@@ -940,10 +1066,13 @@ func TestTalibSTOCHRSI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_STOCHRSI( 
-		runtimeData.Objects[42],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[42]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_STOCHRSI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA STOCHRSI failed to run: %v", err)
@@ -962,10 +1091,13 @@ func TestTalibTRIX(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_TRIX( 
-		runtimeData.Objects[43],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[43]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_TRIX execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA TRIX failed to run: %v", err)
@@ -984,10 +1116,13 @@ func TestTalibULTOSC(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ULTOSC( 
-		runtimeData.Objects[44],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[44]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ULTOSC execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ULTOSC failed to run: %v", err)
@@ -1006,10 +1141,13 @@ func TestTalibWILLR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_WILLR( 
-		runtimeData.Objects[45],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[45]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_WILLR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA WILLR failed to run: %v", err)
@@ -1028,10 +1166,13 @@ func TestTalibAD(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_AD( 
-		runtimeData.Objects[46],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[46]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_AD execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA AD failed to run: %v", err)
@@ -1050,10 +1191,13 @@ func TestTalibADOSC(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ADOSC( 
-		runtimeData.Objects[47],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[47]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ADOSC execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ADOSC failed to run: %v", err)
@@ -1072,10 +1216,13 @@ func TestTalibOBV(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_OBV( 
-		runtimeData.Objects[48],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[48]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_OBV execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA OBV failed to run: %v", err)
@@ -1094,10 +1241,13 @@ func TestTalibHT_DCPERIOD(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_HT_DCPERIOD( 
-		runtimeData.Objects[49],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[49]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_HT_DCPERIOD execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA HT_DCPERIOD failed to run: %v", err)
@@ -1116,10 +1266,13 @@ func TestTalibHT_DCPHASE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_HT_DCPHASE( 
-		runtimeData.Objects[50],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[50]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_HT_DCPHASE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA HT_DCPHASE failed to run: %v", err)
@@ -1138,10 +1291,13 @@ func TestTalibHT_PHASOR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_HT_PHASOR( 
-		runtimeData.Objects[51],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[51]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_HT_PHASOR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA HT_PHASOR failed to run: %v", err)
@@ -1160,10 +1316,13 @@ func TestTalibHT_SINE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_HT_SINE( 
-		runtimeData.Objects[52],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[52]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_HT_SINE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA HT_SINE failed to run: %v", err)
@@ -1182,10 +1341,13 @@ func TestTalibHT_TRENDMODE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_HT_TRENDMODE( 
-		runtimeData.Objects[53],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[53]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_HT_TRENDMODE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA HT_TRENDMODE failed to run: %v", err)
@@ -1204,10 +1366,13 @@ func TestTalibAVGPRICE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_AVGPRICE( 
-		runtimeData.Objects[54],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[54]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_AVGPRICE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA AVGPRICE failed to run: %v", err)
@@ -1226,10 +1391,13 @@ func TestTalibMEDPRICE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_MEDPRICE( 
-		runtimeData.Objects[55],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[55]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_MEDPRICE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA MEDPRICE failed to run: %v", err)
@@ -1248,10 +1416,13 @@ func TestTalibTYPPRICE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_TYPPRICE( 
-		runtimeData.Objects[56],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[56]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_TYPPRICE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA TYPPRICE failed to run: %v", err)
@@ -1270,10 +1441,13 @@ func TestTalibWCLPRICE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_WCLPRICE( 
-		runtimeData.Objects[57],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[57]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_WCLPRICE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA WCLPRICE failed to run: %v", err)
@@ -1292,10 +1466,13 @@ func TestTalibATR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_ATR( 
-		runtimeData.Objects[58],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[58]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_ATR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA ATR failed to run: %v", err)
@@ -1314,10 +1491,13 @@ func TestTalibNATR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_NATR( 
-		runtimeData.Objects[59],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[59]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_NATR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA NATR failed to run: %v", err)
@@ -1336,10 +1516,13 @@ func TestTalibTRANGE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_TRANGE( 
-		runtimeData.Objects[60],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[60]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_TRANGE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA TRANGE failed to run: %v", err)
@@ -1358,10 +1541,13 @@ func TestTalibCDL2CROWS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL2CROWS( 
-		runtimeData.Objects[61],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[61]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL2CROWS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL2CROWS failed to run: %v", err)
@@ -1380,10 +1566,13 @@ func TestTalibCDL3BLACKCROWS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL3BLACKCROWS( 
-		runtimeData.Objects[62],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[62]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL3BLACKCROWS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL3BLACKCROWS failed to run: %v", err)
@@ -1402,10 +1591,13 @@ func TestTalibCDL3INSIDE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL3INSIDE( 
-		runtimeData.Objects[63],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[63]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL3INSIDE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL3INSIDE failed to run: %v", err)
@@ -1424,10 +1616,13 @@ func TestTalibCDL3LINESTRIKE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL3LINESTRIKE( 
-		runtimeData.Objects[64],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[64]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL3LINESTRIKE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL3LINESTRIKE failed to run: %v", err)
@@ -1446,10 +1641,13 @@ func TestTalibCDL3OUTSIDE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL3OUTSIDE( 
-		runtimeData.Objects[65],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[65]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL3OUTSIDE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL3OUTSIDE failed to run: %v", err)
@@ -1468,10 +1666,13 @@ func TestTalibCDL3STARSINSOUTH(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL3STARSINSOUTH( 
-		runtimeData.Objects[66],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[66]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL3STARSINSOUTH execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL3STARSINSOUTH failed to run: %v", err)
@@ -1490,10 +1691,13 @@ func TestTalibCDL3WHITESOLDIERS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDL3WHITESOLDIERS( 
-		runtimeData.Objects[67],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[67]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDL3WHITESOLDIERS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDL3WHITESOLDIERS failed to run: %v", err)
@@ -1512,10 +1716,13 @@ func TestTalibCDLABANDONEDBABY(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLABANDONEDBABY( 
-		runtimeData.Objects[68],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[68]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLABANDONEDBABY execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLABANDONEDBABY failed to run: %v", err)
@@ -1534,10 +1741,13 @@ func TestTalibCDLADVANCEBLOCK(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLADVANCEBLOCK( 
-		runtimeData.Objects[69],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[69]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLADVANCEBLOCK execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLADVANCEBLOCK failed to run: %v", err)
@@ -1556,10 +1766,13 @@ func TestTalibCDLBELTHOLD(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLBELTHOLD( 
-		runtimeData.Objects[70],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[70]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLBELTHOLD execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLBELTHOLD failed to run: %v", err)
@@ -1578,10 +1791,13 @@ func TestTalibCDLBREAKAWAY(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLBREAKAWAY( 
-		runtimeData.Objects[71],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[71]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLBREAKAWAY execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLBREAKAWAY failed to run: %v", err)
@@ -1600,10 +1816,13 @@ func TestTalibCDLCLOSINGMARUBOZU(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLCLOSINGMARUBOZU( 
-		runtimeData.Objects[72],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[72]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLCLOSINGMARUBOZU execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLCLOSINGMARUBOZU failed to run: %v", err)
@@ -1622,10 +1841,13 @@ func TestTalibCDLCONCEALBABYSWALL(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLCONCEALBABYSWALL( 
-		runtimeData.Objects[73],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[73]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLCONCEALBABYSWALL execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLCONCEALBABYSWALL failed to run: %v", err)
@@ -1644,10 +1866,13 @@ func TestTalibCDLCOUNTERATTACK(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLCOUNTERATTACK( 
-		runtimeData.Objects[74],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[74]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLCOUNTERATTACK execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLCOUNTERATTACK failed to run: %v", err)
@@ -1666,10 +1891,13 @@ func TestTalibCDLDARKCLOUDCOVER(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLDARKCLOUDCOVER( 
-		runtimeData.Objects[75],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[75]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLDARKCLOUDCOVER execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLDARKCLOUDCOVER failed to run: %v", err)
@@ -1688,10 +1916,13 @@ func TestTalibCDLDOJI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLDOJI( 
-		runtimeData.Objects[76],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[76]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLDOJI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLDOJI failed to run: %v", err)
@@ -1710,10 +1941,13 @@ func TestTalibCDLDOJISTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLDOJISTAR( 
-		runtimeData.Objects[77],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[77]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLDOJISTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLDOJISTAR failed to run: %v", err)
@@ -1732,10 +1966,13 @@ func TestTalibCDLDRAGONFLYDOJI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLDRAGONFLYDOJI( 
-		runtimeData.Objects[78],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[78]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLDRAGONFLYDOJI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLDRAGONFLYDOJI failed to run: %v", err)
@@ -1754,10 +1991,13 @@ func TestTalibCDLENGULFING(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLENGULFING( 
-		runtimeData.Objects[79],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[79]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLENGULFING execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLENGULFING failed to run: %v", err)
@@ -1776,10 +2016,13 @@ func TestTalibCDLEVENINGDOJISTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLEVENINGDOJISTAR( 
-		runtimeData.Objects[80],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[80]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLEVENINGDOJISTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLEVENINGDOJISTAR failed to run: %v", err)
@@ -1798,10 +2041,13 @@ func TestTalibCDLEVENINGSTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLEVENINGSTAR( 
-		runtimeData.Objects[81],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[81]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLEVENINGSTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLEVENINGSTAR failed to run: %v", err)
@@ -1820,10 +2066,13 @@ func TestTalibCDLGAPSIDESIDEWHITE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLGAPSIDESIDEWHITE( 
-		runtimeData.Objects[82],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[82]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLGAPSIDESIDEWHITE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLGAPSIDESIDEWHITE failed to run: %v", err)
@@ -1842,10 +2091,13 @@ func TestTalibCDLGRAVESTONEDOJI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLGRAVESTONEDOJI( 
-		runtimeData.Objects[83],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[83]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLGRAVESTONEDOJI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLGRAVESTONEDOJI failed to run: %v", err)
@@ -1864,10 +2116,13 @@ func TestTalibCDLHAMMER(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHAMMER( 
-		runtimeData.Objects[84],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[84]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHAMMER execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHAMMER failed to run: %v", err)
@@ -1886,10 +2141,13 @@ func TestTalibCDLHANGINGMAN(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHANGINGMAN( 
-		runtimeData.Objects[85],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[85]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHANGINGMAN execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHANGINGMAN failed to run: %v", err)
@@ -1908,10 +2166,13 @@ func TestTalibCDLHARAMI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHARAMI( 
-		runtimeData.Objects[86],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[86]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHARAMI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHARAMI failed to run: %v", err)
@@ -1930,10 +2191,13 @@ func TestTalibCDLHARAMICROSS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHARAMICROSS( 
-		runtimeData.Objects[87],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[87]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHARAMICROSS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHARAMICROSS failed to run: %v", err)
@@ -1952,10 +2216,13 @@ func TestTalibCDLHIGHWAVE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHIGHWAVE( 
-		runtimeData.Objects[88],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[88]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHIGHWAVE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHIGHWAVE failed to run: %v", err)
@@ -1974,10 +2241,13 @@ func TestTalibCDLHIKKAKE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHIKKAKE( 
-		runtimeData.Objects[89],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[89]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHIKKAKE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHIKKAKE failed to run: %v", err)
@@ -1996,10 +2266,13 @@ func TestTalibCDLHIKKAKEMOD(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHIKKAKEMOD( 
-		runtimeData.Objects[90],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[90]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHIKKAKEMOD execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHIKKAKEMOD failed to run: %v", err)
@@ -2018,10 +2291,13 @@ func TestTalibCDLHOMINGPIGEON(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLHOMINGPIGEON( 
-		runtimeData.Objects[91],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[91]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLHOMINGPIGEON execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLHOMINGPIGEON failed to run: %v", err)
@@ -2040,10 +2316,13 @@ func TestTalibCDLIDENTICAL3CROWS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLIDENTICAL3CROWS( 
-		runtimeData.Objects[92],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[92]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLIDENTICAL3CROWS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLIDENTICAL3CROWS failed to run: %v", err)
@@ -2062,10 +2341,13 @@ func TestTalibCDLINNECK(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLINNECK( 
-		runtimeData.Objects[93],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[93]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLINNECK execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLINNECK failed to run: %v", err)
@@ -2084,10 +2366,13 @@ func TestTalibCDLINVERTEDHAMMER(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLINVERTEDHAMMER( 
-		runtimeData.Objects[94],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[94]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLINVERTEDHAMMER execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLINVERTEDHAMMER failed to run: %v", err)
@@ -2106,10 +2391,13 @@ func TestTalibCDLKICKING(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLKICKING( 
-		runtimeData.Objects[95],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[95]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLKICKING execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLKICKING failed to run: %v", err)
@@ -2128,10 +2416,13 @@ func TestTalibCDLKICKINGBYLENGTH(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLKICKINGBYLENGTH( 
-		runtimeData.Objects[96],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[96]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLKICKINGBYLENGTH execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLKICKINGBYLENGTH failed to run: %v", err)
@@ -2150,10 +2441,13 @@ func TestTalibCDLLADDERBOTTOM(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLLADDERBOTTOM( 
-		runtimeData.Objects[97],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[97]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLLADDERBOTTOM execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLLADDERBOTTOM failed to run: %v", err)
@@ -2172,10 +2466,13 @@ func TestTalibCDLLONGLEGGEDDOJI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLLONGLEGGEDDOJI( 
-		runtimeData.Objects[98],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[98]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLLONGLEGGEDDOJI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLLONGLEGGEDDOJI failed to run: %v", err)
@@ -2194,10 +2491,13 @@ func TestTalibCDLLONGLINE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLLONGLINE( 
-		runtimeData.Objects[99],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[99]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLLONGLINE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLLONGLINE failed to run: %v", err)
@@ -2216,10 +2516,13 @@ func TestTalibCDLMARUBOZU(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLMARUBOZU( 
-		runtimeData.Objects[100],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[100]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLMARUBOZU execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLMARUBOZU failed to run: %v", err)
@@ -2238,10 +2541,13 @@ func TestTalibCDLMATCHINGLOW(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLMATCHINGLOW( 
-		runtimeData.Objects[101],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[101]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLMATCHINGLOW execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLMATCHINGLOW failed to run: %v", err)
@@ -2260,10 +2566,13 @@ func TestTalibCDLMATHOLD(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLMATHOLD( 
-		runtimeData.Objects[102],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[102]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLMATHOLD execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLMATHOLD failed to run: %v", err)
@@ -2282,10 +2591,13 @@ func TestTalibCDLMORNINGDOJISTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLMORNINGDOJISTAR( 
-		runtimeData.Objects[103],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[103]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLMORNINGDOJISTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLMORNINGDOJISTAR failed to run: %v", err)
@@ -2304,10 +2616,13 @@ func TestTalibCDLMORNINGSTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLMORNINGSTAR( 
-		runtimeData.Objects[104],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[104]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLMORNINGSTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLMORNINGSTAR failed to run: %v", err)
@@ -2326,10 +2641,13 @@ func TestTalibCDLONNECK(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLONNECK( 
-		runtimeData.Objects[105],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[105]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLONNECK execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLONNECK failed to run: %v", err)
@@ -2348,10 +2666,13 @@ func TestTalibCDLPIERCING(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLPIERCING( 
-		runtimeData.Objects[106],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[106]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLPIERCING execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLPIERCING failed to run: %v", err)
@@ -2370,10 +2691,13 @@ func TestTalibCDLRICKSHAWMAN(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLRICKSHAWMAN( 
-		runtimeData.Objects[107],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[107]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLRICKSHAWMAN execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLRICKSHAWMAN failed to run: %v", err)
@@ -2392,10 +2716,13 @@ func TestTalibCDLRISEFALL3METHODS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLRISEFALL3METHODS( 
-		runtimeData.Objects[108],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[108]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLRISEFALL3METHODS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLRISEFALL3METHODS failed to run: %v", err)
@@ -2414,10 +2741,13 @@ func TestTalibCDLSEPARATINGLINES(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLSEPARATINGLINES( 
-		runtimeData.Objects[109],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[109]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLSEPARATINGLINES execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLSEPARATINGLINES failed to run: %v", err)
@@ -2436,10 +2766,13 @@ func TestTalibCDLSHOOTINGSTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLSHOOTINGSTAR( 
-		runtimeData.Objects[110],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[110]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLSHOOTINGSTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLSHOOTINGSTAR failed to run: %v", err)
@@ -2458,10 +2791,13 @@ func TestTalibCDLSHORTLINE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLSHORTLINE( 
-		runtimeData.Objects[111],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[111]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLSHORTLINE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLSHORTLINE failed to run: %v", err)
@@ -2480,10 +2816,13 @@ func TestTalibCDLSPINNINGTOP(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLSPINNINGTOP( 
-		runtimeData.Objects[112],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[112]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLSPINNINGTOP execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLSPINNINGTOP failed to run: %v", err)
@@ -2502,10 +2841,13 @@ func TestTalibCDLSTALLEDPATTERN(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLSTALLEDPATTERN( 
-		runtimeData.Objects[113],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[113]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLSTALLEDPATTERN execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLSTALLEDPATTERN failed to run: %v", err)
@@ -2524,10 +2866,13 @@ func TestTalibCDLSTICKSANDWICH(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLSTICKSANDWICH( 
-		runtimeData.Objects[114],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[114]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLSTICKSANDWICH execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLSTICKSANDWICH failed to run: %v", err)
@@ -2546,10 +2891,13 @@ func TestTalibCDLTAKURI(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLTAKURI( 
-		runtimeData.Objects[115],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[115]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLTAKURI execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLTAKURI failed to run: %v", err)
@@ -2568,10 +2916,13 @@ func TestTalibCDLTASUKIGAP(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLTASUKIGAP( 
-		runtimeData.Objects[116],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[116]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLTASUKIGAP execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLTASUKIGAP failed to run: %v", err)
@@ -2590,10 +2941,13 @@ func TestTalibCDLTHRUSTING(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLTHRUSTING( 
-		runtimeData.Objects[117],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[117]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLTHRUSTING execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLTHRUSTING failed to run: %v", err)
@@ -2612,10 +2966,13 @@ func TestTalibCDLTRISTAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLTRISTAR( 
-		runtimeData.Objects[118],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[118]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLTRISTAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLTRISTAR failed to run: %v", err)
@@ -2634,10 +2991,13 @@ func TestTalibCDLUNIQUE3RIVER(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLUNIQUE3RIVER( 
-		runtimeData.Objects[119],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[119]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLUNIQUE3RIVER execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLUNIQUE3RIVER failed to run: %v", err)
@@ -2656,10 +3016,13 @@ func TestTalibCDLUPSIDEGAP2CROWS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLUPSIDEGAP2CROWS( 
-		runtimeData.Objects[120],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[120]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLUPSIDEGAP2CROWS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLUPSIDEGAP2CROWS failed to run: %v", err)
@@ -2678,10 +3041,13 @@ func TestTalibCDLXSIDEGAP3METHODS(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CDLXSIDEGAP3METHODS( 
-		runtimeData.Objects[121],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[121]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CDLXSIDEGAP3METHODS execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CDLXSIDEGAP3METHODS failed to run: %v", err)
@@ -2700,10 +3066,13 @@ func TestTalibBETA(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_BETA( 
-		runtimeData.Objects[122],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[122]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_BETA execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA BETA failed to run: %v", err)
@@ -2722,10 +3091,13 @@ func TestTalibCORREL(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_CORREL( 
-		runtimeData.Objects[123],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[123]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_CORREL execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA CORREL failed to run: %v", err)
@@ -2744,10 +3116,13 @@ func TestTalibLINEARREG(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_LINEARREG( 
-		runtimeData.Objects[124],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[124]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_LINEARREG execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA LINEARREG failed to run: %v", err)
@@ -2766,10 +3141,13 @@ func TestTalibLINEARREG_ANGLE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_LINEARREG_ANGLE( 
-		runtimeData.Objects[125],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[125]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_LINEARREG_ANGLE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA LINEARREG_ANGLE failed to run: %v", err)
@@ -2788,10 +3166,13 @@ func TestTalibLINEARREG_INTERCEPT(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_LINEARREG_INTERCEPT( 
-		runtimeData.Objects[126],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[126]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_LINEARREG_INTERCEPT execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA LINEARREG_INTERCEPT failed to run: %v", err)
@@ -2810,10 +3191,13 @@ func TestTalibLINEARREG_SLOPE(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_LINEARREG_SLOPE( 
-		runtimeData.Objects[127],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[127]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_LINEARREG_SLOPE execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA LINEARREG_SLOPE failed to run: %v", err)
@@ -2832,10 +3216,13 @@ func TestTalibSTDDEV(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_STDDEV( 
-		runtimeData.Objects[128],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[128]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_STDDEV execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA STDDEV failed to run: %v", err)
@@ -2854,10 +3241,13 @@ func TestTalibTSF(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_TSF( 
-		runtimeData.Objects[129],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[129]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_TSF execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA TSF failed to run: %v", err)
@@ -2876,10 +3266,13 @@ func TestTalibVAR(t *testing.T) {
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_VAR( 
-		runtimeData.Objects[130],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[130]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_VAR execution time: %v", end)
 
 	if err != nil {
 		t.Errorf("TA VAR failed to run: %v", err)

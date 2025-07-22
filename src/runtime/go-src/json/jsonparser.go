@@ -55,14 +55,25 @@ func NewRuntimeData(file string) (*technicals.RuntimeData, error) {
 	res.Tickers = data.LiveTickers // live tickers
 	res.RuntimeSettings = data.Runtime // runtime Settings
 
-	res.Objects = make([]technicals.Feature, 0) // Feature Objects
+	// features
+	res.TALIBFeatureTechnicals = make([]technicals.FeatureTechnical, 0)
+	res.OtherFeatureTechnicals  = make([]technicals.FeatureTechnical, 0)
+	res.Relationships = make([]technicals.Relationship, 0)
+
 	res.ColNames = make(map[string]int, 0)
 	for i := range data.Features {
-		res.Objects = append(res.Objects, data.Features[i])
+		tech := data.Features[i].Technical
+
+		if tech == "delta" || tech == "diff" {
+			res.OtherFeatureTechnicals = append(res.OtherFeatureTechnicals, data.Features[i])
+		} else {
+			res.TALIBFeatureTechnicals = append(res.TALIBFeatureTechnicals, data.Features[i])
+		}
+
 		res.ColNames[data.Features[i].Name] = i
 	} 
 	for i := range data.Labels {
-		res.Objects = append(res.Objects, data.Labels[i])
+		res.Relationships = append(res.Relationships, data.Labels[i])
 		res.ColNames[data.Labels[i].Name] = i + len(data.Features)
 	}
 

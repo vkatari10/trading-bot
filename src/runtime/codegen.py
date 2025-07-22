@@ -70,10 +70,13 @@ func TestTalib{func}(t *testing.T) {{
 
 	eventloop.OverrideBurnIn(runtimeData)
 
+    start := time.Now()
 	res, err := technicals.TA_{func}( 
-		runtimeData.Objects[{i}],
+		technicals.Feature(runtimeData.TALIBFeatureTechnicals[{i}]),
 		&runtimeData.OHLCV,
 	)
+    end := time.Since(start)
+    log.Printf("TA_{func} execution time: %v", end)
 
 	if err != nil {{
 		t.Errorf("TA {func} failed to run: %v", err)

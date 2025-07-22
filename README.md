@@ -36,16 +36,19 @@ For more detailed information about ConTrade, visit the [docs](https://vkatari10
 ### Backtesting (Python)
 - CLI powered historical testing on asset strategies
 - Simulate commission, slippage, latency 
-- Quickly obtain profit/loss metrics with optional visualizations
+- Quickly obtain profit/loss metrics 
 
 ### Live Execution Engine (Go)
-- Serve ML models via FastAPI or ONXX
+- Serve ML models via FastAPI or ONNX
 - Real time trading with Alpaca (paper or live accounts)
 - High performance via
-  - TA-Lib integration 
-  - ML service via FastAPI + Websocket or ONXXRuntime
-- Multi asset support with second level cycle support
-- Self hosted API for trade monitoring and internal logging exposure 
+  - TA-Lib integration w/ custom C wrapper via `cgo`
+  - Async ML prediction microservice options
+    - FastAPI + WebSockets
+    - ONNXRuntime (For non-`scikit-learn` models)
+- ~190 concurrent asset tracking @ 60s intervals (on Alpaca free tier)
+- 500ms floor for cycle times, supporting mid frequency trading
+- Exposed API for trade monitoring and internal logging
 
 ### CLI Tools
 - Easily call commands and interact with ConTrade's features via the CLI
@@ -58,7 +61,7 @@ For more detailed information about ConTrade, visit the [docs](https://vkatari10
 - Unit tested across Python and Go
 - Github Actions CI for automated checks
 
-Project size is ~5000 total lines (code, docs) across ~82 files.
+Project size is ~11000 total lines of code across ~50 files.
 
 ### Tech Stack Overview 
 | Feature | Language | Libraries/Frameworks | External APIs |

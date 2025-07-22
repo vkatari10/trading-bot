@@ -14,7 +14,11 @@ type Technical interface {
 type RuntimeData struct {
 	// models JSON objects
 	ColNames map[string]int
-	Objects []Feature
+
+	// All features
+	TALIBFeatureTechnicals []FeatureTechnical // technical indicators
+	OtherFeatureTechnicals []FeatureTechnical // delta/diff
+	Relationships []Relationship // labelling logic
 
 	// contains all historical data
 	OHLCV TALIBWrapper 
@@ -22,7 +26,7 @@ type RuntimeData struct {
 	// for FastAPI served models
 	FeatureJSON map[string]float64
 
-	// for ONXX served models
+	// for ONNX served models
 	FeatureArray []float64
 	
 	// live trade tickers
@@ -32,11 +36,11 @@ type RuntimeData struct {
 } // RuntimeData
 
 // RuntimeSettings is a struct to represent user runtime
-// settings
+// settings from the "runtime_settings" section of the JSON
 type RuntimeSettings struct {
-	CycleTime 		int `json:"cycle_time"`
-	BurnTime 		int `json:"burn_window_time"`
-	LogAPIFlushTime int `json:"log_api_flush_time"`
+	CycleTime 		int `json:"cycle_time"` // seconds 
+	BurnTime 		int `json:"burn_window_time"` // minutes
+	LogAPIFlushTime int `json:"log_api_flush_time"` // milliseconds
 	LogToStdout 	bool `json:"log_to_stdout"`
 	RunAfterClose 	bool `json:"run_after_close"`
 	OverrideBurnIn 	bool `json:"override_burn_in"`

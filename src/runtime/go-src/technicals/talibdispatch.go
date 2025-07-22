@@ -13,15 +13,9 @@ var (
 	talibDispatch map[string]talibMethod
 )
 
-// to satisfy compiler 
-// NOT FOR PRODUCTION CODE
-func tempMethod(ft Feature, tw *TALIBWrapper) ([]float64, error) {
-	return nil, nil
-}
-
 // initializes the main TA-Lib dispatch table for TA-Lib wrapper methods
 func init() {
-	_ = map[string]talibMethod {
+	talibDispatch = map[string]talibMethod {
 		// Overlap Studies
 		//"BBANDS": TA_BBANDS,
 		"DEMA": TA_DEMA,
@@ -157,10 +151,9 @@ func init() {
 		"CDLUPSIDEGAP2CROWS": TA_CDLUPSIDEGAP2CROWS,
 		"CDLXSIDEGAP3METHODS": TA_CDLXSIDEGAP3METHODS,
 
-
 		// Statistic Functions
-		"BETA": tempMethod,
-		"CORREL": tempMethod,
+		"BETA": TA_BETA,
+		"CORREL": TA_CORREL,
 		"LINEARREG": TA_LINEARREG,
 		"LINEARREG_ANGLE": TA_LINEARREG_ANGLE,
 		"LINEARREG_INTERCEPT": TA_LINEARREG_INTERCEPT,
@@ -168,6 +161,5 @@ func init() {
 		"STDDEV": TA_STDDEV,
 		"TSF": TA_TSF,
 		"VAR": TA_VAR,
-
 	} // talibDispatch
 }
