@@ -6,53 +6,53 @@
         {
             "tech": "SMA",
             "args": {"timeperiod": 10},
-            "name": "SMA_10"
+            "name": "T_SMA_10"
         },
         {
             "tech": "SMA",
             "args": {"timeperiod": 30},
-            "name": "SMA_30"
+            "name": "T_SMA_30"
         },
         {
             "tech": "delta",
-            "col1": "SMA_10",
+            "col1": "T_SMA_10",
             "col2": null,
-            "name": "SMA_10_delta"
+            "name": "D_SMA_10_delta"
         },
         {
             "tech": "diff",
-            "col1": "SMA_30",
-            "col2": "SMA_10",
-            "name": "SMA_30_10_diff"
+            "col1": "T_SMA_30",
+            "col2": "T_SMA_10",
+            "name": "D_SMA_30_10_diff"
         },
         {
             "tech": "delta",
-            "col1": "SMA_30",
-            "col2": "SMA_10",
-            "name": "SMA_10_30_delta_diff"
+            "col1": "T_SMA_30",
+            "col2": "T_SMA_10",
+            "name": "D_SMA_10_30_delta_diff"
         }
     ],
     "label_logic": [
         {
             "sig": "crossover",
             "name": "SMA_CROSS",
-            "col1": "SMA_10",
-            "col2": "SMA_30"
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30"
         }
     ],
     "label_logic_2": [
         {
             "sig": "crossover",
             "name": "SMA_CROSS",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
             "weight": 1.0
         },
         {
             "sig": "above",
             "name": "SHORT_SMA_ABOVE",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
             "weight": 1.0,
             "persist": 2
         }

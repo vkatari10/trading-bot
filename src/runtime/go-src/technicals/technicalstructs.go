@@ -12,10 +12,11 @@ type Technical interface {
 
 // Represents technicals and price data 
 type RuntimeData struct {
-	// models JSON objects
+	// models user given name: index on TALIBFeatureTechnicals
 	ColNames map[string]int
 
-	// All features
+	// All features -> update these in order as listed
+	
 	TALIBFeatureTechnicals []FeatureTechnical // technical indicators
 	OtherFeatureTechnicals []FeatureTechnical // delta/diff
 	Relationships []Relationship // labelling logic
@@ -28,6 +29,8 @@ type RuntimeData struct {
 
 	// for ONNX served models
 	FeatureArray []float64
+
+	fillFeatureIndex int
 	
 	// live trade tickers
 	Tickers []string
@@ -53,7 +56,7 @@ type TALIBWrapper struct {
 	sliceCapCount int
 	SliceMaxCap int
 
-	// historical data
+	// historical OHLCV
 	Open 	[]float64
 	High 	[]float64 
 	Low 	[]float64
@@ -79,18 +82,18 @@ type TALIBWrapper struct {
 type Feature interface{
 	Tag()
 	Type() string
-}
+} 
 
 // Technical represents the "feature" section 
 // of the config JSON for each object
 type FeatureTechnical struct {
-	Technical 	string 				`json:"tech"`
-	Name 		string 				`json:"name"`
-	Col1 		string				`json:"col1"`
+	Technical 	string 				`json:"tech"` // must match to talibDispatch
+	Name 		string 				`json:"name"` // user input name
+	Col1 		string				`json:"col1"` // for delta/diff objects
 	Col2 		string				`json:"col2"`
-	Value 		float64		
-	Args 		map[string]float64 	`json:"args"`
-}
+	Value 		float64 // actual feature value
+	Args 		map[string]float64 	`json:"args"` // TALIB kwargs
+} // FeatureTechnical
 
 // Relationship represents the "labelling logic" section 
 // of the config JSON for each object
@@ -101,7 +104,37 @@ type Relationship struct {
 	Signal 	string 	`json:"sig"`
 	Weight 	float64 `json:"weight"`
 	Persist int 	`json:"persist"`
-}
+	Threshold float64 `json:"threshold"`
+
+	// track historical prices 
+	Col1Val float64
+	Col2Val float64
+
+	// if we need to track above/below thresholds
+	PersistCounter int 
+
+	/*
+
+	Say Col1Val and Col2Val are not default values
+	and we get back new data for it 
+
+	we can just say compare these old values to the new ones
+	at that point and then for 3 cases
+
+	1. crossover -- cross check col1, col2 vals against 
+	existing values
+
+	2. above/below -- check colX against ColY and update
+	persist value if needed and replace existing values
+	as well and if they fail to satisfy it again then reset
+	the persist counter back down to 0
+
+	Based on those values we can multiply the resulting value
+	based on whatever values specified in the docs and multiply by 
+	weight
+
+	*/
+} // Relationship
 
 // declarations
 func (FeatureTechnical) Tag() {}

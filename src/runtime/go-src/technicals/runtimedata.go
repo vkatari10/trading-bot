@@ -10,6 +10,7 @@ import "C"
 import (
 	"fmt"
 	"unsafe"
+	"strconv"
 )
 
 const (
@@ -19,11 +20,20 @@ const (
 /*
 GENERAL FLOW
 
-1. PopLeft()
-2. AppendNewOHLCV()
-3. UpdateTALIBTechnicals()
-4. UpdateOtherTechnicals()
-5. UpdateRelationships()
+1. PopLeft() Remove oldest value, reset cap if necessary
+2. AppendNewOHLCV()  Add new bars to OHLCV arrays
+3. UpdateTALIBTechnicals() Updates TALIB object values base for next method
+4. UpdateOtherTechnicals() Updates Delta/Diff objects relies on prev call
+5. UpdateRelationships() Updates relationship (labelling_logic) relies on prev 2 calls
+
+INIT FLOW
+1. Burn in OHLCV arrays
+2. Initialize TALIB Technicals (UpdateTALIBTechnicals)
+3. Initialize other user objects (UpdateOtherTechnicals)
+4. Initialize technicals (InitRelationships) 
+	Notice: this is not the same as UpdateRelationships 
+	because we need to provide some values to the actual
+	relationship value
 */
 
 // CopySlice copies the Slice to reduce the capacity
@@ -116,7 +126,7 @@ func (rd *RuntimeData) AppendNewOHLCV(
 	close float64,
 	volume float64,
 ) {
-	rd.OHLCV.Open = append(rd.OHLCV.High, open)
+	rd.OHLCV.Open = append(rd.OHLCV.Open, open)
 	rd.OHLCV.High = append(rd.OHLCV.High, high)
 	rd.OHLCV.Low = append(rd.OHLCV.Low, low)
 	rd.OHLCV.Close = append(rd.OHLCV.Close, close)
@@ -136,9 +146,9 @@ func (rd *RuntimeData) TestAppend(val float64) {
 
 // UpdateTALIBTechnicals updates the rd.TALIBTechnicals
 // object after the rd.OHLCV arrays have been updated
+// i.e. Burn in has been complete
 func (rd *RuntimeData) UpdateTALIBTechnicals() error {
 	for i := range rd.TALIBFeatureTechnicals {
-
 
 		obj := &rd.TALIBFeatureTechnicals[i]
 
@@ -149,33 +159,119 @@ func (rd *RuntimeData) UpdateTALIBTechnicals() error {
 		}
 
 		obj.Value = res[0]
+		
+		rd.FeatureArray[rd.fillFeatureIndex] = res[0]
+		rd.FeatureJSON[strconv.Itoa(rd.fillFeatureIndex)] = res[0]
+		rd.fillFeatureIndex++
 	}
+
 	return nil
 } // UpdateTALIBTechnicals
 
-// UpdateOtherTechnicals updates the rd.OhterTechincals
+// getOtherFeatureMappedValues returns the values
+// that a non TALIB object maps to in the TALIB array 
+// returns as [col1Val, col2Val]
+func getOtherFeatureMappedValues(rd *RuntimeData, ft *FeatureTechnical) []float64 {
+	col1Val := rd.TALIBFeatureTechnicals[rd.ColNames[ft.Col1]].Value
+	col2Val := rd.TALIBFeatureTechnicals[rd.ColNames[ft.Col2]].Value
+	return []float64{col1Val, col2Val}
+} // getOtherTechnicalValue
+
+// UpdateOtherTechnicals updates the rd.OtherTechnicals
 // array after UpdateTALIBTechnicals() has been called
 func (rd *RuntimeData) UpdateOtherTechnicals() error {
 	for i := range rd.OtherFeatureTechnicals {
 
 		obj := &rd.OtherFeatureTechnicals[i]
 
+		matchingValues := getOtherFeatureMappedValues(
+			rd,
+			obj,
+		)
+
 		if obj.Technical == "diff" {
-			obj.Value = rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col1]].Value - rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col2]].Value
+			obj.Value = matchingValues[0] - matchingValues[1]
 		} else { /// delta
 			if obj.Col2 == "" { // single col
-				obj.Value -= rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col1]].Value
+				obj.Value -= matchingValues[0]
 			} else { // delta of differences
-				obj.Value -= rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col1]].Value - rd.TALIBFeatureTechnicals[rd.ColNames[obj.Col2]].Value
+				obj.Value -= matchingValues[0] - matchingValues[1]
 			}
 		}
+
+		rd.FeatureArray[rd.fillFeatureIndex] = obj.Value
+		rd.FeatureJSON[strconv.Itoa(rd.fillFeatureIndex)] = obj.Value
+		rd.fillFeatureIndex++
+	}
+	return nil
+} // UpdateOtherTechnicals
+
+// UpdateRelationships updates the rd.Relationships
+// array after UpdateOtherTechnicals() has been called
+func (rd *RuntimeData) UpdateRelationships() error {
+
+
+	for i := range rd.Relationships {
+
+		obj := &rd.Relationships[i]
+		
+		compValues, err := obj.getRelationshipValues(rd)
+		if err != nil {
+			return fmt.Errorf("technicals.UpdateRelationships(): Could not process relationship object at index %d", i)
+		}
+
+		featureVal := relationshipDispatch[obj.Signal](
+			obj,
+			rd,
+			compValues,
+		)
+
+		weightedFeatureVal := obj.Weight * featureVal
+
+	 	if weightedFeatureVal < obj.Threshold {
+			weightedFeatureVal = 0
+		}
+
+		rd.FeatureArray[rd.fillFeatureIndex] = weightedFeatureVal
+		rd.FeatureJSON[strconv.Itoa(rd.fillFeatureIndex)] = weightedFeatureVal
+		rd.fillFeatureIndex++
+	}
+
+	rd.fillFeatureIndex = 0
+
+	return nil
+} // UpdateOtherTechnicals
+
+// InitRelationships initializes the relationship values
+// once the TALIB and Other features have been initialized as 
+// well, SHOULD ONLY EVER BE CALLED ONCE 
+func (rd *RuntimeData) InitRelationships() error {
+
+	for i := range rd.Relationships {
+
+		obj := &rd.Relationships[i]
+
+		col1Val, err := getColVal(
+			rd, 
+			rd.Relationships[i].Col1, 
+			getPrefix(rd.Relationships[i].Col1),
+		)
+		if err != nil {
+			return fmt.Errorf("col1Val failed to return for relationship index %d", i)
+		}
+
+		col2Val, err := getColVal(
+			rd, 
+			rd.Relationships[i].Col2, 
+			getPrefix(rd.Relationships[i].Col2),
+		)
+		if err != nil {
+			return fmt.Errorf("col1Val failed to return for relationship index %d", i)
+		}
+
+		obj.Col1Val = col1Val
+		obj.Col2Val = col2Val
 	}
 
 	return nil
-} // UpdateOtherTechnicals
-
-// UpdateOtherTechnicals updates the rd.Relationships
-// array after UpdateOtherTechnicals() has been called
-func (rd *RuntimeData) UpdateRelationships() error {
-	return nil
-} // UpdateOtherTechnicals
+} // InitRelationships

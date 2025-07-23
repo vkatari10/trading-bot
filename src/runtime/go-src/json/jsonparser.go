@@ -17,7 +17,7 @@ import (
 type configSettings struct {
 	LiveTickers []string 						`json:"live_trade_stocks"`
 	Features 	[]technicals.FeatureTechnical 	`json:"features"`
-	Labels 		[]technicals.Relationship 		`json:"label_logic"`
+	Labels 		[]technicals.Relationship 		`json:"label_logic_2"`
 	Runtime 	technicals.RuntimeSettings 		`json:"runtime_settings"`
 } // ConfigSettings
 
@@ -61,21 +61,32 @@ func NewRuntimeData(file string) (*technicals.RuntimeData, error) {
 	res.Relationships = make([]technicals.Relationship, 0)
 
 	res.ColNames = make(map[string]int, 0)
+
+	talibCount := 0
+	otherCount := 0
+
 	for i := range data.Features {
 		tech := data.Features[i].Technical
+		name := data.Features[i].Name
 
 		if tech == "delta" || tech == "diff" {
 			res.OtherFeatureTechnicals = append(res.OtherFeatureTechnicals, data.Features[i])
+			res.ColNames[name] = otherCount
+			otherCount++
 		} else {
 			res.TALIBFeatureTechnicals = append(res.TALIBFeatureTechnicals, data.Features[i])
+			res.ColNames[name] = talibCount
+			talibCount++
 		}
 
-		res.ColNames[data.Features[i].Name] = i
 	} 
 	for i := range data.Labels {
 		res.Relationships = append(res.Relationships, data.Labels[i])
-		res.ColNames[data.Labels[i].Name] = i + len(data.Features)
+		// res.ColNames[data.Labels[i].Name] = i + len(data.Features)
 	}
+
+	res.FeatureJSON = map[string]float64{}
+	res.FeatureArray = make([]float64, len(data.Labels) + len(res.TALIBFeatureTechnicals) + len(res.OtherFeatureTechnicals))
 
 	res.OHLCV = technicals.TALIBWrapper{} // init during burn in period
 
