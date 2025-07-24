@@ -22,7 +22,7 @@ func TestNewRuntimeData(t *testing.T) {
 	
 	wantTickerNames := []string{"AAPL", "AMZN", "BA"}
 
-	wantCycleTime := 15
+	wantCycleTime := 15.0
 	wantOverride := true
 
 

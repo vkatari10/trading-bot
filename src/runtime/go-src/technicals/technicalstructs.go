@@ -41,9 +41,9 @@ type RuntimeData struct {
 // RuntimeSettings is a struct to represent user runtime
 // settings from the "runtime_settings" section of the JSON
 type RuntimeSettings struct {
-	CycleTime 		int `json:"cycle_time"` // seconds 
+	CycleTime 		float64 `json:"cycle_time"` // seconds 
 	BurnTime 		int `json:"burn_window_time"` // minutes
-	LogAPIFlushTime int `json:"log_api_flush_time"` // milliseconds
+	LogAPIFlushTime float64 `json:"log_api_flush_time"` // milliseconds
 	LogToStdout 	bool `json:"log_to_stdout"`
 	RunAfterClose 	bool `json:"run_after_close"`
 	OverrideBurnIn 	bool `json:"override_burn_in"`
@@ -52,7 +52,7 @@ type RuntimeSettings struct {
 // TALIBWrapper represents a TA-Lib wrapper to interact
 // with the compiled C code using cgo 
 type TALIBWrapper struct {
-	// slice capacity tracker
+	// slice capacity tracker	
 	sliceCapCount int
 	SliceMaxCap int
 

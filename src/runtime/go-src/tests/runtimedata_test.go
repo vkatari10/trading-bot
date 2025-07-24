@@ -33,10 +33,6 @@ func TestRuntimeDataUpdateTechnicals(t *testing.T) {
 	if err != nil {
 		t.Errorf("RuntimeData.UpdateOtherTechnicals() failed")
 	}
-
-
-
-
 }
 
 func TestRuntimeDataStressTests(t *testing.T) {
@@ -51,7 +47,7 @@ func TestRuntimeDataStressTests(t *testing.T) {
 	rd.InitRelationships()
 	
 	start := time.Now()
-	for range 1_000_000 { // 65 microseconds per tick
+	for range 1_000_000 { // 1.7 microseconds per tick
 		rd.UpdateOHLCVDeltas()
 
 		err = rd.UpdateTALIBTechnicals()
@@ -70,15 +66,12 @@ func TestRuntimeDataStressTests(t *testing.T) {
 		}
 
 		rd.PopLeft()
-		rd.TestAppend(rand.Float64() * 10)
+		rd.TestAppend(rand.Float64() * 10) // dummy new market price 
 	}
 	end := time.Since(start)
 
 	log.Println(end)
 	log.Println(end / 1_000_000)
-
-	log.Println(rd.FeatureArray)
-	log.Println(rd.FeatureJSON)
 	
 	if len(rd.OHLCV.High) > 31 || cap(rd.OHLCV.High) > 62 {
 		t.Errorf("Cap or length of OHLCV arrays grew beyond permitted size")

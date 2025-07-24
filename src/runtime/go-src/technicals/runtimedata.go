@@ -158,7 +158,7 @@ func (rd *RuntimeData) UpdateTALIBTechnicals() error {
 			return fmt.Errorf("%v", err)
 		}
 
-		obj.Value = res[0]
+		obj.Value = res[0] // related issue with #41
 		
 		rd.FeatureArray[rd.fillFeatureIndex] = res[0]
 		rd.FeatureJSON[strconv.Itoa(rd.fillFeatureIndex)] = res[0]
@@ -274,4 +274,4 @@ func (rd *RuntimeData) InitRelationships() error {
 	}
 
 	return nil
-} // InitRelationships
+} // InitRelationships	

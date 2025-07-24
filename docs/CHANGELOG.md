@@ -15,6 +15,7 @@ Changes
 - ML Pipeline overhauled by modularizing around `TA-lib`
 - Implemented CI scripts for automated testing via `GitHub Actions`
 - Added configurable model selection including `XGBoost` and `LightGBM` and 12 `Scikit-learn` models
+- Complete Runtime Engine rewrite
 
 
 In Progress
