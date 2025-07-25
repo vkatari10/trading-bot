@@ -29,8 +29,7 @@ models/*.json
 # VS Code
 .vscode
 
-# Go binary 
-./src/runtime/go-src/go-src
+
 
 # mkdocs
 ./site/
