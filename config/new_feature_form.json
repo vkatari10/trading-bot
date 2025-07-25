@@ -43,14 +43,6 @@
             "sig": "crossover",
             "name": "SMA_CROSS",
             "col1": "SMA_10",
-            "col2": "SMA_30"
-        }
-    ],
-    "label_logic_2": [
-        {
-            "sig": "crossover",
-            "name": "SMA_CROSS",
-            "col1": "SMA_10",
             "col2": "SMA_30",
             "weight": 1.0
         },
@@ -70,21 +62,21 @@
     "live_trade_stocks": [
         "AAPL",
         "AMZN",
-        "BA"
+        "MSFT"
     ],
     "ml_settings": {
-        "model_framework": "xgboost",
+        "model_framework": "scikit",
         "scikit_model_type": "RandomForrestClassifier",
-        "model_name": "model_xgb.json",
+        "model_name": "model_v2.pkl",
         "model_training_timeframe": "1m",   
         "model_training_interval": "5d",
-        "use_OHLCV_diffs": true,
+        "use_OHLCV_diffs": false,
         "hyperparameters": {
-            "device": "cpu"
+            "random_state": 42
         }
     },  
     "runtime_settings": {
-        "cycle_time": 15,
+        "cycle_time": 60,
         "burn_window_time": 31,
         "log_api_flush_time": 2000, 
         "log_to_stdout": true,

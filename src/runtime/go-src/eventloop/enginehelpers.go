@@ -8,6 +8,7 @@ import (
 	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	"math/rand"
 	"os"
+	apibuf "github.com/vkatari10/trading-bot/src/runtime/go-src/apibuffer"
 )
 
 // DEPRECATED
@@ -45,9 +46,10 @@ func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote
 	return burn, newQuote
 } // BurnIn
 
+// TODO: Move to risk package once rewrite done
 // handlePrediction handles the prediction made by the ML model by 
 // working with the broker API
-func handlePrediction(apiBuffer *APIBuffer, prediction float64, ticker string) {
+func handlePrediction(apiBuffer *apibuf.APIBuffer, prediction float64, ticker string) {
 
 	decisionMsg := "DECIDE: "
 		var decision string;
@@ -64,7 +66,7 @@ func handlePrediction(apiBuffer *APIBuffer, prediction float64, ticker string) {
 			decisionMsg += "HOLD"
 		} // if-else
 		
-		go apiBuffer.enqueue(
+		go apiBuffer.Enqueue(
 			map[string]any{
 				"msg": fmt.Sprintf("DECIDE: %s %s", decisionMsg, ticker),
 			}, logLink)

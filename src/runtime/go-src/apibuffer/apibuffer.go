@@ -1,4 +1,4 @@
-package eventloop
+package apibuffer
 
 // APIBuffer is just a Queue implementaion to buffer outbound API
 // Posts from the log
@@ -6,9 +6,10 @@ package eventloop
 import (
 	"sync"
 	"time"
+	"fmt"
 )
 
-var (
+const (
 	initialSize = 30
 )
 
@@ -20,15 +21,15 @@ type APIBuffer struct {
 	mu 		sync.Mutex
 } // APIBuffer
 
-func newAPIBuffer() *APIBuffer {
+func NewAPIBuffer() *APIBuffer {
 	return &APIBuffer{
 		Data: make([]map[string]any, 0, initialSize),
 		Links: make([]string, 0, initialSize),
 	}
-} // NewAPIBuffer
+} // newAPIBuffer
 
 // enqueue adds data onto the APIBuffer Object
-func (queue *APIBuffer) enqueue(json map[string]any, link string) {	
+func (queue *APIBuffer) Enqueue(json map[string]any, link string) {	
 	queue.mu.Lock()
 	defer queue.mu.Unlock()
 	if cap(queue.Data) > 2 * initialSize {
@@ -40,7 +41,7 @@ func (queue *APIBuffer) enqueue(json map[string]any, link string) {
 } // enqueue 
 
 // dequeue removes the first item form the APIBuffer
-func (queue *APIBuffer) dequeue() (json map[string]any, link string) {
+func (queue *APIBuffer) Dequeue() (json map[string]any, link string) {
 	queue.mu.Lock()
 	defer queue.mu.Unlock()
 	if len(queue.Data) == 0 {
@@ -60,13 +61,25 @@ func (queue *APIBuffer) dequeue() (json map[string]any, link string) {
 
 // offload will send the number of items to their destination given a 
 // valid wait time
-func (queue *APIBuffer) flush(times int, wait time.Duration) {
+func (queue *APIBuffer) Flush(times int, wait time.Duration, action func(map[string]any, string)) {
 	for i := 0; i < times; i++ {
-		data, dest := queue.dequeue() // NOTE: this uses mutex
-		go SendPayload(data, dest)
+		data, dest := queue.Dequeue() // NOTE: this uses mutex
+		go action(data, dest)
 		time.Sleep(wait * time.Millisecond)
 	} // for
 } // offload
+
+// flushAll flushes all items inside a APIBuffer and waits
+// for wait amount of time until flushing the next item
+// to its destination
+func (q *APIBuffer) FlushAll(wait time.Duration, action func(map[string]any, string)) {
+	fmt.Println(q.Data)
+	for _ = range q.Data {
+		data, dest := q.Dequeue()
+		go action(data, dest)
+		time.Sleep(wait * time.Millisecond)
+	}
+} // flushAll
 
 // CopySlice copies the Slice to reduce the capacity 
 // of the underlying array
@@ -83,3 +96,4 @@ func copyLinks(slice []string) []string {
 	copy(copied, slice)
 	return copied
 } // copyLinks
+

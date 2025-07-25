@@ -26,7 +26,7 @@ print(args)
 if len(args) > 1:
     config = jp.UserConfig(args[-1])
 
-    file_path = "src/ml/models/decider/" + config.get_model_name()
+    file_path = "models/" + config.get_model_name()
 
     with open(file_path, 'rb') as f:
         model = pickle.load(f)
@@ -45,7 +45,7 @@ app = FastAPI()
 async def load_model():
     global model
     config = jp.UserConfig(args[-1])
-    file_path = "src/ml/models/decider/" + config.get_model_name()
+    file_path = "models/" + config.get_model_name()
     print(file_path)
     with open(file_path, 'rb') as f:
         model = pickle.load(f)

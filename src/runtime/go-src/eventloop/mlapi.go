@@ -79,7 +79,7 @@ func MakeMLPayload(obj *technicals.UserData, ticker string) (res map[string]any,
 
 // websocketWriter will write the features to the ML API Server as a JSON
 // given the channel with the payload to send
-func websocketWriter(conn *websocket.Conn, payload <-chan map[string]any) {
+func websocketWriter(conn *websocket.Conn, payload <-chan map[string]float64) {
     for {
         err := conn.WriteJSON(<-payload)
         if err != nil {

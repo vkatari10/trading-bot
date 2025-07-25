@@ -39,13 +39,11 @@ For more detailed information about ConTrade, visit the [docs](https://vkatari10
 - Quickly obtain profit/loss metrics 
 
 ### Live Execution Engine (Go)
-- Serve ML models via FastAPI or ONNX
+- Serve ML models via FastAPI 
 - Real time trading with Alpaca (paper or live accounts)
 - High performance via
   - TA-Lib integration w/ custom C wrapper via `cgo`
-  - Async ML prediction microservice options
-    - FastAPI + WebSockets
-    - ONNXRuntime (For non-`scikit-learn` models)
+  - Async ML prediction microservice via FastAPI + WebSockets
 - ~190 concurrent asset tracking @ 60s intervals (on Alpaca free tier)
 - 500ms floor for cycle times, supporting mid frequency trading
 - Exposed API for trade monitoring and internal logging

@@ -17,7 +17,7 @@ import (
 type configSettings struct {
 	LiveTickers []string 						`json:"live_trade_stocks"`
 	Features 	[]technicals.FeatureTechnical 	`json:"features"`
-	Labels 		[]technicals.Relationship 		`json:"label_logic_2"`
+	Labels 		[]technicals.Relationship 		`json:"label_logic"`
 	Runtime 	technicals.RuntimeSettings 		`json:"runtime_settings"`
 } // ConfigSettings
 
@@ -44,11 +44,11 @@ func getConfigJSON(file string) (*configSettings, error) {
 
 // NewRuntimeData gives a new RuntimeData object that represents all user
 // defined config values as a Go object
-func NewRuntimeData(file string) (*technicals.RuntimeData, error) {
+func NewRuntimeData(file string) (technicals.RuntimeData, error) {
 
 	data, err := getConfigJSON(file)
 	if err != nil {
-		return nil, err
+		return technicals.RuntimeData{}, err
 	} 
 
 	var res technicals.RuntimeData 
@@ -85,13 +85,15 @@ func NewRuntimeData(file string) (*technicals.RuntimeData, error) {
 		// res.ColNames[data.Labels[i].Name] = i + len(data.Features)
 	}
 
+	// first 5 values are latest OHLCV values 
+	// place as CHLOV as YFinance DFs are formatted like that 
 	res.FeatureJSON = map[string]float64{}
-	res.FeatureArray = make([]float64, len(data.Labels) + len(res.TALIBFeatureTechnicals) + len(res.OtherFeatureTechnicals))
+	res.FeatureArray = make([]float64, 5 + len(data.Labels) + len(res.TALIBFeatureTechnicals) + len(res.OtherFeatureTechnicals))
 
 	res.OHLCV = technicals.TALIBWrapper{} // init during burn in period
 
 	// let the max capacity have -2 from limit to prevent unwanted GC
 	res.OHLCV.SliceMaxCap = res.RuntimeSettings.BurnTime * technicals.CapLimitMultiplier - 2 
 	
-	return &res, nil
+	return res, nil
 } // NewRuntimeData

@@ -14,7 +14,7 @@ import (
 
 // SendPayload should send the JSON as an Object to the frontend
 func SendPayload(data map[string]any, postLink string) {
-	if postLink == logLink && us.LogToStdout { // dev debug mode
+	if postLink == logLink && log_to_stdio { // dev debug mode
 		log.Println(data["msg"])
 	} // if 
 
@@ -27,8 +27,7 @@ func SendPayload(data map[string]any, postLink string) {
     if err != nil {
 		return
     } // if
-
-    defer resp.Body.Close()
+	defer resp.Body.Close()
 } // SendPayload
 
 // sendEnvironmentData will send the environment variable

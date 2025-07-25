@@ -69,8 +69,12 @@ func burnIn(rd *technicals.RuntimeData, ticker string) (error) {
 
 // overrideBurnIn creates fake data to skip the burn in process
 // immediately, modifies the RuntimeData object in place
-func OverrideBurnIn(rd *technicals.RuntimeData) { // RENAME METHOD TO BE UNEXPORTED AFTER REMOVING DEPRECATED VERSION
-	log.Printf("STAGE: Overriding burn in")
+func OverrideBurnIn(rd *technicals.RuntimeData, ticker string) { // RENAME METHOD TO BE UNEXPORTED AFTER REMOVING DEPRECATED VERSION
+	go SendPayload(
+		map[string]any{
+			"msg": fmt.Sprintf("%s Overriding burn in", ticker),
+		}, logLink,
+	)
 
 	len := rd.RuntimeSettings.BurnTime
 

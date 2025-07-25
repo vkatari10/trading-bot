@@ -11,6 +11,7 @@ import (
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 	"sync"
 	"github.com/gorilla/websocket"
+	apibuffer "github.com/vkatari10/trading-bot/src/runtime/go-src/apibuffer"
 )
 
 var (
@@ -62,11 +63,10 @@ func EventLoop(tempTicker string, tickerID int) {
 	}
 	defer c.Close()
 
-	apiInputChan := make(chan map[string]any, 1)
+	// apiInputChan := make(chan map[string]any, 1)
 	apiOutputChan := make(chan float64, 1)
-
 	go websocketReader(c, apiOutputChan)
-	go websocketWriter(c, apiInputChan)
+	// go websocketWriter(c, apiInputChan)
 
 	
 	// Load User JSON -> Convert to Go Struct
@@ -115,7 +115,7 @@ func EventLoop(tempTicker string, tickerID int) {
 	LoadBurnData(&userIndicators, burn)
 	UpdateOHLCVDeltas(&userIndicators, burnQuote)
 
-	apiBuf := newAPIBuffer() // store logging info in here
+	apiBuf := apibuffer.NewAPIBuffer() // store logging info in here
 
 	go SendPayload(map[string]any{
 		"msg": fmt.Sprintf("(%s) STAGE: LIVE", tempTicker),
@@ -142,29 +142,29 @@ func EventLoop(tempTicker string, tickerID int) {
 
 		UpdateOHLCVDeltas(&userIndicators, newQuote)
 
-		go apiBuf.enqueue(
-			map[string]any{
-				"msg": fmt.Sprintf("%s: $%.2f", tempTicker, newQuote[0]),
-			}, logLink)
+		// go apiBuf.Enqueue(
+		// 	map[string]any{
+		// 		"msg": fmt.Sprintf("%s: $%.2f", tempTicker, newQuote[0]),
+		// 	}, logLink)
 		
 		UpdateTechnicals(&userIndicators, newQuote[0])  // Close values
-		go apiBuf.enqueue(
-			map[string]any{
-				"msg": "UPDATE: Updated Technicals",
-			}, logLink)
+		// go apiBuf.Enqueue(
+		// 	map[string]any{
+		// 		"msg": "UPDATE: Updated Technicals",
+		// 	}, logLink)
 		
 		// DEBUG for seeing live updates of technicals
 		// for j := range userIndicators.Techs {
 		// 	log.Println(userIndicators.Ind[j])
 		// }
 
-		payload, err := MakeMLPayload(&userIndicators, tempTicker)
-		if err != nil {
-			go SendPayload(map[string]any{
-				"msg": "ERROR: could not produce ML Payload",
-			}, logLink)
-		} // if
-		apiInputChan <- payload
+		// payload, err := MakeMLPayload(&userIndicators, tempTicker)
+		// if err != nil {
+		// 	go SendPayload(map[string]any{
+		// 		"msg": "ERROR: could not produce ML Payload",
+		// 	}, logLink)
+		// } // if
+		// apiInputChan <- payload
 
 		pred := <-apiOutputChan
 

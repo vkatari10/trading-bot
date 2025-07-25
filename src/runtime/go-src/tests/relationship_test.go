@@ -26,10 +26,10 @@ func TestCrossover(t *testing.T) {
 	testCrossUp := []float64{0.4, 0.3}
 	testCrossDown := []float64{50, 75}
 
-	check := technicals.CrossoverRelationship(&relationshipTestUp, data, testCrossUp)
+	check := technicals.CrossoverRelationship(&relationshipTestUp, &data, testCrossUp)
 
 	check2 := technicals.CrossoverRelationship(&relationshipTestDown,
-	data, testCrossDown)
+	&data, testCrossDown)
 
 	if check != 1 || check2 != -1 {
 		t.Errorf("Computation failed for TestCrossover")

@@ -24,7 +24,7 @@ class UserMLConfig():
         '''
         import src.ml.training.training_methods as train # prevent partial module init
         training_df = dp.get_df(self.config)
-        self.stop = self.find_stop(training_df)
+        # self.stop = self.find_stop(training_df)
         train.train_dispatch(self, training_df)
 
     def generate_model_userdata(self, csv_file_path: str) -> None:

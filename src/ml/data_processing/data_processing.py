@@ -190,7 +190,7 @@ def rebalance_df(ud: ud.UserMLConfig,
     '''Rebalance dataframe by features and labelling logic, useful for all models'''
     from imblearn.under_sampling import RandomUnderSampler
 
-    cols = [i for i in range(ud.stop)]
+    cols = [i for i in range(len(df.columns) - 1)]
 
     X = df.iloc[:, cols]
     y = df.iloc[:, -1] # TODO accept multiple back column

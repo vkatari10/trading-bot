@@ -120,17 +120,29 @@ func (rd *RuntimeData) PopLeft() {
 // AppendNewOHLCV appends all new OHLCV values to all
 // OHLCV arrays
 func (rd *RuntimeData) AppendNewOHLCV(
-	open float64,
-	high float64,
-	low float64,
-	close float64,
-	volume float64,
+	bars [5]float64,
 ) {
-	rd.OHLCV.Open = append(rd.OHLCV.Open, open)
-	rd.OHLCV.High = append(rd.OHLCV.High, high)
-	rd.OHLCV.Low = append(rd.OHLCV.Low, low)
-	rd.OHLCV.Close = append(rd.OHLCV.Close, close)
-	rd.OHLCV.Volume = append(rd.OHLCV.Volume, volume)
+	rd.OHLCV.Open = append(rd.OHLCV.Open, bars[0])
+	rd.OHLCV.High = append(rd.OHLCV.High, bars[1])
+	rd.OHLCV.Low = append(rd.OHLCV.Low, bars[2])
+	rd.OHLCV.Close = append(rd.OHLCV.Close, bars[3])
+	rd.OHLCV.Volume = append(rd.OHLCV.Volume, bars[4])
+
+	// 3 1 2 0 4
+	// YFinance DF == CHLOV
+	rd.FeatureArray[0] = bars[3] // Close MUST GO first to match Training data
+	rd.FeatureArray[1] = bars[1]
+	rd.FeatureArray[2] = bars[2]
+	rd.FeatureArray[3] = bars[0] // Open goes here
+	rd.FeatureArray[4] = bars[4]
+
+	rd.FeatureJSON["0"] = bars[3]
+	rd.FeatureJSON["1"] = bars[1]
+	rd.FeatureJSON["2"] = bars[2]
+	rd.FeatureJSON["3"] = bars[0]
+	rd.FeatureJSON["4"] = bars[4]
+
+	rd.fillFeatureIndex = 5
 } // AppendNewOHLCV
 
 // TestAppend is a testing method that is used to test
