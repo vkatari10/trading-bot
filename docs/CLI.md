@@ -2,12 +2,39 @@
 
 To get quick jobs done rom CLI, you can call the `./contrade_cli.py` tool. 
 
-## Commands
+## Training
 
-| Command | Description | Usage |
-|:-------:|--------|------|
-| build | Compiles `Go` source code and `C` source code if applicable | `./contrade_cli.py build` |
-| mlapi | Starts ML API Server, should be called before the `run` command to ensure inferences can be made | `./contrade_cli.py mlapi <CONFIG_FILE_PATH>` | 
-| run | Starts Live execution with a given JSON configuration file, the path of the config file should be relative from the root, you will need to call `mlapi` command as well from another terminal to ensure that the ML model can make live inferences. **NOTE:** make sure you are using the same config file as the one used to call `mlapi` | `./contrade_cli.py run <CONFIG_FILE_PATH>` | 
-| test | Runs all unit tests for both `Python` and `Go` source files | `./contrade_cli.py test` |
-| train | Trains ML model given a JSON configuration file, the path of the config file should be relative from the root | `./contrade_cli.py train <CONFIG_FILE_PATH>` | 
+`./contrade_cli.py train <PATH_TO_CONFIG_FILE>`
+
+The train command will parse, train, and dump the ML model according to your specifications
+
+## Backtesting
+
+`./contrade_cli.py backtest <PATH_TO_CONFIG_FILE> <ASSET_TICKER> --cash 10000 --commission 0.00 --slippage 0.03 --size 1`
+
+The backtest command will backtest your model against the specified granularity/timeframe given a valid Ticker to backtest on.
+
+All arguments starting with `--` are optional and **do not** need to be provided in your JSON config already contains default settings for backtest settings. In this case you just need to specify the asset ticker.
+
+If your JSON config **does not** contain default settings then you **must** provide all optional arguments then. If you have default arguments in your JSON, you can provide **any** number of optional arguments and override them from the CLI.
+
+## Run Live
+
+You will **need** to use 2 terminals, and do them **in order** as shown.
+
+1. `./contrade_cli.py mlapi <PATH_TO_CONFIG_FILE>`
+2. `./contrade_cli.py run <PATH_TO_CONFIG_FILE>`
+
+The first command will load the model onto its own server, then the run command will connect to the ML model server. The config file **must** be the same when using both commands, or undefined behavior will occur. 
+
+## Build Dependencies
+
+`./contrade_cli.py build`
+
+The build command just compiles all required `Go` source code, and `C` code if applicable. Should only be used during the setup phase
+
+## Run Tests
+
+`./contrade_cli.py test`
+
+The test command will run test for both `Python` and `Go` source code. CI pipelines already exist to automate these tests on push and pull requests, however they take around 2 minutes to complete, since it needs to set up the environment from scratch every time. 

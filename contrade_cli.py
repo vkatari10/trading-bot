@@ -5,56 +5,87 @@ CLI Tool to interact with various services
 Author: Vikas Katari 
 Date: 06/30/2025
 '''
+import argparse
+import subprocess
+
+def train(args):
+    import src.ml.pipeline as pipe
+    pipe.pipeline_yfinance(args.config)
+
+def build(args):
+    subprocess.run(["bash", "./scripts/build.sh"])
+
+def test(args):
+    subprocess.run(["bash", "./scripts/test.sh"])
+
+def run(args):
+    subprocess.Popen(["go", "build"], cwd="./src/runtime/go-src").wait()
+    process = subprocess.Popen(
+        ["go", "run", ".", args.config],
+        cwd="./src/runtime/go-src"
+    )
+    process.communicate()
+
+def mlapi(args):
+    subprocess.run(
+        ["python", "-m", "src.api.internal.model_api.fast_model_api", args.config]
+    )
+
+def backtest(args):
+    import src.backtesting.backtesting as bt
+    bt.run_backtest(args.config,
+                    args.asset,
+                    args.cash,
+                    args.commission,
+                    args.slippage,
+                    args.size)
+
+# --- parser setup ---
+parser = argparse.ArgumentParser(prog="contrade")
+subparsers = parser.add_subparsers(dest="command")
+
+# train
+p_train = subparsers.add_parser("train", help="Train a model using a config file")
+p_train.add_argument("config", help="Path to config file (e.g. config/xyz.json)")
+p_train.set_defaults(func=train)
+
+# build
+p_build = subparsers.add_parser("build", help="Run the build script")
+p_build.set_defaults(func=build)
+
+# test
+p_test = subparsers.add_parser("test", help="Run the test script")
+p_test.set_defaults(func=test)
+
+# run
+p_run = subparsers.add_parser("run", help="Run Go execution engine with config")
+p_run.add_argument("config", help="Path to config file (e.g. config/xyz.json)")
+p_run.set_defaults(func=run)
+
+# mlapi
+p_mlapi = subparsers.add_parser("mlapi", help="Run fast ML API with config")
+p_mlapi.add_argument("config", help="Path to config file (e.g. config/xyz.json)")
+p_mlapi.set_defaults(func=mlapi)
+
+# backtest
+p_backtest = subparsers.add_parser("backtest", help="Run backtest with config and asset")
+p_backtest.add_argument("config", help="Path to config file (e.g. config/xyz.json)")
+p_backtest.add_argument("asset", help="Asset ticker symbol (e.g. AAPL)")
+p_backtest.set_defaults(func=backtest)
+
+# optional args
+p_backtest.add_argument("--cash", type=float, default=None, help="Initial cash balance")
+p_backtest.add_argument("--commission", type=float, default=None, help="Commission per trade")
+p_backtest.add_argument("--slippage", type=float, default=None, help="Random range where buy/sell trades could be adjusted by")
+p_backtest.add_argument("--size", type=int, default=None, help="How many shares should be bought on every trade")
+
 try:
-
-    import sys # argv
-    import subprocess # run shell scripts
-    import src.ml.pipeline as pipe # to train models
-    import src.backtesting.backtesting as bt # backtesting module
-
-    args = sys.argv
-
-    if args[1] == "train":
-
-        if len(args) < 3:
-            print("usage: ./contrade_cli.py train <PATH_TO_CONFIG_FILE>")
-        else:
-            pipe.pipeline_yfinance(args[2]) 
-    elif args[1] == "build":
-        subprocess.run(["bash", "./scripts/build.sh"])
-    elif args[1] == "test":
-        subprocess.run(["bash", "./scripts/test.sh"])
-    elif args[1] == "run":
-        if len(args) < 3:
-            print("usage: ./contrade_cli.py run <PATH_TO_CONFIG_FILE")
-        else:
-            file = args[2]       
-
-            compile = subprocess.Popen(
-                ["go", "build"],
-                cwd="./src/runtime/go-src"
-            )
-
-            process = subprocess.Popen( # forked
-                ["go", "run", ".", file],
-                cwd="./src/runtime/go-src"
-            )
-
-            process.communicate()
-    elif args[1] == "mlapi":
-        if len(args) == 3:
-            file = args[2]
-            process = subprocess.run(
-                ["python", "-m", "src.api.internal.model_api.fast_model_api", file]
-            )
-        else: 
-            print("usage: ./contrade_cli.py mlapi <PATH_TO_CONFIG_FILE>")
-    elif args[1] == "backtest":
-        if len(args) == 4:
-            bt.run_backtest(args[2], args[3])
-        else:
-            print("usage: ./contrade_cli.py backtest <PATH_TO_CONFIG_FILE> <ASSET_TICKER>")
+    args = parser.parse_args()
+    if hasattr(args, "func"):
+        args.func(args)
+    else:
+        parser.print_help()
 except ModuleNotFoundError:
-    print("venv has been not started, run 'source venv/bin/activate'")
+    print("venv has not been started, run 'source venv/bin/activate'")
 except KeyboardInterrupt:
-    print('quit')
+    print("quit")

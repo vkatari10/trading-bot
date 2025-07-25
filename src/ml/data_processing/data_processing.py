@@ -10,7 +10,7 @@ Author: Vikas Katari
 Date: 05/03/2025
 '''
 import pandas as pd
-from typing import Dict, Any, List, Tuple
+from typing import Dict, Any, List
 
 
 # Python technical indicators
@@ -181,7 +181,7 @@ def get_single_df(ud: ud.UserMLConfig, ticker: str) -> pd.DataFrame:
     A single dataframe with the user defined features and labels from the JSON 
     config file 
     '''
-    df = yf.get_data(ticker, ud.config.get_model_training_interval(), ud.config.get_model_training_timeframe())
+    df = yf.get_data(ticker, ud.get_model_training_interval(), ud.get_model_training_timeframe())
     df = process_data(df, ud)
     return df
 

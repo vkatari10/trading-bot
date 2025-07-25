@@ -84,4 +84,5 @@ class UserConfig():
     def get_backtesting_pos_size(self) -> int:
         return self.get('backtest_settings', 'position_size')
 
-   
+    def get_backtesting_slippage(self) -> float:
+        return self.get('backtest_settings', 'slippage')

@@ -86,6 +86,7 @@
     "backtest_settings": {
         "starting_cash": 10000,
         "commission": 0.00,
-        "position_size": 1
+        "position_size": 1,
+        "slippage": 0.03
     } 
 }
