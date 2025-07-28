@@ -33,3 +33,6 @@ models/*.json
 
 # mkdocs
 ./site/
+
+# npm
+frontend/node_modules/
