@@ -15,7 +15,7 @@ import (
 // 		t.Errorf("failed to create runtimeData Object")
 // 	}
 
-// 	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+// 	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
 // 	res, err := technicals.TA_SMA( // ~10-20 microseconds w/ len 31 window
 // 		runtimeData.Objects[0],
@@ -39,7 +39,7 @@ func TestTalibBBANDS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_BBANDS( 
@@ -64,7 +64,7 @@ func TestTalibDEMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_DEMA( 
@@ -89,7 +89,7 @@ func TestTalibEMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_EMA( 
@@ -114,7 +114,7 @@ func TestTalibHT_TRENDLINE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_HT_TRENDLINE( 
@@ -139,7 +139,7 @@ func TestTalibKAMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_KAMA( 
@@ -164,7 +164,7 @@ func TestTalibMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MA( 
@@ -189,7 +189,7 @@ func TestTalibMIDPOINT(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MIDPOINT( 
@@ -214,7 +214,7 @@ func TestTalibMIDPRICE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MIDPRICE( 
@@ -239,7 +239,7 @@ func TestTalibSAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_SAR( 
@@ -264,7 +264,7 @@ func TestTalibSAREXT(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_SAREXT( 
@@ -289,7 +289,7 @@ func TestTalibSMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_SMA( 
@@ -314,7 +314,7 @@ func TestTalibT3(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_T3( 
@@ -339,7 +339,7 @@ func TestTalibTEMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_TEMA( 
@@ -364,7 +364,7 @@ func TestTalibTRIMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_TRIMA( 
@@ -389,7 +389,7 @@ func TestTalibWMA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_WMA( 
@@ -414,7 +414,7 @@ func TestTalibADX(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ADX( 
@@ -439,7 +439,7 @@ func TestTalibADXR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ADXR( 
@@ -464,7 +464,7 @@ func TestTalibAPO(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_APO( 
@@ -489,7 +489,7 @@ func TestTalibAROON(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_AROON( 
@@ -514,7 +514,7 @@ func TestTalibAROONOSC(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_AROONOSC( 
@@ -539,7 +539,7 @@ func TestTalibBOP(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_BOP( 
@@ -564,7 +564,7 @@ func TestTalibCCI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CCI( 
@@ -589,7 +589,7 @@ func TestTalibCMO(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CMO( 
@@ -614,7 +614,7 @@ func TestTalibDX(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_DX( 
@@ -639,7 +639,7 @@ func TestTalibMACD(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MACD( 
@@ -664,7 +664,7 @@ func TestTalibMACDEXT(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MACDEXT( 
@@ -689,7 +689,7 @@ func TestTalibMACDFIX(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MACDFIX( 
@@ -714,7 +714,7 @@ func TestTalibMFI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MFI( 
@@ -739,7 +739,7 @@ func TestTalibMINUS_DI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MINUS_DI( 
@@ -764,7 +764,7 @@ func TestTalibMINUS_DM(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MINUS_DM( 
@@ -789,7 +789,7 @@ func TestTalibMOM(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MOM( 
@@ -814,7 +814,7 @@ func TestTalibPLUS_DI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_PLUS_DI( 
@@ -839,7 +839,7 @@ func TestTalibPLUS_DM(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_PLUS_DM( 
@@ -864,7 +864,7 @@ func TestTalibPPO(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_PPO( 
@@ -889,7 +889,7 @@ func TestTalibROC(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ROC( 
@@ -914,7 +914,7 @@ func TestTalibROCP(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ROCP( 
@@ -939,7 +939,7 @@ func TestTalibROCR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ROCR( 
@@ -964,7 +964,7 @@ func TestTalibROCR100(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ROCR100( 
@@ -989,7 +989,7 @@ func TestTalibRSI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_RSI( 
@@ -1014,7 +1014,7 @@ func TestTalibSTOCH(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_STOCH( 
@@ -1039,7 +1039,7 @@ func TestTalibSTOCHF(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_STOCHF( 
@@ -1064,7 +1064,7 @@ func TestTalibSTOCHRSI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_STOCHRSI( 
@@ -1089,7 +1089,7 @@ func TestTalibTRIX(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_TRIX( 
@@ -1114,7 +1114,7 @@ func TestTalibULTOSC(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ULTOSC( 
@@ -1139,7 +1139,7 @@ func TestTalibWILLR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_WILLR( 
@@ -1164,7 +1164,7 @@ func TestTalibAD(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_AD( 
@@ -1189,7 +1189,7 @@ func TestTalibADOSC(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ADOSC( 
@@ -1214,7 +1214,7 @@ func TestTalibOBV(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_OBV( 
@@ -1239,7 +1239,7 @@ func TestTalibHT_DCPERIOD(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_HT_DCPERIOD( 
@@ -1264,7 +1264,7 @@ func TestTalibHT_DCPHASE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_HT_DCPHASE( 
@@ -1289,7 +1289,7 @@ func TestTalibHT_PHASOR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_HT_PHASOR( 
@@ -1314,7 +1314,7 @@ func TestTalibHT_SINE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_HT_SINE( 
@@ -1339,7 +1339,7 @@ func TestTalibHT_TRENDMODE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_HT_TRENDMODE( 
@@ -1364,7 +1364,7 @@ func TestTalibAVGPRICE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_AVGPRICE( 
@@ -1389,7 +1389,7 @@ func TestTalibMEDPRICE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_MEDPRICE( 
@@ -1414,7 +1414,7 @@ func TestTalibTYPPRICE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_TYPPRICE( 
@@ -1439,7 +1439,7 @@ func TestTalibWCLPRICE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_WCLPRICE( 
@@ -1464,7 +1464,7 @@ func TestTalibATR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_ATR( 
@@ -1489,7 +1489,7 @@ func TestTalibNATR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_NATR( 
@@ -1514,7 +1514,7 @@ func TestTalibTRANGE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_TRANGE( 
@@ -1539,7 +1539,7 @@ func TestTalibCDL2CROWS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL2CROWS( 
@@ -1564,7 +1564,7 @@ func TestTalibCDL3BLACKCROWS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL3BLACKCROWS( 
@@ -1589,7 +1589,7 @@ func TestTalibCDL3INSIDE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL3INSIDE( 
@@ -1614,7 +1614,7 @@ func TestTalibCDL3LINESTRIKE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL3LINESTRIKE( 
@@ -1639,7 +1639,7 @@ func TestTalibCDL3OUTSIDE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL3OUTSIDE( 
@@ -1664,7 +1664,7 @@ func TestTalibCDL3STARSINSOUTH(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL3STARSINSOUTH( 
@@ -1689,7 +1689,7 @@ func TestTalibCDL3WHITESOLDIERS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDL3WHITESOLDIERS( 
@@ -1714,7 +1714,7 @@ func TestTalibCDLABANDONEDBABY(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLABANDONEDBABY( 
@@ -1739,7 +1739,7 @@ func TestTalibCDLADVANCEBLOCK(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLADVANCEBLOCK( 
@@ -1764,7 +1764,7 @@ func TestTalibCDLBELTHOLD(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLBELTHOLD( 
@@ -1789,7 +1789,7 @@ func TestTalibCDLBREAKAWAY(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLBREAKAWAY( 
@@ -1814,7 +1814,7 @@ func TestTalibCDLCLOSINGMARUBOZU(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLCLOSINGMARUBOZU( 
@@ -1839,7 +1839,7 @@ func TestTalibCDLCONCEALBABYSWALL(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLCONCEALBABYSWALL( 
@@ -1864,7 +1864,7 @@ func TestTalibCDLCOUNTERATTACK(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLCOUNTERATTACK( 
@@ -1889,7 +1889,7 @@ func TestTalibCDLDARKCLOUDCOVER(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLDARKCLOUDCOVER( 
@@ -1914,7 +1914,7 @@ func TestTalibCDLDOJI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLDOJI( 
@@ -1939,7 +1939,7 @@ func TestTalibCDLDOJISTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLDOJISTAR( 
@@ -1964,7 +1964,7 @@ func TestTalibCDLDRAGONFLYDOJI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLDRAGONFLYDOJI( 
@@ -1989,7 +1989,7 @@ func TestTalibCDLENGULFING(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLENGULFING( 
@@ -2014,7 +2014,7 @@ func TestTalibCDLEVENINGDOJISTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLEVENINGDOJISTAR( 
@@ -2039,7 +2039,7 @@ func TestTalibCDLEVENINGSTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLEVENINGSTAR( 
@@ -2064,7 +2064,7 @@ func TestTalibCDLGAPSIDESIDEWHITE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLGAPSIDESIDEWHITE( 
@@ -2089,7 +2089,7 @@ func TestTalibCDLGRAVESTONEDOJI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLGRAVESTONEDOJI( 
@@ -2114,7 +2114,7 @@ func TestTalibCDLHAMMER(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHAMMER( 
@@ -2139,7 +2139,7 @@ func TestTalibCDLHANGINGMAN(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHANGINGMAN( 
@@ -2164,7 +2164,7 @@ func TestTalibCDLHARAMI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHARAMI( 
@@ -2189,7 +2189,7 @@ func TestTalibCDLHARAMICROSS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHARAMICROSS( 
@@ -2214,7 +2214,7 @@ func TestTalibCDLHIGHWAVE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHIGHWAVE( 
@@ -2239,7 +2239,7 @@ func TestTalibCDLHIKKAKE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHIKKAKE( 
@@ -2264,7 +2264,7 @@ func TestTalibCDLHIKKAKEMOD(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHIKKAKEMOD( 
@@ -2289,7 +2289,7 @@ func TestTalibCDLHOMINGPIGEON(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLHOMINGPIGEON( 
@@ -2314,7 +2314,7 @@ func TestTalibCDLIDENTICAL3CROWS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLIDENTICAL3CROWS( 
@@ -2339,7 +2339,7 @@ func TestTalibCDLINNECK(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLINNECK( 
@@ -2364,7 +2364,7 @@ func TestTalibCDLINVERTEDHAMMER(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLINVERTEDHAMMER( 
@@ -2389,7 +2389,7 @@ func TestTalibCDLKICKING(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLKICKING( 
@@ -2414,7 +2414,7 @@ func TestTalibCDLKICKINGBYLENGTH(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLKICKINGBYLENGTH( 
@@ -2439,7 +2439,7 @@ func TestTalibCDLLADDERBOTTOM(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLLADDERBOTTOM( 
@@ -2464,7 +2464,7 @@ func TestTalibCDLLONGLEGGEDDOJI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLLONGLEGGEDDOJI( 
@@ -2489,7 +2489,7 @@ func TestTalibCDLLONGLINE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLLONGLINE( 
@@ -2514,7 +2514,7 @@ func TestTalibCDLMARUBOZU(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLMARUBOZU( 
@@ -2539,7 +2539,7 @@ func TestTalibCDLMATCHINGLOW(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLMATCHINGLOW( 
@@ -2564,7 +2564,7 @@ func TestTalibCDLMATHOLD(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLMATHOLD( 
@@ -2589,7 +2589,7 @@ func TestTalibCDLMORNINGDOJISTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLMORNINGDOJISTAR( 
@@ -2614,7 +2614,7 @@ func TestTalibCDLMORNINGSTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLMORNINGSTAR( 
@@ -2639,7 +2639,7 @@ func TestTalibCDLONNECK(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLONNECK( 
@@ -2664,7 +2664,7 @@ func TestTalibCDLPIERCING(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLPIERCING( 
@@ -2689,7 +2689,7 @@ func TestTalibCDLRICKSHAWMAN(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLRICKSHAWMAN( 
@@ -2714,7 +2714,7 @@ func TestTalibCDLRISEFALL3METHODS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLRISEFALL3METHODS( 
@@ -2739,7 +2739,7 @@ func TestTalibCDLSEPARATINGLINES(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLSEPARATINGLINES( 
@@ -2764,7 +2764,7 @@ func TestTalibCDLSHOOTINGSTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLSHOOTINGSTAR( 
@@ -2789,7 +2789,7 @@ func TestTalibCDLSHORTLINE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLSHORTLINE( 
@@ -2814,7 +2814,7 @@ func TestTalibCDLSPINNINGTOP(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLSPINNINGTOP( 
@@ -2839,7 +2839,7 @@ func TestTalibCDLSTALLEDPATTERN(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLSTALLEDPATTERN( 
@@ -2864,7 +2864,7 @@ func TestTalibCDLSTICKSANDWICH(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLSTICKSANDWICH( 
@@ -2889,7 +2889,7 @@ func TestTalibCDLTAKURI(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLTAKURI( 
@@ -2914,7 +2914,7 @@ func TestTalibCDLTASUKIGAP(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLTASUKIGAP( 
@@ -2939,7 +2939,7 @@ func TestTalibCDLTHRUSTING(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLTHRUSTING( 
@@ -2964,7 +2964,7 @@ func TestTalibCDLTRISTAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLTRISTAR( 
@@ -2989,7 +2989,7 @@ func TestTalibCDLUNIQUE3RIVER(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLUNIQUE3RIVER( 
@@ -3014,7 +3014,7 @@ func TestTalibCDLUPSIDEGAP2CROWS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLUPSIDEGAP2CROWS( 
@@ -3039,7 +3039,7 @@ func TestTalibCDLXSIDEGAP3METHODS(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CDLXSIDEGAP3METHODS( 
@@ -3064,7 +3064,7 @@ func TestTalibBETA(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_BETA( 
@@ -3089,7 +3089,7 @@ func TestTalibCORREL(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_CORREL( 
@@ -3114,7 +3114,7 @@ func TestTalibLINEARREG(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_LINEARREG( 
@@ -3139,7 +3139,7 @@ func TestTalibLINEARREG_ANGLE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_LINEARREG_ANGLE( 
@@ -3164,7 +3164,7 @@ func TestTalibLINEARREG_INTERCEPT(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_LINEARREG_INTERCEPT( 
@@ -3189,7 +3189,7 @@ func TestTalibLINEARREG_SLOPE(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_LINEARREG_SLOPE( 
@@ -3214,7 +3214,7 @@ func TestTalibSTDDEV(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_STDDEV( 
@@ -3239,7 +3239,7 @@ func TestTalibTSF(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_TSF( 
@@ -3264,7 +3264,7 @@ func TestTalibVAR(t *testing.T) {
 		t.Errorf("failed to create runtimeData Object")
 	}
 
-	eventloop.OverrideBurnIn(&runtimeData, "XYZ")
+	eventloop.OverrideBurnIn(&runtimeData, "XYZ", "")
 
     start := time.Now()
 	res, err := technicals.TA_VAR( 

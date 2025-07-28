@@ -49,7 +49,12 @@ func BurnIn(burnTime int, ticker string, refresh int) (arr []float64, finalQuote
 // TODO: Move to risk package once rewrite done
 // handlePrediction handles the prediction made by the ML model by 
 // working with the broker API
-func handlePrediction(apiBuffer *apibuf.APIBuffer, prediction float64, ticker string) {
+func handlePrediction(
+	apiBuffer *apibuf.APIBuffer, 
+	prediction float64, 
+	ticker string,
+	postLink string,
+	) {
 
 	decisionMsg := "DECIDE: "
 		var decision string;
@@ -69,8 +74,8 @@ func handlePrediction(apiBuffer *apibuf.APIBuffer, prediction float64, ticker st
 		go apiBuffer.Enqueue(
 			map[string]any{
 				"msg": fmt.Sprintf("DECIDE: %s %s", decisionMsg, ticker),
-			}, logLink)
-		go sendBrokerData()
+			}, postLink)
+		// go sendBrokerData()
 
 } // handlePrediction
 

@@ -11,7 +11,7 @@ import (
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 	"sync"
 	"github.com/gorilla/websocket"
-	apibuffer "github.com/vkatari10/trading-bot/src/runtime/go-src/apibuffer"
+	// apibuffer "github.com/vkatari10/trading-bot/src/runtime/go-src/apibuffer"
 )
 
 var (
@@ -115,7 +115,7 @@ func EventLoop(tempTicker string, tickerID int) {
 	LoadBurnData(&userIndicators, burn)
 	UpdateOHLCVDeltas(&userIndicators, burnQuote)
 
-	apiBuf := apibuffer.NewAPIBuffer() // store logging info in here
+	// apiBuf := apibuffer.NewAPIBuffer() // store logging info in here
 
 	go SendPayload(map[string]any{
 		"msg": fmt.Sprintf("(%s) STAGE: LIVE", tempTicker),
@@ -166,10 +166,10 @@ func EventLoop(tempTicker string, tickerID int) {
 		// } // if
 		// apiInputChan <- payload
 
-		pred := <-apiOutputChan
+		// pred := <-apiOutputChan
 
 		// Decide Buy/Sell/Hold 
-		handlePrediction(apiBuf, pred, tempTicker)
+		// handlePrediction(apiBuf, pred, tempTicker)
 
 		// go apiBuf.enqueue(map[string]any{ 
 		// 	"msg": fmt.Sprintf("STAGE: WAIT (%d seconds)", userSettings.CycleTime),

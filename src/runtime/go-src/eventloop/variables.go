@@ -20,9 +20,9 @@ func init() {
 	godotenv.Load("../../../.env")
 
 	// API Endpoints
-	logLink = os.Getenv("LOG_LINK")
-	dataLink = os.Getenv("DATA_LINK")
-	envLink = os.Getenv("ENV_LINK")
-	brokerLink = os.Getenv("BROKER_LINK")
+	logLink = os.Getenv("LOG_API_LINK")
+	dataLink = os.Getenv("DATA_API_LINK")
+	envLink = os.Getenv("ENV_API_LINK")
+	brokerLink = os.Getenv("BROKER_API_LINK")
 	mlServerLink = os.Getenv("ML_API_LINK")
 } // init()

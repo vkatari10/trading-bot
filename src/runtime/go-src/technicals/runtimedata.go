@@ -118,7 +118,9 @@ func (rd *RuntimeData) PopLeft() {
 } // DropFirstArrayValues
 
 // AppendNewOHLCV appends all new OHLCV values to all
-// OHLCV arrays
+// OHLCV arrays, this will Also add the first default
+// OHLCV values to the feature payloads in YFinance order
+// (CHLOV)
 func (rd *RuntimeData) AppendNewOHLCV(
 	bars [5]float64,
 ) {
@@ -221,8 +223,6 @@ func (rd *RuntimeData) UpdateOtherTechnicals() error {
 // UpdateRelationships updates the rd.Relationships
 // array after UpdateOtherTechnicals() has been called
 func (rd *RuntimeData) UpdateRelationships() error {
-
-
 	for i := range rd.Relationships {
 
 		obj := &rd.Relationships[i]
@@ -283,7 +283,7 @@ func (rd *RuntimeData) InitRelationships() error {
 
 		obj.Col1Val = col1Val
 		obj.Col2Val = col2Val
-	}
+	}			
 
 	return nil
 } // InitRelationships	

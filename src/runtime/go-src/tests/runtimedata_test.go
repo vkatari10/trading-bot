@@ -18,7 +18,7 @@ func TestRuntimeDataUpdateTechnicals(t *testing.T) {
 		t.Errorf("Test RuntimeData Update Technicals failed to init runtime data obj")
 	}
 
-	eventloop.OverrideBurnIn(&rd, "X")
+	eventloop.OverrideBurnIn(&rd, "X", "")
 
 	
 
@@ -42,7 +42,7 @@ func TestRuntimeDataStressTests(t *testing.T) {
 		t.Errorf("Test RuntimeData Update Technicals failed to init runtime data obj")
 	}
 
-	eventloop.OverrideBurnIn(&rd, "X")
+	eventloop.OverrideBurnIn(&rd, "X", "")
 
 	rd.InitRelationships()
 	
@@ -84,7 +84,7 @@ func TestInitRelationships(t *testing.T) {
 		t.Errorf("InitRelationships: Failed to construct runtime data object")
 	}
 
-	eventloop.OverrideBurnIn(&data, "X")
+	eventloop.OverrideBurnIn(&data, "X", "")
 	data.UpdateTALIBTechnicals()
 	data.UpdateOtherTechnicals()
 	data.InitRelationships()

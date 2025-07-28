@@ -16,7 +16,7 @@ func TestOverrideBurnIn(t *testing.T) {
 		t.Errorf("%v", err)
 	}
 
-	OverrideBurnIn(&gotConfig, "XYZ")
+	OverrideBurnIn(&gotConfig, "XYZ", "")
 
 	if len(gotConfig.OHLCV.High) < gotConfig.RuntimeSettings.BurnTime {
 		t.Errorf("TestOverrideBurnIn: arrays were not initialized")
@@ -32,7 +32,7 @@ func TestRuntimeDataStressed(t *testing.T) {
 		t.Errorf("%v", err)
 	}
 
-	OverrideBurnIn(&gotConfig, "XYZ")
+	OverrideBurnIn(&gotConfig, "XYZ", "")
 
 	
 	for range 1_000_000 { // 0.05s @ CapLimitMultiplier = 2

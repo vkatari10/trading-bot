@@ -6,7 +6,7 @@ package apibuffer
 import (
 	"sync"
 	"time"
-	"fmt"
+	_ "fmt"
 )
 
 const (
@@ -73,7 +73,7 @@ func (queue *APIBuffer) Flush(times int, wait time.Duration, action func(map[str
 // for wait amount of time until flushing the next item
 // to its destination
 func (q *APIBuffer) FlushAll(wait time.Duration, action func(map[string]any, string)) {
-	fmt.Println(q.Data)
+	// fmt.Println(q.Data)
 	for _ = range q.Data {
 		data, dest := q.Dequeue()
 		go action(data, dest)

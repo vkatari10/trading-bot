@@ -1,6 +1,8 @@
 {
     "notes": {
-        "note": "Testing TA-Lib style formatting to support more technicals"
+        "note": "Testing TA-Lib style formatting to support more technicals",
+        "note_again": "Do not use this for tests -- this config will not work",
+        "note_3": "This is only designed to tests the \"features\" category"
     },
     "features": [
         {

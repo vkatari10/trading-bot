@@ -1,12 +1,13 @@
 '''
-FastAPI implementation allowing Scikit-learn models
-to communicate with Go
+FastAPI implementation allowing for ML microservice
+and frontend logging with Go backend comms via websockets 
+/ HTTP POST
 
 Author: Vikas Katari
 Date: 07/07/2025
 '''
 
-from fastapi import FastAPI, BackgroundTasks, HTTPException, WebSocket
+from fastapi import FastAPI, WebSocket, Request, WebSocketDisconnect
 import uvicorn as uvi
 
 # internal
@@ -14,14 +15,13 @@ import src.ml.json.json_parser as jp
 import sys
 import numpy as np
 import pickle
+from collections import defaultdict
 
 # load in ML model based on CLI input
 
 args = sys.argv
 
 config = None
-
-print(args)
 
 if len(args) > 1:
     config = jp.UserConfig(args[-1])
@@ -46,7 +46,7 @@ async def load_model():
     global model
     config = jp.UserConfig(args[-1])
     file_path = "models/" + config.get_model_name()
-    print(file_path)
+    # print(file_path)
     with open(file_path, 'rb') as f:
         model = pickle.load(f)
 
@@ -95,6 +95,7 @@ def test_ml_prediction(data: dict):
 
     return 0
 
+
 @app.websocket("/test-result")
 async def test_websocket(websocket: WebSocket):
 
@@ -105,7 +106,83 @@ async def test_websocket(websocket: WebSocket):
     result = test_ml_prediction(data)
 
     await websocket.send_json({"result": result})
+
+
+log_websockets = defaultdict(list)
+data_websockets = defaultdict(list)
+broker_websocket = None
+
+
+@app.websocket("/api/log/{id}")
+async def log_api_websocket(websocket: WebSocket, id: int):
+    await websocket.accept()
+    log_websockets[id].append(websocket)
+
+    try:
+        while True:
+            await websocket.receive_json()
+    except WebSocketDisconnect:
+        log_websockets[id].remove(websocket)
     
+
+@app.post("/api/log/{id}")
+async def log_api(req: Request, id: int):
+    data = await req.json()
+
+    sockets = log_websockets.get(id)
+    if not sockets: # no hooked up websockets yet
+        return
+
+    for ws in sockets:
+        await ws.send_json(data)
+
+    return {"status": "ok"}
+
+
+# @app.websocket("/api/broker")
+# async def broker_api_websocket(websocket: WebSocket):
+#     await websocket.accept()
+#     global broker_websocket
+#     broker_websocket = websocket
+    
+#     try:
+#         while True:
+#             await websocket.receive_json()
+#     except WebSocketDisconnect:
+#         return
+
+
+# @app.post("/api/broker")
+# async def broker_api(req: Request):
+#     data = await req.json()
+#     await broker_websocket.send_json(data)
+
+
+@app.websocket("/api/data/{id}")
+async def data_api_websocket(websocket: WebSocket, id: int):
+    await websocket.accept()
+    data_websockets[id].append(websocket)
+
+    try:
+        while True:
+            await websocket.receive_json()
+    except WebSocketDisconnect:
+        data_websockets[id].remove(websocket)
+
+
+@app.post("/api/data/{id}")
+async def data_api(req: Request, id: int):
+    data = await req.json() 
+
+    sockets = data_websockets.get(id)
+    if not sockets:
+        return
+
+    for ws in sockets:
+        await ws.send_json(data)
+
+    return {"status": "ok"}
+
 
 if __name__ == "__main__":
     uvi.run(

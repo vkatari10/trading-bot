@@ -8,18 +8,20 @@ import (
 	"net/http"
 	"bytes"
 	"log"
+	"strings"
 	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	technicals "github.com/vkatari10/trading-bot/src/runtime/go-src/technicals"
 )
 
 // SendPayload should send the JSON as an Object to the frontend
 func SendPayload(data map[string]any, postLink string) {
-	if postLink == logLink && log_to_stdio { // dev debug mode
+	if strings.Contains(postLink, logLink) && log_to_stdio { // dev debug mode
 		log.Println(data["msg"])
 	} // if 
 
 	payload, err := json.Marshal(data)
     if err != nil {
+		log.Println("SendPayload failed")
 		return
     } // if
 		// handle these errors in the future somehow

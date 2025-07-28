@@ -40,10 +40,6 @@ func deepCopyRuntimeData(rd technicals.RuntimeData) technicals.RuntimeData {
 func StartEventLoops() {
 	rd, err := jsonInternal.NewRuntimeData("../../../" + getFileName())
 	if err != nil {
-		SendPayload(
-			map[string]any{"msg": fmt.Sprintf("Exit Code 1: %v", err)},
-			logLink,
-		)
 		fmt.Printf("Exit Code 1: %v", err)
 		return
 	}
@@ -67,12 +63,16 @@ func StartEventLoops() {
 // Handles the entire eventloop process from initialization, trading, ML prediction
 func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 	// websocket connection setup
-	url := fmt.Sprintf(mlServerLink + "/%d", id)
-	c, _, err := websocket.DefaultDialer.Dial(url, nil)
+	urlML := fmt.Sprintf(mlServerLink + "/%d", id)
+	
+	logUrl := fmt.Sprintf(logLink + "/%d", id)
+	dataUrl := fmt.Sprintf(dataLink + "/%d", id)
+	_ = fmt.Sprintf(brokerLink + "/%d", id)
+	c, _, err := websocket.DefaultDialer.Dial(urlML, nil)
 	if err != nil {
 		SendPayload(
 			map[string]any{"msg": fmt.Sprintf("Exit code 2: %v", err)},
-			logLink,
+			logUrl,
 		)
 		return
 	}
@@ -87,7 +87,7 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 	// go sendEnvironmentData() if u want here or something
 
 	if rd.RuntimeSettings.OverrideBurnIn {
-		OverrideBurnIn(&rd, ticker)
+		OverrideBurnIn(&rd, ticker, logUrl)
 	} else {
 		burnIn(&rd, ticker)
 	}
@@ -96,7 +96,7 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 	if err != nil {
 		SendPayload(
 			map[string]any{"msg": "Exit code 3: JSON object failed to be initialized"},
-			logLink,
+			logUrl,
 		)
 		return
 	}	
@@ -104,10 +104,9 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 	apibuf := apibuffer.NewAPIBuffer()
 	i := 0
 	for i < int(float64(thisRuntime) / rd.RuntimeSettings.CycleTime) { // main event loop
-
 		newBars, err := alpaca.GetAlpacaBars(ticker)
 		if err != nil {
-			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Failed to fet latest quote, waiting...", ticker)}, logLink)
+			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Failed to fet latest quote, waiting...", ticker)}, logUrl)
 			time.Sleep(time.Duration(rd.RuntimeSettings.CycleTime) * time.Second) 
 			i++
 			continue
@@ -117,7 +116,7 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 			map[string]any{
 				"msg": fmt.Sprintf("%s: %.2f", ticker, newBars[3]),
 			}, 
-			logLink,
+			logUrl,
 		)
 
 		rd.PopLeft()
@@ -126,7 +125,7 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 
 		err = rd.UpdateTALIBTechnicals()
 		if err != nil {
-			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Feature computations failed, waiting...", ticker)}, logLink)
+			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Feature computations failed, waiting...", ticker)}, logUrl)
 			time.Sleep(time.Duration(rd.RuntimeSettings.CycleTime) * time.Second) 
 			i++
 			continue
@@ -134,7 +133,7 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 
 		err = rd.UpdateOtherTechnicals()
 		if err != nil {
-			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Failed to Update non-TA-Lib features, waiting...", ticker)}, logLink)
+			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Failed to Update non-TA-Lib features, waiting...", ticker)}, logUrl)
 			time.Sleep(time.Duration(rd.RuntimeSettings.CycleTime) * time.Second) 
 			i++
 			continue
@@ -142,31 +141,26 @@ func eventLoop(rd technicals.RuntimeData, ticker string, id int) {
 
 		err = rd.UpdateRelationships()
 		if err != nil {
-			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Label logic computations failed, waiting...", ticker)}, logLink)
+			go SendPayload(map[string]any{"msg": fmt.Sprintf("%s: Label logic computations failed, waiting...", ticker)}, logUrl)
 			time.Sleep(time.Duration(rd.RuntimeSettings.CycleTime) * time.Second) 
 			i++
 			continue
 		}
 
-		apiInputChan <- rd.FeatureJSON
-
-		fmt.Println("sent prediction payload awaiting response")
+		apiInputChan <- rd.FeatureJSON // will block if these fails, update internal methods
 		prediction := <-apiOutputChan
-
-		fmt.Println("got prediction")
 
 		go apibuf.Enqueue(
 			map[string]any{
 				"msg": fmt.Sprintf("%s: Received Prediction of %.2f", ticker, prediction),
-			}, logLink,
+			}, logUrl,
 		)
 
-		handlePrediction(apibuf, prediction, ticker)
-		
-		fmt.Println("made decision")
+		handlePrediction(apibuf, prediction, ticker, logUrl)
 
 		time.Sleep(time.Duration(rd.RuntimeSettings.CycleTime) * time.Second)
 		go apibuf.FlushAll(time.Duration(rd.RuntimeSettings.LogAPIFlushTime), SendPayload)
+		sendDataPayload(rd.FeatureJSON, dataUrl) // impl uses goroutined anon function 
 		i++
 	}
 } // eventLoop
