@@ -67,7 +67,7 @@ class LogPanel(Vertical):
         log.write("STARTUP CHECKLIST")
         log.write("1. Start ML server")
         log.write("2. Start engine")
-        log.write("3. ")
+        log.write("3. Start this TUI (You already did)")
 
     
 
@@ -88,7 +88,6 @@ class PositionPanel(Static):
 
     def on_mount(self):
         table = self.query_one(DataTable)
-        table.add_columns(*TECHNICALS[0])
 
 class InfoPanel(Static):
     def compose(self) -> ComposeResult:
@@ -134,12 +133,30 @@ class ConTrade(App):
     async def on_mount(self) -> None:
         log = self.query_one("#main_log", RichLog)
         data_table = self.query_one("#data_table", DataTable)
+        log.write("mounting started")
 
+        # init main data_table
+        data_table.add_columns("Asset", "Close", "High", "Low", "Open", "Volume", *config.get_all_feature_label_names())
 
-        for i in range(ticker_count):
-            asyncio.create_task(listen_data_api(i, data_table))
+        # put place holder data
+        tickers = config.get_live_stocks()
+        placeholder = ["NULL"] * (5 + len(config.get_all_feature_label_names())) # account for OHLCV
+
+        # put placeholders
+        for i in range(len(tickers)):
+            data_table.add_row(tickers[i], *placeholder, key=f"row_{i}")
+
+        for i in range(len(tickers)):
+            asyncio.create_task(listen_data_api(i, data_table, log))
             asyncio.create_task(listen_log_api(i, log))
-   
+
+
+        log.write(f"Added rows: {list(data_table.rows)}")
+
+        data_table.update_cell_at((0, 2), 1)
+
+
+
 
 async def listen_log_api(id: int, log=None):
    col_index = log_link.index(":")
@@ -150,27 +167,24 @@ async def listen_log_api(id: int, log=None):
             data = json.loads(raw_data)  # decode JSON string to dict
             log.write(data["msg"])
 
-
-async def listen_data_api(id: int, table=None):
+async def listen_data_api(id: int, table: DataTable, log: RichLog):
     col_index = data_link.index(":")
     url = "ws" + data_link[col_index:] + f"/{id}"
+    log.write(f"[DATA {id}] Connecting to: {url}")
+
     async with websockets.connect(url) as websocket:
         while True:
             raw_data = await websocket.recv()
-            # print(data)
+            data = json.loads(raw_data)
 
-            data = json.loads(raw_data)  # Parse string to dict
-
-            # Ensure row exists
-            row_key = str(id)
-            if not table.get_row(row_key):
-                table.add_row(*[""] * len(data), key=row_key)
-
-            for i in range(len(data)):
-                table.update_cell(row_key, i, data[str(i)])
-
-
-
+            for i in range(0, 5 + len(config.get_all_feature_label_names())):
+                try:
+                    # Safe to update
+                    table.update_cell_at((id, i + 1), data[str(i)], update_width=True)
+                except KeyError:
+                    log.write(f"[MISSING] Row key {id} not found in table")
+                except Exception as e:
+                    log.write(f"[ERROR {id}] {str(e)}")
 
 if __name__ == "__main__":
 
@@ -181,17 +195,8 @@ if __name__ == "__main__":
 
     file_name = args[1]
 
+    global config
     config = jp.UserConfig(file_name)
-
-    # instantiate global list to rep tables
-    # based on config table 
-
-    tickers = config.get_live_stocks()
-    global ticker_count
-    ticker_count = len(tickers)
-
-    TICKERS = tickers
-    TECHNICALS: List[List] = [[]]
-    TECHNICALS[0] = config.get_all_feature_label_names()
+    
 
     ConTrade().run()

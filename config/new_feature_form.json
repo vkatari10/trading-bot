@@ -76,7 +76,7 @@
         }
     },  
     "runtime_settings": {
-        "cycle_time": 60,
+        "cycle_time": 10,
         "burn_window_time": 31,
         "log_api_flush_time": 2000, 
         "log_to_stdout": true,
