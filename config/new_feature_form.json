@@ -6,51 +6,51 @@
         {
             "tech": "SMA",
             "args": {"timeperiod": 10},
-            "name": "SMA_10"
+            "name": "T_SMA_10"
         },
         {
             "tech": "SMA",
             "args": {"timeperiod": 30},
-            "name": "SMA_30"
+            "name": "T_SMA_30"
         },
         {
             "tech": "delta",
             "col1": "SMA_10",
             "col2": null,
-            "name": "SMA_10_delta"
+            "name": "D_SMA_10_delta"
         },
         {
             "tech": "delta",
             "col1": "SMA_30",
             "col2": null,
-            "name": "SMA_30_delta"
+            "name": "D_SMA_30_delta"
         },
         {
             "tech": "diff",
             "col1": "SMA_10",
             "col2": "SMA_30",
-            "name": "SMA_10_30_diff"
+            "name": "D_SMA_10_30_diff"
         },
         {
             "tech": "delta",
             "col1": "SMA_10",
             "col2": "SMA_30",
-            "name": "SMA_10_30_delta_diff"
+            "name": "T_SMA_10_30_delta_diff"
         }
     ],
     "label_logic": [
         {
             "sig": "crossover",
             "name": "SMA_CROSS",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
             "weight": 1.0
         },
         {
             "sig": "above",
             "name": "SHORT_SMA_ABOVE",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
             "weight": 1.0,
             "persist": 2
         }
@@ -63,11 +63,11 @@
         "AAPL",
         "AMZN",
         "MSFT"
-    ],
+    ],  
     "ml_settings": {
         "model_framework": "scikit",
         "scikit_model_type": "RandomForrestClassifier",
-        "model_name": "model_v2.pkl",
+        "model_name": "model_v2.pkl",   
         "model_training_timeframe": "1m",   
         "model_training_interval": "5d",
         "use_OHLCV_diffs": false,

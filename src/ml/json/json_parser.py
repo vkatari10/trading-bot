@@ -41,6 +41,21 @@ class UserConfig():
     def get_labels(self) -> List[Dict[str, Any]]:
         return self.get('label_logic')
     
+    def get_all_feature_label_names(self) -> List[str]:
+        features = self.get_features()
+        labels = self.get_labels()
+
+        res = []
+
+
+        for i in range(len(features)):
+            res.append(features[i]["name"])
+        
+        for i in range(len(labels)):
+            res.append(labels[i]["name"])
+
+        return res
+    
     def get_training_stocks(self) -> List[str]:
         return self.get('train_stocks')
         
