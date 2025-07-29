@@ -1,0 +1,4 @@
+#positions_table {
+    height: 15;
+    overflow: auto;
+}

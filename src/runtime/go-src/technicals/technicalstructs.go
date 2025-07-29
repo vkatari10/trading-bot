@@ -142,3 +142,5 @@ func (Relationship) 	Tag() {}
 
 func (FeatureTechnical) Type() (string) {return "FEATURE_TECHNICAL"}
 func (Relationship) 	Type() (string) {return "RELATIONSHIP"}
+
+

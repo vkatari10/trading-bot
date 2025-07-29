@@ -10,7 +10,27 @@ import (
 	"net/http"
 	"bytes"
 	"log"
+	"strings"
 )
+
+// SendPayload should send the JSON as an Object to the frontend
+func SendPayload(data map[string]any, postLink string) {
+	if strings.Contains(postLink, logLink) && log_to_stdio { // dev debug mode
+		log.Println(data["msg"])
+	} // if 
+
+	payload, err := json.Marshal(data)
+    if err != nil {
+		log.Println("SendPayload failed")
+		return
+    } // if
+		// handle these errors in the future somehow
+    resp, err := http.Post(postLink, "application/json", bytes.NewBuffer(payload))
+    if err != nil {
+		return
+    } // if
+	defer resp.Body.Close()
+} // SendPayload
 
 // for post links like /api/data/{id}
 // those id's should be embedded into the postLink variables

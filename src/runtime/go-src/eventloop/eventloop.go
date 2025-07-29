@@ -11,6 +11,7 @@ import (
 	"time"
 	"github.com/gorilla/websocket"
 	"encoding/json"
+	"os"
 	alpaca "github.com/vkatari10/trading-bot/src/runtime/go-src/alpaca"
 	apibuffer "github.com/vkatari10/trading-bot/src/runtime/go-src/apibuffer"
 	jsonInternal "github.com/vkatari10/trading-bot/src/runtime/go-src/json"
@@ -26,6 +27,11 @@ var (
 // Why? Force the Payload to be sent and blocked before returning to ensure
 // the payload is delivered to its intended source
 
+// getFileName gets the config file name used from the CLI
+func getFileName() string {
+	argv := os.Args
+	return argv[1]
+} // getFileName
 
 // deepCopyRuntimeData makes a deep copy of a runtimeData structure
 func deepCopyRuntimeData(rd technicals.RuntimeData) technicals.RuntimeData {

@@ -6,6 +6,7 @@ Date: 06/22/2025
 '''
 
 class Account():
+    '''Models account'''
 
     def __init__(self, cash=10000.0, commission=0.00, batch_size=1):
         self.cash = cash
@@ -13,7 +14,7 @@ class Account():
         self.positions = []
         self.batch_size = batch_size
 
-    def buy(self, price):
+    def buy(self, price: float) -> None:
 
         cost = price * self.batch_size + self.commission
 
@@ -22,7 +23,20 @@ class Account():
 
         self.positions.append(Position(start_price=price, shares=self.batch_size))
         self.cash -= cost
+    
+    def sell_all(self, end_price: float) -> None:
+
+        if len(self.positions) == 0:
+            return 
         
+        proceeds = 0
+
+        for pos in self.positions:
+            proceeds += pos.findReturn(end_price)
+        
+        self.positions.clear()
+        self.cash += proceeds
+
     def sell(self, end_price):
         if len(self.positions) == 0: # nothing to sell 
             return  
@@ -33,7 +47,7 @@ class Account():
             pl += self.positions[i].findReturn(end_price)
         
         self.positions.clear()
-        self.cash += pl - self.commission
+        self.cash += pl
 
 
 class Position():
@@ -46,3 +60,5 @@ class Position():
 
     def findReturn(self, end_price: float) -> float:
         return self.shares * end_price
+
+
