@@ -26,4 +26,6 @@ This platform is a modular, ML-powered trading system built for strategy experim
     - Recomputes indicators per config
     - Calls `api/` for predictions
     - Places trades
-    - Exposes its own API (repsented in `/frontend` and live dashboard)
+    - Exposes its own API
+- `tui/`
+  - Live monitoring dashboard to control the engines and servers and displays data from the Runtime Engine

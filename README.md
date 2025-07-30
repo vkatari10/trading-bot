@@ -48,12 +48,16 @@ For more detailed information about ConTrade, visit the [docs](https://vkatari10
 - 500ms floor for cycle times, supporting mid frequency trading
 - Exposed API for trade monitoring and internal logging
 
-### CLI Tools
+### CLI Tools & TUI Dashboard
 - Easily call commands and interact with ConTrade's features via the CLI
   - Training
   - Backtesting
   - Live Deployment
   - Tests
+- Live TUI dashboard
+  - View live:
+     - Logging Information
+     - Technical Data for all tickers
 
 ### Testing and CI 
 - Unit tested across Python and Go
@@ -67,9 +71,10 @@ Project size is ~11000 total lines of code across ~50 files.
 | Config Files | JSON | - | - | 
 | ML Training Pipeline | Python | Pandas, NumPy, Scikit-learn, XGBoost, LightGBM, TA-Lib | YFinance |
 | Backtesting Engine | Python | -| YFinance |
-| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib | Alpaca Market |
+| Runtime Engine | Go, Python | FastAPI, Gorilla WebSocket, TA-Lib, `cgo` | Alpaca Market |
 | Risk Engine (WIP) | Go | - | Alpaca Account |
-| CLI | Python | Rich | - |
+| CLI | Python | - | - |  
+| TUI | Python | Textual | Internal Runtime Engine API | 
 | Testing & CI | Go, Python, YAML | Pytest, `go test`, Github Actions | - | 
 
 ## Architecture
