@@ -44,10 +44,8 @@ def process_data(df: pd.DataFrame, ud: ud.UserMLConfig) -> pd.DataFrame:
     df.dropna(inplace=True)
 
     # put featurs on the training dataframe
-    if ud.get_OHLCV_diffs_setting():
-        df = OHCLV_diffs(df)
     df = load_features(df, ud.get_features())
-    df = relationships(df, ud.get_labels())
+    df = put_relationships(ud, df, ud.get_labels())
 
     # print("Number of things that are not hold")
     # print(len(df[df['final_signal'] != 0]))
@@ -55,7 +53,6 @@ def process_data(df: pd.DataFrame, ud: ud.UserMLConfig) -> pd.DataFrame:
     return df
 
 
-# TODO make these dispatch tables somehow
 def load_features(df: pd.DataFrame,
                   features: List[Dict[str, Any]]) -> pd.DataFrame:
     '''
@@ -85,45 +82,19 @@ def load_features(df: pd.DataFrame,
 
     return df
 
-def relationships(df: pd.DataFrame,
-                  signals: List[Dict[str, Any]]) -> pd.DataFrame:
-    '''
-    Loads user defined labelling logic from the user config 
 
-    Args:
+def put_relationships(uc: jp.UserConfig, df: pd.DataFrame, 
+                      labels: List[Dict[str, Any]]) -> pd.DataFrame:
+    """Puts user defined labelling logic onto the training DataFrame"""
+    for label in labels:
+        df[label['name']] = dp.dispatch_signal(label['sig'],
+                                               df,
+                                               label['col1'],
+                                               label['col2'],
+                                               label.get('persist'))
 
-    df (pd.DataFrame): DataFrame from YFinance 
-    signals (List[Dict[str, Any]]): A list of JSON objects from the config
-    file containing labelling logic between technical indicators
-
-    Returns:
-
-    The modified dataframe with the user defined labelling logic and final
-    labelling column at the last index with the final signal to buy/sell
-    '''
-    stop_col = signals[0]['name'] # stop column from features -> labels
-
-    for i in range(len(signals)): # Call Dispatcher for label logic methods 
-        df[signals[i]['name']] = dp.dispatch_label(signals[i]['sig'], df, 
-                                                   signals[i]['col1'], 
-                                                   signals[i]['col2'])
-
-    # ==== replace index tuple with first relationship defined ====
-    index = df.columns.get_loc((stop_col))
-
-    # put the final sum of signals to indicate buy/sell
-    df['final_signal'] = sig.sum_to_sigs(df, index)
-    return df
-
-
-def OHCLV_diffs(df: pd.DataFrame) -> pd.DataFrame:
-    '''Puts the difference cols of the OHCLV data from Yfinance'''
-    yf_cols = ['close', 'high', 'low', 'open', 'volume']
-
-    for col in yf_cols:
-        col_name = col + "_delta"
-        df[col_name] = df[col].diff()
-
+    # put final signal values based on relationship values / weights
+    df['final_sig'] = sig.final_sig(uc, df, df.columns.get_loc(labels[0]['name']))  
     return df
 
 def get_df(uc: jp.UserConfig, concat=True) -> pd.DataFrame:
@@ -193,7 +164,7 @@ def rebalance_df(ud: ud.UserMLConfig,
     cols = [i for i in range(len(df.columns) - 1)]
 
     X = df.iloc[:, cols]
-    y = df.iloc[:, -1] # TODO accept multiple back column
+    y = df.iloc[:, -1] # TODO accept multiple back label columns
 
     rus = RandomUnderSampler(random_state=42)
     X_res, y_res = rus.fit_resample(X, y)

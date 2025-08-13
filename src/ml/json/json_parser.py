@@ -47,12 +47,22 @@ class UserConfig():
 
         res = []
 
-
         for i in range(len(features)):
             res.append(features[i]["name"])
         
         for i in range(len(labels)):
             res.append(labels[i]["name"])
+
+        return res
+
+    def get_all_weights(self) -> List[float]:
+
+        labels = self.get_labels()
+
+        res = []
+
+        for r in labels:
+            res.append(r["weight"])
 
         return res
     

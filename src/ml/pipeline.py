@@ -38,6 +38,7 @@ def pipeline(file: str) -> None:
     df = dp.get_df(config)
     log(f"Created all ({len(config.get_training_stocks())}) training DataFrames",
         style="green")
+    print("Created DataFrames")
     # find the stop column to prevent training on cols that are not features
     stop = train.find_stop(df, config)
 

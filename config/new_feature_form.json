@@ -1,7 +1,4 @@
 {
-    "notes": {
-        "note": "Testing TA-Lib style formatting to support more technicals"
-    },
     "features": [
         {
             "tech": "SMA",
@@ -15,26 +12,26 @@
         },
         {
             "tech": "delta",
-            "col1": "SMA_10",
+            "col1": "T_SMA_10",
             "col2": null,
             "name": "D_SMA_10_delta"
         },
         {
             "tech": "delta",
-            "col1": "SMA_30",
+            "col1": "T_SMA_30",
             "col2": null,
             "name": "D_SMA_30_delta"
         },
         {
             "tech": "diff",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
             "name": "D_SMA_10_30_diff"
         },
         {
             "tech": "delta",
-            "col1": "SMA_10",
-            "col2": "SMA_30",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
             "name": "T_SMA_10_30_delta_diff"
         }
     ],
@@ -70,7 +67,6 @@
         "model_name": "model_v2.pkl",   
         "model_training_timeframe": "1m",   
         "model_training_interval": "5d",
-        "use_OHLCV_diffs": false,
         "hyperparameters": {
             "random_state": 42
         }
