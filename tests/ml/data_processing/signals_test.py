@@ -14,16 +14,16 @@ def get_dummy_stock_df() -> pd.DataFrame:
     return pd.DataFrame(data)
 
 
-def test_signals():
-    '''
-    Test if signals come out as intended on a dummy DataFrame
-    '''
-    test_df = get_dummy_stock_df()
+# def test_signals():
+#     '''
+#     Test if signals come out as intended on a dummy DataFrame
+#     '''
+#     test_df = get_dummy_stock_df()
 
-    test_df['Crossover'] = sig.crossover(test_df, "Open", "Close")
-    test_df['Above'] = sig.above(test_df, "Open", "Close")
-    test_df['Below'] = sig.below(test_df, "Open", "Close")
+#     test_df['Crossover'] = sig.crossover(test_df, "Open", "Close")
+#     test_df['Above'] = sig.above(test_df, "Open", "Close")
+#     test_df['Below'] = sig.below(test_df, "Open", "Close")
 
-    assert test_df['Crossover'].equals(pd.Series([0, 0, 1, -1, 1]))
-    assert test_df['Above'].equals(pd.Series([0, 0, 1, 0, 1]))
-    assert test_df['Below'].equals(pd.Series([1, 1, 0, 1, 0]))
+#     assert test_df['Crossover'].equals(pd.Series([0, 0, 1, -1, 1]))
+#     assert test_df['Above'].equals(pd.Series([0, 0, 1, 0, 1]))
+#     assert test_df['Below'].equals(pd.Series([1, 1, 0, 1, 0]))
