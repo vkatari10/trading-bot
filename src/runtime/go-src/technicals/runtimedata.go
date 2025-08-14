@@ -207,9 +207,9 @@ func (rd *RuntimeData) UpdateOtherTechnicals() error {
 			obj.Value = matchingValues[0] - matchingValues[1]
 		} else { /// delta
 			if obj.Col2 == "" { // single col
-				obj.Value -= matchingValues[0]
+				obj.Value = matchingValues[0] - obj.Value
 			} else { // delta of differences
-				obj.Value -= matchingValues[0] - matchingValues[1]
+				obj.Value = (matchingValues[0] - matchingValues[1]) - obj.Value
 			}
 		}
 
@@ -240,14 +240,29 @@ func (rd *RuntimeData) UpdateRelationships() error {
 
 		weightedFeatureVal := obj.Weight * featureVal
 
+		/*
+
+			This only needs to check if its larger or less
+			than zero not the raw value being fed to the ML models
+
+			There fore we check the threshold? and do not 
+			do the adjustment below?
+		*/
 	 	if weightedFeatureVal < obj.Threshold {
 			weightedFeatureVal = 0
+		}
+
+		if weightedFeatureVal > 0 { // here is the match to the ML pipeline
+			// check ./src/ml/data_processing/signals for the ML side 
+			weightedFeatureVal = 1
+		} else if weightedFeatureVal < 0 {
+			weightedFeatureVal = -1
 		}
 
 		rd.FeatureArray[rd.fillFeatureIndex] = weightedFeatureVal
 		rd.FeatureJSON[strconv.Itoa(rd.fillFeatureIndex)] = weightedFeatureVal
 		rd.fillFeatureIndex++
-	}
+	} 
 
 	rd.fillFeatureIndex = 0
 

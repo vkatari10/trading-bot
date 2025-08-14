@@ -8,19 +8,19 @@ import (
 
 // Account represents a users Alpaca account
 type Account struct {
-	Cash float64
-	Positions map[string]Position
+	Cash float64 `json:"cash"`
+	Positions []Position
 	mu sync.Mutex // may be unused 
 } // Account
 
 // Position represents the position of a single asset
 type Position struct {
-	Price float64
-	Quantity int
-	TotalCost float64
-	AvgCost float64
-	MarketValue float64
-	TotalPL float64
+	Price float64 `json:"current_price"`
+	Quantity int `json:"qty"`
+	TotalCost float64  `json:"cost_basis"`
+	AvgCost float64 `json:"entry_price"`
+	MarketValue float64 `json:"market_value"`
+	TotalPL float64 `json:"unrealized_pl"`
 } // Position
 
 
