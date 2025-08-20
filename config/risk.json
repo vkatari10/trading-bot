@@ -1,0 +1,93 @@
+{
+    "features": [
+        {
+            "tech": "SMA",
+            "args": {"timeperiod": 10},
+            "name": "T_SMA_10"
+        },
+        {
+            "tech": "SMA",
+            "args": {"timeperiod": 30},
+            "name": "T_SMA_30"
+        },
+        {
+            "tech": "delta",
+            "col1": "T_SMA_10",
+            "col2": null,
+            "name": "D_SMA_10_delta"
+        },
+        {
+            "tech": "delta",
+            "col1": "T_SMA_30",
+            "col2": null,
+            "name": "D_SMA_30_delta"
+        },
+        {
+            "tech": "diff",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
+            "name": "D_SMA_10_30_diff"
+        },
+        {
+            "tech": "delta",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
+            "name": "T_SMA_10_30_delta_diff"
+        }
+    ],
+    "label_logic": [
+        {
+            "sig": "crossover",
+            "name": "SMA_CROSS",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
+            "weight": 1.0
+        },
+        {
+            "sig": "above",
+            "name": "SHORT_SMA_ABOVE",
+            "col1": "T_SMA_10",
+            "col2": "T_SMA_30",
+            "weight": 1.0,
+            "persist": 2
+        }
+    ],
+    "train_stocks": [
+        "BA",
+        "MSFT"
+    ],
+    "live_trade_stocks": [
+        "AAPL",
+        "AMZN",
+        "MSFT"
+    ],  
+    "ml_settings": {
+        "model_framework": "scikit",
+        "scikit_model_type": "RandomForrestClassifier",
+        "model_name": "model_v2.pkl",   
+        "model_training_timeframe": "1m",   
+        "model_training_interval": "5d",
+        "hyperparameters": {
+            "random_state": 42
+        }
+    },  
+    "runtime_settings": {
+        "cycle_time": 10,
+        "burn_window_time": 31,
+        "log_api_flush_time": 2000, 
+        "log_to_stdout": true,
+        "run_after_close": false,
+        "override_burn_in": true
+    },
+    "backtest_settings": {
+        "starting_cash": 10000,
+        "commission": 0.00,
+        "position_size": 1,
+        "slippage": 0.03
+    },
+    "risk_settings": {
+        "batch_size": 1, 
+        "stop_loss": 10,
+        "risk_metrics": ["max_drawdown", "sharpe"]
+    }
+}
