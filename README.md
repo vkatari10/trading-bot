@@ -10,8 +10,6 @@ ConTrade is language-decoupled, real-time capable, and architected for both expe
 
 For more detailed information about ConTrade, visit the [docs](https://vkatari10.github.io/trading-bot/)
 
-**Note**: This project is under active development, expect new features weekly. Below is a list of current features
-
 ## Core Features
 
 ### Unified Config Driven Architecture
