@@ -2,6 +2,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
+/*
+Other risk methods that should be implemented
+
+
+*/
+
 double max_drawdown(const double *equity, int n) {
     double peak = equity[0];
     double max_dd = 0.0;
